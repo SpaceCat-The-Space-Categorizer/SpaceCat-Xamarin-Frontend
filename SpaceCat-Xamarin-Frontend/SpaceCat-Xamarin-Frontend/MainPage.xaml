@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
              x:Class="SpaceCat_Xamarin_Frontend.MainPage">
 
     <ContentPage.Resources>
@@ -57,50 +58,62 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
+
     
-    <!-- Title Layout -->
-    <StackLayout Spacing="0">
-        <Frame Style="{StaticResource frame-title}">
-            <Label Text="SPACE CAT!" Style="{StaticResource label-title}"/>
-        </Frame>
+    <ContentPage.BindingContext>
+        <local:BuildingListViewModel/>
+    </ContentPage.BindingContext>
 
-        <Frame Style="{StaticResource frame-main}">
-            <Frame Style="{StaticResource frame-exterior}">
-                <!-- Main Layout -->
-                <StackLayout Orientation="Horizontal" Spacing="0">
-                    <!-- Select Building Layout -->
-                    <Frame Style="{StaticResource frame-exterior}">
-                        <StackLayout>
-                            
-                            <Frame Style="{StaticResource frame-interior}">
-                                <!-- Building List Objects -->
-                                <StackLayout>
-                                    <Label Text="Current Building" Style="{StaticResource label-subtitle}"/>
-                                    <Label Text="*List of Buildings*" Style="{StaticResource label-content}"/>
-                                </StackLayout>
-                            </Frame>
-                            <Button Text="Create New Map" Style="{StaticResource button-primary}"/>
-                        </StackLayout>
-                    </Frame>
-
-                    <!-- Building Info Layout -->
-                    <Frame Style="{StaticResource frame-exterior}">
-                        <StackLayout>
-                            <Label Text="Building Info" Style="{StaticResource label-subtitle}"/>
-                            <Frame Style="{StaticResource frame-interior}">
-                                <StackLayout>
-                                    <Label Text="*Building Name*" Style="{StaticResource label-content}"/>
-                                    <Label Text="*Date*" Style="{StaticResource label-content}"/>
-                                    <Label Text="*Floorplan Image*" Style="{StaticResource label-content}"/>
-                                    <Label Text="*Status*" Style="{StaticResource label-content}"/>
-                                </StackLayout>
-                            </Frame>
-                            <Button Text="Start a Building Survey" Style="{StaticResource button-primary}"/>
-                            <Button Text="Data Analysis and Export" Style="{StaticResource button-primary}"/>
-                        </StackLayout>
-                    </Frame>
-                </StackLayout>
+    <ContentPage.Content>
+        <!-- Title Layout -->
+        <StackLayout Spacing="0">
+            <Frame Style="{StaticResource frame-title}">
+                <Label Text="SPACE CAT!" Style="{StaticResource label-title}"/>
             </Frame>
-        </Frame>
-    </StackLayout>
+
+            <Frame Style="{StaticResource frame-main}">
+                <Frame Style="{StaticResource frame-exterior}">
+                    <!-- Main Layout -->
+                    <StackLayout Orientation="Horizontal" Spacing="0">
+                        
+                        
+                        <!-- Select Building Layout -->
+                        <Frame Style="{StaticResource frame-exterior}">
+                            <StackLayout>
+                                <Frame Style="{StaticResource frame-interior}">
+                                    <!-- Building List Objects -->
+                                    <StackLayout>
+                                        <Label Text="Current Building" Style="{StaticResource label-subtitle}"/>
+                                        <Label Text="*List of Buildings*" Style="{StaticResource label-content}"/>
+                                        <ListView x:Name="lvBuildings" ItemsSource="{Binding Buildings}">
+                                        
+                                        </ListView>
+                                    </StackLayout>
+                                </Frame>
+                                <Button Text="Create New Map" Clicked="Clicked_Create" Style="{StaticResource button-primary}"/>
+                            </StackLayout>
+                        </Frame>
+
+                        
+                        <!-- Building Info Layout -->
+                        <Frame Style="{StaticResource frame-exterior}">
+                            <StackLayout>
+                                <Label Text="Building Info" Style="{StaticResource label-subtitle}"/>
+                                <Frame Style="{StaticResource frame-interior}">
+                                    <StackLayout>
+                                        <Label Text="{Binding Name}" Style="{StaticResource label-content}"/>
+                                        <Label Text="{Binding Date}" Style="{StaticResource label-content}"/>
+                                        <Label Text="{Binding FloorPlan}" Style="{StaticResource label-content}"/>
+                                        <Label Text="{Binding Status}" Style="{StaticResource label-content}"/>
+                                    </StackLayout>
+                                </Frame>
+                                <Button Text="Start a Building Survey" Command="{Binding GoToSurveyMode}" Style="{StaticResource button-primary}"/>
+                                <Button x:Name="buttonNote" Text="Data Analysis and Export" Clicked="Clicked_Analysis" Style="{StaticResource button-primary}"/>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                </Frame>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>
