@@ -4,104 +4,7 @@
              xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
              x:Class="SpaceCat_Xamarin_Frontend.MainPage">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="label-title" TargetType="Label">
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="FontSize" Value="36" />
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
-            </Style>
-            <Style x:Key="label-subtitle" TargetType="Label">
-                <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="FontSize" Value="28"/>
-                <Setter Property="HorizontalTextAlignment" Value="Center"/>
-                <Setter Property="Padding" Value="30,10,30,10"/>
-            </Style>
-            <Style x:Key="label-content" TargetType="Label">
-                <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="FontSize" Value="18"/>
-            </Style>
-            <Style x:Key="label-buildingList" TargetType="Label">
-                <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="FontSize" Value="20"/>
-                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
-            </Style>
-            <Style x:Key="label-buildingListSub" TargetType="Label">
-                <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="FontSize" Value="16"/>
-                <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
-            </Style>
-            <Style x:Key="image-floorPlan" TargetType="Label">
-                <Setter Property="HeightRequest" Value="200"/>
-                <Setter Property="WidthRequest" Value="350"/>
-                <Setter Property="TextColor" Value="Black"/>
-            </Style>
-            <Style x:Key="frame-title" TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="CornflowerBlue"/>
-                <Setter Property="Padding" Value="10"/>
-                <Setter Property="CornerRadius" Value="0"/>
-            </Style>
-            <Style x:Key="frame-main" TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="Gray"/>
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="Margin" Value="0"/>
-                <Setter Property="CornerRadius" Value="0"/>
-                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
-                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-            </Style>
-            <Style x:Key="frame-exterior" TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="LightGray"/>
-                <Setter Property="Padding" Value="5"/>
-                <Setter Property="Margin" Value="5"/>
-                <Setter Property="CornerRadius" Value="5"/>
-                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
-                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
-            </Style>
-            <Style x:Key="frame-interior" TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="WhiteSmoke"/>
-                <Setter Property="Padding" Value="15"/>
-                <Setter Property="CornerRadius" Value="0"/>
-                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
-            </Style>
-            <Style x:Key="frame-listItem" TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="White"/>
-                <Setter Property="Padding" Value="5,10,5,10"/>
-                <Setter Property="Margin" Value="5"/>
-                <Setter Property="CornerRadius" Value="5"/>
-            </Style>
-            <Style x:Key="button-primary" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="White"/>
-                <Setter Property="BorderColor" Value="Black"/>
-                <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="Padding" Value="10,30,10,30"/>
-                <Setter Property="CornerRadius" Value="10"/>
-            </Style>
-            <!-- Margin needs to be equal on these two buttons -->
-            <Style x:Key="button-editBuilding" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="YellowGreen"/>
-                <Setter Property="BorderColor" Value="Black"/>
-                <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="Margin" Value="0,0,15,0"/>
-                <Setter Property="CornerRadius" Value="5"/>
-                <Setter Property="HeightRequest" Value="40"/>
-                <Setter Property="WidthRequest" Value="80"/>
-            </Style>
-            <Style x:Key="button-deleteBuilding" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="IndianRed"/>
-                <Setter Property="BorderColor" Value="Black"/>
-                <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="Margin" Value="10,0,5,0"/>
-                <Setter Property="CornerRadius" Value="5"/>
-                <Setter Property="HeightRequest" Value="40"/>
-                <Setter Property="WidthRequest" Value="50"/>
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
-    
     <ContentPage.BindingContext>
         <local:BuildingListViewModel/>
     </ContentPage.BindingContext>
@@ -154,7 +57,7 @@
                                         </ListView>
                                     </StackLayout>
                                 </Frame>
-                                <Button Text="Create New Map" Clicked="Clicked_Create" Style="{StaticResource button-primary}"/>
+                                <Button Text="Create New Map" Clicked="Clicked_Create" Style="{StaticResource button-big}"/>
                             </StackLayout>
                         </Frame>
 
@@ -165,14 +68,14 @@
                                 <Label Text="Building Info" Style="{StaticResource label-subtitle}"/>
                                 <Frame Style="{StaticResource frame-interior}">
                                     <StackLayout>
-                                        <Label Text="{Binding SelectedBuilding.BuildingName}" FontSize="24" Style="{StaticResource label-content}"/>
-                                        <Label Text="{Binding SelectedBuilding.BuildingDate}" Style="{StaticResource label-content}"/>
+                                        <Label Text="{Binding SelectedBuilding.BuildingName}" FontSize="24" Style="{StaticResource label-small}"/>
+                                        <Label Text="{Binding SelectedBuilding.BuildingDate}" Style="{StaticResource label-small}"/>
                                         <Label Text="{Binding SelectedBuilding.BuildingFloorplan}" Style="{StaticResource image-floorPlan}"/>
-                                        <Label Text="{Binding SelectedBuilding.BuildingStatus}" VerticalOptions="EndAndExpand" Style="{StaticResource label-content}"/>
+                                        <Label Text="{Binding SelectedBuilding.BuildingStatus}" VerticalOptions="EndAndExpand" Style="{StaticResource label-small}"/>
                                     </StackLayout>
                                 </Frame>
-                                <Button Text="Start a Building Survey" Command="{Binding GoToSurveyMode}" Style="{StaticResource button-primary}"/>
-                                <Button x:Name="buttonNote" Text="Data Analysis and Export" Clicked="Clicked_Analysis" Style="{StaticResource button-primary}"/>
+                                <Button Text="Start a Building Survey" Command="{Binding GoToSurveyMode}" Style="{StaticResource button-big}"/>
+                                <Button x:Name="buttonNote" Text="Data Analysis and Export" Clicked="Clicked_Analysis" Style="{StaticResource button-big}"/>
                             </StackLayout>
                         </Frame>
                     </StackLayout>
