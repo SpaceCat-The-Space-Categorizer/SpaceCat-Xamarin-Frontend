@@ -43,7 +43,7 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
             </Style>
             <Style x:Key="frame-interior" TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="BackgroundColor" Value="WhiteSmoke"/>
                 <Setter Property="Padding" Value="15"/>
                 <Setter Property="CornerRadius" Value="0"/>
                 <Setter Property="VerticalOptions" Value="FillAndExpand"/>
@@ -85,12 +85,11 @@
                                     <StackLayout>
                                         <Label Text="Current Building" Style="{StaticResource label-subtitle}"/>
                                         <Label Text="*List of Buildings*" Style="{StaticResource label-content}"/>
-                                        <ListView x:Name="lvBuildings" ItemsSource="{Binding Buildings}">
-                                        
+                                        <ListView x:Name="lvBuildings" ItemsSource="{Binding Buildings}" SelectedItem="{Binding SelectedBuilding}">
                                         </ListView>
                                     </StackLayout>
                                 </Frame>
-                                <Button Text="Create New Map" Clicked="Clicked_Create" Style="{StaticResource button-primary}"/>
+                                <Button Text="Create New Map" Command="{Binding CreateNewBuilding}" Style="{StaticResource button-primary}"/>
                             </StackLayout>
                         </Frame>
 

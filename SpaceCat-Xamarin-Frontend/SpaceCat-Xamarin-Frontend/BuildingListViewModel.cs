@@ -12,6 +12,7 @@ namespace SpaceCat_Xamarin_Frontend
     public class BuildingListViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public ICommand CreateNewBuilding => new Command(Clicked_Create);
         public ICommand GoToSurveyMode => new Command(Clicked_Survey);
 
         // SELECTED BUILDING VARIABLES
@@ -54,26 +55,43 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
-        // BUILDING LIST VARIABLE
+        // BUILDING LIST VARIABLES
+        private string _selectedBuilding;
         public ObservableCollection<string> Buildings { get; set; }
+
+            // ALTER ON IMPLEMENT - need Building class, placeholder data to fill info
+        public string SelectedBuilding
+        {
+            get { return _selectedBuilding; }
+            set
+            {
+                _selectedBuilding = value;
+                OnPropertyChanged();
+                this.Name = _selectedBuilding;
+                this.Date = "March 2022";
+                this.FloorPlan = "*floorplan image*";
+                this.Status = "Status: Ready for Survey";
+            }
+        }
 
         public BuildingListViewModel()
         {
             Buildings = new ObservableCollection<string>();
 
+            // TEMPORARY - need Building class, placeholder data to display List View
             Buildings.Add("Building 1");
             Buildings.Add("Building 2");
             Buildings.Add("Building 3");
             Buildings.Add("Building 4");
         }
 
+        private void Clicked_Create()
+        {
+            Buildings.Add("Another Building");
+        }
+
         private void Clicked_Survey()
         {
-            // ALTER ON IMPLEMENT - need Building class, placeholder data to check binding
-            this.Name = "Building Name";
-            this.Date = "March 2022";
-            this.FloorPlan = "*floorplan image*";
-            this.Status = "Status: Ready for Survey";
 
         }
 

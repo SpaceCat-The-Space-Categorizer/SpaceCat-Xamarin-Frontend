@@ -28,10 +28,5 @@ namespace SpaceCat_Xamarin_Frontend
         {
 
         }
-
-        private void Clicked_Create(object sender, EventArgs e)
-        {
-
-        }
     }
 }
