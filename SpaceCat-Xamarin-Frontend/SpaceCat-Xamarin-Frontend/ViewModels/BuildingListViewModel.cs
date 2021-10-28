@@ -13,6 +13,7 @@ namespace SpaceCat_Xamarin_Frontend
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public ICommand CreateNewBuilding => new Command(Clicked_Create);
+        public ICommand DeleteBuilding => new Command(Clicked_Delete);
         public ICommand GoToSurveyMode => new Command(Clicked_Survey);
 
         // SELECTED BUILDING VARIABLES
@@ -88,6 +89,11 @@ namespace SpaceCat_Xamarin_Frontend
         private void Clicked_Create()
         {
             Buildings.Add("Another Building");
+        }
+
+        private void Clicked_Delete()
+        {
+            Buildings.Remove(SelectedBuilding);
         }
 
         private void Clicked_Survey()

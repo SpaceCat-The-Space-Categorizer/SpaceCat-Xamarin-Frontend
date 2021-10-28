@@ -21,6 +21,10 @@
                 <Setter Property="TextColor" Value="Black"/>
                 <Setter Property="FontSize" Value="16"/>
             </Style>
+            <Style x:Key="label-buildingList" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
             <Style x:Key="frame-title" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="CornflowerBlue"/>
                 <Setter Property="Padding" Value="10"/>
@@ -48,6 +52,12 @@
                 <Setter Property="CornerRadius" Value="0"/>
                 <Setter Property="VerticalOptions" Value="FillAndExpand"/>
             </Style>
+            <Style x:Key="frame-listItem" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="Padding" Value="5,10,5,10"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="CornerRadius" Value="5"/>
+            </Style>
             <Style x:Key="button-primary" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="White"/>
                 <Setter Property="BorderColor" Value="Black"/>
@@ -55,6 +65,22 @@
                 <Setter Property="FontSize" Value="18"/>
                 <Setter Property="Padding" Value="10,30,10,30"/>
                 <Setter Property="CornerRadius" Value="10"/>
+            </Style>
+            <Style x:Key="button-editBuilding" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="YellowGreen"/>
+                <Setter Property="BorderColor" Value="Black"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Padding" Value="15,0,15,0"/>
+                <Setter Property="CornerRadius" Value="5"/>
+            </Style>
+            <Style x:Key="button-deleteBuilding" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="IndianRed"/>
+                <Setter Property="BorderColor" Value="Black"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontSize" Value="18"/>
+                <Setter Property="Padding" Value="15,0,15,0"/>
+                <Setter Property="CornerRadius" Value="5"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -81,11 +107,24 @@
                         <Frame Style="{StaticResource frame-exterior}">
                             <StackLayout>
                                 <Frame Style="{StaticResource frame-interior}">
-                                    <!-- Building List Objects -->
+                                    <!-- Building List -->
                                     <StackLayout>
                                         <Label Text="Current Building" Style="{StaticResource label-subtitle}"/>
-                                        <Label Text="*List of Buildings*" Style="{StaticResource label-content}"/>
                                         <ListView x:Name="lvBuildings" ItemsSource="{Binding Buildings}" SelectedItem="{Binding SelectedBuilding}">
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <ViewCell>
+                                                        <Frame Style="{StaticResource frame-listItem}">
+                                                            <StackLayout Orientation="Horizontal">
+                                                                <Button Text="X" Command="{Binding DeleteBuilding}" Style="{StaticResource button-deleteBuilding}"/>
+                                                                <Button Text="Edit" Style="{StaticResource button-editBuilding}"/>
+                                                                <Label Text="Name" Style="{StaticResource label-buildingList}"/>
+                                                                <Label Text="Date" Style="{StaticResource label-buildingList}"/>
+                                                            </StackLayout>
+                                                        </Frame>
+                                                    </ViewCell>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
                                         </ListView>
                                     </StackLayout>
                                 </Frame>
