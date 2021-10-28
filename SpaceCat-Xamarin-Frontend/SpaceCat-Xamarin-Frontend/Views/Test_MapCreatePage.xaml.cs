@@ -22,12 +22,12 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
-        private void Clicked_Save(object sender, EventArgs e)
+        private async void Clicked_Save(object sender, EventArgs e)
         {
             Test_Building building = ((Test_MapCreateViewModel)BindingContext).Building;
             MessagingCenter.Send(this, "CreateBuilding", building);
             
-            Navigation.PopModalAsync();
+            await Navigation.PopModalAsync();
         }
     }
 }
