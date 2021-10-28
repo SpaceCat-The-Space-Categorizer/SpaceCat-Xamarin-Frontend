@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
+             x:Class="SpaceCat_Xamarin_Frontend.Test_MapCreatePage">
+
+    <ContentPage.BindingContext>
+        <local:Test_MapCreateViewModel/>
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            
+            <Label Text="Testing Building Creation with MessageCenter!!"/>
+            <Entry Placeholder="Building Name" Text="{Binding Building.BuildingName}"/>
+            <Entry Placeholder="Building Date" Text="{Binding Building.BuildingDate}"/>
+            <Entry Placeholder="Building Layout" Text="{Binding Building.BuildingFloorplan}"/>
+            <Entry Placeholder="Building Status" Text="{Binding Building.BuildingStatus}"/>
+            <Button Text="Save" Clicked="Clicked_Save"/>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

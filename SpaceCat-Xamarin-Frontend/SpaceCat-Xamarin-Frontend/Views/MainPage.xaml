@@ -116,10 +116,10 @@
                                                     <ViewCell>
                                                         <Frame Style="{StaticResource frame-listItem}">
                                                             <StackLayout Orientation="Horizontal">
-                                                                <Button Text="X" Command="{Binding DeleteBuilding}" Style="{StaticResource button-deleteBuilding}"/>
-                                                                <Button Text="Edit" Style="{StaticResource button-editBuilding}"/>
-                                                                <Label Text="Name" Style="{StaticResource label-buildingList}"/>
-                                                                <Label Text="Date" Style="{StaticResource label-buildingList}"/>
+                                                                <Button Text="X" Clicked="Clicked_Delete" CommandParameter="{Binding BuildingID}" Style="{StaticResource button-deleteBuilding}"/>
+                                                                <Button Text="Edit" Clicked="Clicked_Edit" CommandParameter="{Binding BuildingID}" Style="{StaticResource button-editBuilding}"/>
+                                                                <Label Text="{Binding BuildingName}" Style="{StaticResource label-buildingList}"/>
+                                                                <Label Text="{Binding BuildingDate}" Style="{StaticResource label-buildingList}"/>
                                                             </StackLayout>
                                                         </Frame>
                                                     </ViewCell>
@@ -128,7 +128,7 @@
                                         </ListView>
                                     </StackLayout>
                                 </Frame>
-                                <Button Text="Create New Map" Command="{Binding CreateNewBuilding}" Style="{StaticResource button-primary}"/>
+                                <Button Text="Create New Map" Clicked="Clicked_Create" Style="{StaticResource button-primary}"/>
                             </StackLayout>
                         </Frame>
 
@@ -139,10 +139,10 @@
                                 <Label Text="Building Info" Style="{StaticResource label-subtitle}"/>
                                 <Frame Style="{StaticResource frame-interior}">
                                     <StackLayout>
-                                        <Label Text="{Binding Name}" Style="{StaticResource label-content}"/>
-                                        <Label Text="{Binding Date}" Style="{StaticResource label-content}"/>
-                                        <Label Text="{Binding FloorPlan}" Style="{StaticResource label-content}"/>
-                                        <Label Text="{Binding Status}" Style="{StaticResource label-content}"/>
+                                        <Label Text="{Binding SelectedBuilding.BuildingName}" Style="{StaticResource label-content}"/>
+                                        <Label Text="{Binding SelectedBuilding.BuildingDate}" Style="{StaticResource label-content}"/>
+                                        <Label Text="{Binding SelectedBuilding.BuildingFloorplan}" Style="{StaticResource label-content}"/>
+                                        <Label Text="{Binding SelectedBuilding.BuildingStatus}" Style="{StaticResource label-content}"/>
                                     </StackLayout>
                                 </Frame>
                                 <Button Text="Start a Building Survey" Command="{Binding GoToSurveyMode}" Style="{StaticResource button-primary}"/>
