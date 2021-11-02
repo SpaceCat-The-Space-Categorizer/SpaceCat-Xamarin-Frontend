@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
              x:Class="SpaceCat_Xamarin_Frontend.MainPage">
 
+<!-- Building List content page (Landing page) -->
+    
+<!-- building list is the left-hand content, building info is the right-hand content -->
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style x:Key="labelLocal-buildingList-main" TargetType="Label" BasedOn="{StaticResource label-medium}">

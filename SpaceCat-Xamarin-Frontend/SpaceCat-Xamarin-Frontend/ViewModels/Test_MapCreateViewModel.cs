@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
+// A test class - implemented to follow MVVM style, largely unused with current implementation
+
 namespace SpaceCat_Xamarin_Frontend
 {
     class Test_MapCreateViewModel : INotifyPropertyChanged
@@ -20,6 +22,8 @@ namespace SpaceCat_Xamarin_Frontend
             Building = new Test_Building();
         }
 
+        // INotifyPropertyChanged interface is used to update the UI when variables are altered
+        // may be unnecessary here? test when actually implementing
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

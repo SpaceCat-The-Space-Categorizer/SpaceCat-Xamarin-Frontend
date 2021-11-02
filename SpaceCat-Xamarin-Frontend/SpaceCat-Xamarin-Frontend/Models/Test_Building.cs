@@ -4,6 +4,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
+// A test class - temporary building class used to test landing page building list
+// Should be replaced when the .NET library Building class is implemented
+
 namespace SpaceCat_Xamarin_Frontend
 {
     public class Test_Building : INotifyPropertyChanged
@@ -41,7 +44,7 @@ namespace SpaceCat_Xamarin_Frontend
 
         public Test_Building()
         {
-
+            // keep to use no argument constructor
         }
 
         public Test_Building(int buildingID, string buildingName, string buildingDate, string buildingLayout, string buildingStatus)
@@ -53,6 +56,7 @@ namespace SpaceCat_Xamarin_Frontend
             BuildingStatus = buildingStatus;
         }
 
+        // INotifyPropertyChanged interface is used to update the UI when variables are altered
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
