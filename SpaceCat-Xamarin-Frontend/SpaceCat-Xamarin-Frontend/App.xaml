@@ -3,6 +3,105 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SpaceCat_Xamarin_Frontend.App">
     <Application.Resources>
+        <ResourceDictionary>
 
+            <!-- LABEL STYLES -->
+            <Style x:Key="label-title" TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="36" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+            </Style>
+
+            <Style x:Key="label-base" TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+            <Style x:Key="label-large" BasedOn="{StaticResource label-base}" TargetType="Label">
+                <Setter Property="FontSize" Value="28"/>
+            </Style>
+            <Style x:Key="label-medium" BasedOn="{StaticResource label-base}" TargetType="Label">
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+            <Style x:Key="label-small" BasedOn="{StaticResource label-base}" TargetType="Label">
+                <Setter Property="FontSize" Value="16"/>
+            </Style>
+            <Style x:Key="label-subtitle" BasedOn="{StaticResource label-large}" TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="Padding" Value="30,10,30,10"/>
+            </Style>
+
+
+            <!-- EDIT LATER -->
+            <Style x:Key="image-floorPlan" TargetType="Label" BasedOn="{StaticResource label-base}">
+                <Setter Property="HeightRequest" Value="200"/>
+                <Setter Property="WidthRequest" Value="350"/>
+            </Style>
+
+
+            <!-- FRAME STYLES -->
+            <Style x:Key="frame-title" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="CornflowerBlue"/>
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="CornerRadius" Value="0"/>
+            </Style>
+            <Style x:Key="frame-main" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Gray"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="CornerRadius" Value="0"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+            <Style x:Key="frame-exterior" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+            <Style x:Key="frame-interior" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="WhiteSmoke"/>
+                <Setter Property="Padding" Value="15"/>
+                <Setter Property="CornerRadius" Value="0"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+            </Style>
+            <Style x:Key="frame-listItem" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="Padding" Value="5,10,5,10"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="CornerRadius" Value="5"/>
+            </Style>
+
+
+            <!-- BUTTON STYLES -->
+            <Style x:Key="button-base" TargetType="Button">
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="BorderColor" Value="Black"/>
+            </Style>
+            <Style x:Key="button-big" BasedOn="{StaticResource button-base}" TargetType="Button">
+                <Setter Property="Padding" Value="10,30,10,30"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="CornerRadius" Value="10"/>
+            </Style>
+            <Style x:Key="button-small" BasedOn="{StaticResource button-base}" TargetType="Button">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="HeightRequest" Value="40"/>
+            </Style>
+            <Style x:Key="button-editBuilding" BasedOn="{StaticResource button-small}" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="YellowGreen"/>
+                <Setter Property="Margin" Value="0,0,15,0"/>
+                <Setter Property="WidthRequest" Value="80"/>
+            </Style>
+            <Style x:Key="button-deleteBuilding" BasedOn="{StaticResource button-small}" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="IndianRed"/>
+                <Setter Property="Margin" Value="10,0,5,0"/>
+                <Setter Property="WidthRequest" Value="50"/>
+            </Style>
+
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
