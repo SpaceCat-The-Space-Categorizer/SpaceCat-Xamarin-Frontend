@@ -25,6 +25,12 @@ namespace SpaceCat_Xamarin_Frontend
             Navigation.PushModalAsync(new Test_MapCreatePage());
         }
 
+        private void Clicked_Import(object sender, EventArgs e)
+        {
+            // need to do file picker
+            // check if imported file is already on list (and potentially select it if it is)
+        }
+
         private void Clicked_Edit(object sender, EventArgs e)
         {
             // gets the building associated with the edit button selected and opens a Test_MapCreatePage to edit that building

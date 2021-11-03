@@ -77,7 +77,10 @@
                                         </ListView>
                                     </StackLayout>
                                 </Frame>
-                                <Button Text="Create New Map" Clicked="Clicked_Create" Style="{StaticResource button-big}"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <Button Text="Import Existing Map" Clicked="Clicked_Import" Style="{StaticResource button-big}"/>
+                                    <Button Text="Create New Map" Clicked="Clicked_Create" Style="{StaticResource button-big}"/>
+                                </StackLayout>
                             </StackLayout>
                         </Frame>
 
