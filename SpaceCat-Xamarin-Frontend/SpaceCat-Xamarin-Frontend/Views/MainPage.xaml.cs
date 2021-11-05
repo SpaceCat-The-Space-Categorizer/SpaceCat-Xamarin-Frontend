@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 // View (Building List page) - handles user input and page navigation on Building List content page
@@ -27,8 +28,9 @@ namespace SpaceCat_Xamarin_Frontend
 
         private void Clicked_Import(object sender, EventArgs e)
         {
-            // need to do file picker
-            // check if imported file is already on list (and potentially select it if it is)
+            // calls the file picker method for building maps
+            FilePickBuilding();
+            // TODO: check if imported file is already on list (and potentially select it if it is)
         }
 
         private void Clicked_Edit(object sender, EventArgs e)
@@ -52,6 +54,38 @@ namespace SpaceCat_Xamarin_Frontend
         private void Clicked_Analysis(object sender, EventArgs e)
         {
 
+        }
+
+        private async void FilePickBuilding()
+        {
+            // specifies file types to allow user to choose from and opens the file
+            // picker to select that type of file (others are greyed out)
+            // calls import building method from view model with file name
+
+            var customFileType =
+                new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+                {
+                    { DevicePlatform.Android, new[] { "application/buildings" } },
+                    { DevicePlatform.UWP, new[] { ".txt", ".csv" } },
+                });
+
+            var options = new PickOptions
+            {
+                PickerTitle = "Please select a building file",
+                FileTypes = customFileType,
+            };
+
+            // open file picker
+            try
+            {
+                var result = await FilePicker.PickAsync(options);
+                ((BuildingListViewModel)BindingContext).ImportBuilding(result.FileName);
+            }
+            catch (Exception e)
+            {
+                // exit fail
+                System.Diagnostics.Debug.WriteLine("Exception on MainPage.xaml.cs in FilePickMap: " + e);
+            }
         }
     }
 }

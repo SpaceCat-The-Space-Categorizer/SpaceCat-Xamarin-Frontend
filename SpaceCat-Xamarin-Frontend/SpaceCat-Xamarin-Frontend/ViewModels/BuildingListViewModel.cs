@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 // View Model (Building List page) - manages buildings in left-hand side list view
@@ -69,6 +72,28 @@ namespace SpaceCat_Xamarin_Frontend
                     }
                 });
         }
+
+        public void ImportBuilding(string fileName)
+        {
+            //
+
+            try
+            {
+                using (StreamReader cout = new StreamReader(fileName, Encoding.UTF8))
+                {
+                    string line;
+                    while ((line = cout.ReadLine()) != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine(line);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Exception on BuildingListViewModel.cs in ImportBuilding: " + e.Message);
+            }
+        }
+
 
         // INotifyPropertyChanged interface is used to update the UI when variables are altered
         public event PropertyChangedEventHandler PropertyChanged;
