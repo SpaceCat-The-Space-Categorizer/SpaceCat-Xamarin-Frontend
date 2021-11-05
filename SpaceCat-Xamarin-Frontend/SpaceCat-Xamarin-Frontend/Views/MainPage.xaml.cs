@@ -22,7 +22,7 @@ namespace SpaceCat_Xamarin_Frontend
         {
             // opens a Test_MapCreatePage to create a new building
 
-            Navigation.PushModalAsync(new Test_MapCreatePage());
+            Navigation.PushModalAsync(new MapCreationPage());
         }
 
         private void Clicked_Edit(object sender, EventArgs e)

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpaceCat_Xamarin_Frontend.MapCreationPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="polygon-triangle-dropdown" TargetType="Polygon">
+                <Setter Property="Points" Value="10,0 30,0 20,15"/>
+                <Setter Property="Stroke" Value="Blue"/>
+                <Setter Property="StrokeThickness" Value="5"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <StackLayout Orientation="Horizontal">
+            
+            
+            <!-- TOOLS -->
+            <Frame WidthRequest="200" BackgroundColor="AliceBlue">
+                <StackLayout>
+                    <!-- AREA TOOLS -->
+                    <Frame BackgroundColor="Aqua">
+                        <StackLayout Orientation="Horizontal">
+                            <Polygon Style="{StaticResource polygon-triangle-dropdown}"/>
+                            <Label Text="AREA TOOLS" Style="{StaticResource label-medium}"/>
+                        </StackLayout>
+                    </Frame>
+                    <Grid>
+                        <Button Text="New Area" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource button-small}"/>
+                        <Button Text="Delete Area" Grid.Row="1" Grid.Column="0" Style="{StaticResource button-small}"/>
+                        <Button Text="Add to Area" Grid.Row="1" Grid.Column="1" Style="{StaticResource button-small}"/>
+                    </Grid>
+                    
+                    <!-- FURNITURE TOOLS -->
+                    <Frame BackgroundColor="Aqua">
+                        <StackLayout Orientation="Horizontal">
+                            <Polygon Style="{StaticResource polygon-triangle-dropdown}"/>
+                            <Label Text="FURNITURE" Style="{StaticResource label-medium}"/>
+                        </StackLayout>
+                    </Frame>
+                    <Grid>
+                        <Button Grid.Row="0" Grid.Column="0" Text="Add New Furniture" Style="{StaticResource button-small}"/>
+                        <Button Grid.Row="0" Grid.Column="1" Text="See All" Style="{StaticResource button-small}"/>
+                    </Grid>
+                    <Frame VerticalOptions="EndAndExpand" BackgroundColor="Chartreuse">
+                        <StackLayout>
+                            <Button Text="Map Settings" Style="{StaticResource button-big}"/>
+                            <Button Text="Save n Exit" Style="{StaticResource button-big}"/>
+                        </StackLayout>
+                    </Frame>
+                </StackLayout>
+            </Frame>
+            
+            
+            
+            <!-- MAP -->
+            <Frame HorizontalOptions="FillAndExpand" BackgroundColor="BlanchedAlmond">
+                <AbsoluteLayout>
+                    <!-- TODO: need to see how it behaves with image -->
+                    <BoxView Color="Purple"
+                            AbsoluteLayout.LayoutBounds="0.5,0.5,900,725"
+                            AbsoluteLayout.LayoutFlags="PositionProportional" />
+                    <Label Text="Centered text"
+                            AbsoluteLayout.LayoutBounds="0.5,0.5,110,25"
+                            AbsoluteLayout.LayoutFlags="PositionProportional" />
+                </AbsoluteLayout>
+            </Frame>
+            
+            
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
