@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
              x:Class="SpaceCat_Xamarin_Frontend.MapCreationPage">
 
     <ContentPage.Resources>
@@ -12,7 +13,11 @@
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
+    <ContentPage.BindingContext>
+        <local:MapCreationViewModel/>
+    </ContentPage.BindingContext>
+
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal">
             
@@ -22,6 +27,10 @@
                 <StackLayout>
                     <!-- AREA TOOLS -->
                     <Frame BackgroundColor="Aqua">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TapAreaTools}"
+                                                  CommandParameter="AreaTools"/>
+                        </Frame.GestureRecognizers>
                         <StackLayout Orientation="Horizontal">
                             <Polygon Style="{StaticResource polygon-triangle-dropdown}"/>
                             <Label Text="AREA TOOLS" Style="{StaticResource label-medium}"/>
