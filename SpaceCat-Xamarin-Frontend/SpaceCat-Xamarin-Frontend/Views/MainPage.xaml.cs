@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,7 +80,10 @@ namespace SpaceCat_Xamarin_Frontend
             try
             {
                 var result = await FilePicker.PickAsync(options);
-                ((BuildingListViewModel)BindingContext).ImportBuilding(result.FileName);
+                if (result != null)
+                {
+                    ((BuildingListViewModel)BindingContext).ImportBuilding(result);
+                }
             }
             catch (Exception e)
             {

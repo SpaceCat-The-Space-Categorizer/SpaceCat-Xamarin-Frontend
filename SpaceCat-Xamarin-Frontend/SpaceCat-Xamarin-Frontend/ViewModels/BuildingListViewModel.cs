@@ -73,19 +73,21 @@ namespace SpaceCat_Xamarin_Frontend
                 });
         }
 
-        public void ImportBuilding(string fileName)
+        public async void ImportBuilding(FileResult file)
         {
             //
 
             try
             {
-                using (StreamReader cout = new StreamReader(fileName, Encoding.UTF8))
+                using (var stream = await file.OpenReadAsync())
                 {
-                    string line;
-                    while ((line = cout.ReadLine()) != null)
+                    byte[] b = new byte[1024];
+                    UTF8Encoding encode = new UTF8Encoding(true);
+                    while (stream.Read(b, 0, b.Length) > 0)
                     {
-                        System.Diagnostics.Debug.WriteLine(line);
+                        System.Diagnostics.Debug.WriteLine(encode.GetString(b));
                     }
+                    // need to dispose?
                 }
             }
             catch (Exception e)
