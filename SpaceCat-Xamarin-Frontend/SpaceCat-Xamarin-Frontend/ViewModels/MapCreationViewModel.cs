@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Xamarin.Forms.Shapes;
 
 // View Model (Map Creation page) - manages button clicks currently
 
@@ -26,6 +27,10 @@ namespace SpaceCat_Xamarin_Frontend
         public ICommand TapAddFurniture { get { return tapAddFurniture; } }
         public ICommand TapChooseFurniture { get { return tapChooseFurniture; } }
 
+        string[] hexAreaColors = new string[] 
+            { "CCDF3E", "E06666", "F6B26B", "FFD966", "93C47D", "76A5AF",
+                "6FA8DC", "8E7CC3", "C27BA0" };
+
         public MapCreationViewModel()
         {
             // attach command functions to ICommand variables
@@ -36,6 +41,26 @@ namespace SpaceCat_Xamarin_Frontend
             tapAddFurniture = new Command(TappedAddFurniture);
             tapChooseFurniture = new Command(TappedChooseFurniture);
         }
+
+        public Polygon CreateArea(PointCollection points)
+        {
+            // returns a new polygon object from the provided points
+            // color of polygon is currently randomized from hexAreaColors array
+
+            int randIndex = new Random().Next(hexAreaColors.Length);
+            SolidColorBrush strokeColor = new SolidColorBrush(Color.FromHex("#" + hexAreaColors[randIndex]));
+            // first string is alpha channel, should be same for every area
+            SolidColorBrush fillColor = new SolidColorBrush(Color.FromHex("#33" + hexAreaColors[randIndex])); 
+            Polygon newArea = new Polygon
+            {
+                Points = points,
+                Fill = fillColor,
+                Stroke = strokeColor,
+                StrokeThickness = 5
+            };
+            return newArea;
+        }
+
 
         private void TappedSettings(object s)
         {
