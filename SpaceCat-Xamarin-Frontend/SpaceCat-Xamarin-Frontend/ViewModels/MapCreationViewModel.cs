@@ -20,12 +20,15 @@ namespace SpaceCat_Xamarin_Frontend
         ICommand tapAddArea;
         ICommand tapAddFurniture;
         ICommand tapChooseFurniture;
+
+        ICommand drawArea;
         public ICommand TapSettings { get { return tapSettings; } }
         public ICommand TapNewArea { get { return tapNewArea; } }
         public ICommand TapDeleteArea { get { return tapDeleteArea; } }
         public ICommand TapAddArea { get { return tapAddArea; } }
         public ICommand TapAddFurniture { get { return tapAddFurniture; } }
         public ICommand TapChooseFurniture { get { return tapChooseFurniture; } }
+        public ICommand DrawArea { get { return drawArea; } }
 
         string[] hexAreaColors = new string[] 
             { "CCDF3E", "E06666", "F6B26B", "FFD966", "93C47D", "76A5AF",
@@ -40,6 +43,7 @@ namespace SpaceCat_Xamarin_Frontend
             tapAddArea = new Command(TappedAddArea);
             tapAddFurniture = new Command(TappedAddFurniture);
             tapChooseFurniture = new Command(TappedChooseFurniture);
+            drawArea = new Command(DrawingArea);
         }
 
         public Polygon CreateArea(PointCollection points)
@@ -61,6 +65,10 @@ namespace SpaceCat_Xamarin_Frontend
             return newArea;
         }
 
+        public void DrawingArea(object s)
+        {
+            
+        }
 
         private void TappedSettings(object s)
         {

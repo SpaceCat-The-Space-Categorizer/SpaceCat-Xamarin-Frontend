@@ -73,7 +73,8 @@
                         <!-- TODO: need to see how it behaves with image -->
                         <BoxView Color="AntiqueWhite"
                                 AbsoluteLayout.LayoutBounds="0,0,900,725"
-                                AbsoluteLayout.LayoutFlags="PositionProportional" />
+                                AbsoluteLayout.LayoutFlags="PositionProportional" >
+                         </BoxView>
                     </AbsoluteLayout>
                 </Frame>
             

@@ -19,6 +19,11 @@ namespace SpaceCat_Xamarin_Frontend
         {
             InitializeComponent();
             DrawArea();
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                // add a pointer event to theMap
+                
+            }
         }
 
         public void DrawArea()
