@@ -10,14 +10,14 @@
     
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="labelLocal-buildingList-main" TargetType="Label" BasedOn="{StaticResource label-medium}">
+            <Style x:Key="label-buildingList-main" TargetType="Label" BasedOn="{StaticResource label-medium}">
                 <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
             </Style>
-            <Style x:Key="labelLocal-buildingList-last" TargetType="Label" BasedOn="{StaticResource label-small}">
+            <Style x:Key="label-buildingList-last" TargetType="Label" BasedOn="{StaticResource label-small}">
                 <Setter Property="HorizontalOptions" Value="EndAndExpand"/>
                 <Setter Property="Padding" Value="0,0,10,0"/>
             </Style>
-            <Style x:Key="labelLocal-buildingInfo-last" TargetType="Label" BasedOn="{StaticResource label-small}">
+            <Style x:Key="label-buildingInfo-last" TargetType="Label" BasedOn="{StaticResource label-small}">
                 <Setter Property="VerticalOptions" Value="EndAndExpand"/>
             </Style>
             <Style x:Key="frame-buildingList-exterior" TargetType="Frame" BasedOn="{StaticResource frame-exterior}">
@@ -54,17 +54,6 @@
                                 <Frame Style="{StaticResource frame-buildingList-interior}">
                                     <StackLayout>
                                         <Label Text="Current Building" Style="{StaticResource label-subtitle}"/>
-
-                                        <!-- TEMP: for testing UI changes with Hot Reload -->
-                                        <Frame Style="{StaticResource frame-listItem}">
-                                        <StackLayout Orientation="Horizontal">
-                                            <Button Text="X" Style="{StaticResource button-deleteBuilding}"/>
-                                            <Button Text="EDIT" Style="{StaticResource button-editBuilding}"/>
-                                            <Label Text="Hot Reload List Template" Style="{StaticResource labelLocal-buildingList-main}"/>
-                                            <Label Text="Blaze 420" Style="{StaticResource labelLocal-buildingList-last}"/>
-                                        </StackLayout>
-                                        </Frame>
-                                            
                                         <ListView x:Name="lvBuildings" ItemsSource="{Binding Buildings}" SelectedItem="{Binding SelectedBuilding}">
                                             <ListView.ItemTemplate>
                                                 <DataTemplate>
@@ -73,8 +62,8 @@
                                                             <StackLayout Orientation="Horizontal">
                                                                 <Button Text="X" Clicked="Clicked_Delete" CommandParameter="{Binding BuildingID}" Style="{StaticResource button-deleteBuilding}"/>
                                                                 <Button Text="EDIT" Clicked="Clicked_Edit" CommandParameter="{Binding BuildingID}" Style="{StaticResource button-editBuilding}"/>
-                                                                <Label Text="{Binding BuildingName}" Style="{StaticResource labelLocal-buildingList-main}"/>
-                                                                <Label Text="{Binding BuildingDate}" Style="{StaticResource labelLocal-buildingList-last}"/>
+                                                                <Label Text="{Binding BuildingName}" Style="{StaticResource label-buildingList-main}"/>
+                                                                <Label Text="{Binding BuildingDate}" Style="{StaticResource label-buildingList-last}"/>
                                                             </StackLayout>
                                                         </Frame>
                                                     </ViewCell>
@@ -83,7 +72,10 @@
                                         </ListView>
                                     </StackLayout>
                                 </Frame>
-                                <Button Text="Create New Map" Clicked="Clicked_Create" Style="{StaticResource button-big}"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <Button Text="Import Existing Map" Clicked="Clicked_Import" Style="{StaticResource button-big}"/>
+                                    <Button Text="Create New Map" Clicked="Clicked_Create" Style="{StaticResource button-big}"/>
+                                </StackLayout>
                             </StackLayout>
                         </Frame>
 
@@ -97,7 +89,7 @@
                                         <Label Text="{Binding SelectedBuilding.BuildingName}" Style="{StaticResource label-medium}"/>
                                         <Label Text="{Binding SelectedBuilding.BuildingDate}" Style="{StaticResource label-small}"/>
                                         <Label Text="{Binding SelectedBuilding.BuildingFloorplan}" Style="{StaticResource image-floorPlan}"/>
-                                        <Label Text="{Binding SelectedBuilding.BuildingStatus}" Style="{StaticResource labelLocal-buildingInfo-last}"/>
+                                        <Label Text="{Binding SelectedBuilding.BuildingStatus}" Style="{StaticResource label-buildingInfo-last}"/>
                                     </StackLayout>
                                 </Frame>
                                 <Button Text="Start a Building Survey" Command="{Binding GoToSurveyMode}" Style="{StaticResource button-big}"/>
