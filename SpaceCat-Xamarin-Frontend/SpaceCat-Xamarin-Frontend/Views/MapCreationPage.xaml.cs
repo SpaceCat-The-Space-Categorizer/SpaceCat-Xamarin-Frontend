@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TouchTracking;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Shapes;
@@ -18,19 +19,34 @@ namespace SpaceCat_Xamarin_Frontend
         public MapCreationPage()
         {
             InitializeComponent();
-            DrawArea();
-            if (Device.RuntimePlatform == Device.UWP)
+        }
+
+        private void TappedMap(object sender, TouchActionEventArgs args)
+        {
+            switch (args.Type)
             {
-                // add a pointer event to theMap
-                
+                case TouchActionType.Pressed:
+                    //mouse down
+                    if (((MapCreationViewModel)BindingContext).newAreaToolOn || 
+                        ((MapCreationViewModel)BindingContext).addAreaToolOn)
+                    {
+                        DrawArea(new Point(args.Location.X, args.Location.Y), new Point(args.Location.X, args.Location.Y));
+                    }
+                    break;
+                case TouchActionType.Moved:
+                case TouchActionType.Released:
+                    //mouse move or up
+                    ((MapCreationViewModel)BindingContext).AreaCreationHandler(args);
+                    break;
             }
         }
 
-        public void DrawArea()
+        public void DrawArea(Point start, Point end)
         {
             // calls the view model's Create Area method with a point collection and
             // adds the result to the map
-            Polygon anArea = ((MapCreationViewModel)BindingContext).CreateArea(new PointCollection { new Point(50, 50), new Point(300, 50), new Point(300, 300), new Point(50, 300) });
+            PointCollection points = new PointCollection { new Point(start.X, start.Y), new Point(end.X, start.Y), new Point(end.X, end.Y), new Point(start.X, end.Y) };
+            Polygon anArea = ((MapCreationViewModel)BindingContext).CreateArea(points);
             theMap.Children.Add(anArea);
         }
 
@@ -40,5 +56,7 @@ namespace SpaceCat_Xamarin_Frontend
             // TODO: send message back with updated building object
             await Navigation.PopModalAsync();
         }
+
+        
     }
 }

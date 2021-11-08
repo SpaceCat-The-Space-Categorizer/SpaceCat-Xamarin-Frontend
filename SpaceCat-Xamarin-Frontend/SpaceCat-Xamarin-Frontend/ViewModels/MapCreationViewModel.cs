@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
+using TouchTracking;
 using Xamarin.Forms;
 using Xamarin.Forms.Shapes;
 
@@ -13,6 +14,13 @@ namespace SpaceCat_Xamarin_Frontend
 {
     class MapCreationViewModel : INotifyPropertyChanged
     {
+        public bool newAreaToolOn;
+        public bool addAreaToolOn;
+
+        public Polygon inProgressArea;
+        public Point startLocation;
+        public Point endLocation;
+        
         // ICommands allow button clicks to route to ViewModel instead of using their "Clicked" property
         ICommand tapSettings;
         ICommand tapNewArea;
@@ -20,7 +28,6 @@ namespace SpaceCat_Xamarin_Frontend
         ICommand tapAddArea;
         ICommand tapAddFurniture;
         ICommand tapChooseFurniture;
-
         ICommand drawArea;
         public ICommand TapSettings { get { return tapSettings; } }
         public ICommand TapNewArea { get { return tapNewArea; } }
@@ -30,12 +37,17 @@ namespace SpaceCat_Xamarin_Frontend
         public ICommand TapChooseFurniture { get { return tapChooseFurniture; } }
         public ICommand DrawArea { get { return drawArea; } }
 
-        string[] hexAreaColors = new string[] 
+        string[] hexAreaColors = new string[]
             { "CCDF3E", "E06666", "F6B26B", "FFD966", "93C47D", "76A5AF",
                 "6FA8DC", "8E7CC3", "C27BA0" };
 
         public MapCreationViewModel()
         {
+            newAreaToolOn = false;
+            addAreaToolOn = false;
+            startLocation = new Point(0, 0);
+            endLocation = new Point(0, 0);
+
             // attach command functions to ICommand variables
             tapSettings = new Command(TappedSettings);
             tapNewArea = new Command(TappedNewArea);
@@ -46,7 +58,37 @@ namespace SpaceCat_Xamarin_Frontend
             drawArea = new Command(DrawingArea);
         }
 
-        public Polygon CreateArea(PointCollection points)
+        public void AreaCreationHandler(TouchActionEventArgs args)
+        {
+            switch(args.Type)
+            {
+                case TouchActionType.Moved:
+                    if (inProgressArea != null)
+                    {
+                        UpdateArea(new Point(args.Location.X, args.Location.Y));
+                    }
+                    break;
+                case TouchActionType.Released:
+                    //mouse up
+                    if (inProgressArea != null)
+                    {
+                        if (newAreaToolOn)
+                        {
+                            // TODO: create new area
+                            inProgressArea = null;
+                            newAreaToolOn = false;
+                        }
+                        else if (addAreaToolOn)
+                        {
+                            // TODO: add to selected area
+                            addAreaToolOn = false;
+                        }
+                    }
+                    break;
+            }
+        }
+
+            public Polygon CreateArea(PointCollection points)
         {
             // returns a new polygon object from the provided points
             // color of polygon is currently randomized from hexAreaColors array
@@ -62,7 +104,16 @@ namespace SpaceCat_Xamarin_Frontend
                 Stroke = strokeColor,
                 StrokeThickness = 5
             };
+            startLocation = new Point(points[0].X, points[0].Y);
+            endLocation = new Point(points[2].X, points[2].Y);
+            inProgressArea = newArea;
             return newArea;
+        }
+
+        public void UpdateArea(Point endPoint)
+        {
+            endLocation = endPoint;
+            inProgressArea.Points = new PointCollection { startLocation, new Point(endLocation.X, startLocation.Y), endLocation, new Point(startLocation.X, endLocation.Y) };
         }
 
         public void DrawingArea(object s)
@@ -78,8 +129,9 @@ namespace SpaceCat_Xamarin_Frontend
 
         private void TappedNewArea(object s)
         {
-            // Handles tapping the new area button (unimplemented)
+            // Handles tapping the new area button
             System.Diagnostics.Debug.WriteLine("Tapped New Area!");
+            newAreaToolOn = true;
         }
 
         private void TappedDeleteArea(object s)
@@ -90,8 +142,9 @@ namespace SpaceCat_Xamarin_Frontend
 
         private void TappedAddArea(object s)
         {
-            // Handles tapping the add to area button (unimplemented)
+            // Handles tapping the add to area button
             System.Diagnostics.Debug.WriteLine("Tapped Add to Area!");
+            addAreaToolOn = true;
         }
 
         private void TappedAddFurniture(object s)
