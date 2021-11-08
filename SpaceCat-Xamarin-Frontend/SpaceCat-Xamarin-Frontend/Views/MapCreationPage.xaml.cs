@@ -16,5 +16,10 @@ namespace SpaceCat_Xamarin_Frontend
         {
             InitializeComponent();
         }
+
+        public async void ExitPage(object sender, EventArgs e)
+        {
+            await Navigation.PopModalAsync();
+        }
     }
 }
