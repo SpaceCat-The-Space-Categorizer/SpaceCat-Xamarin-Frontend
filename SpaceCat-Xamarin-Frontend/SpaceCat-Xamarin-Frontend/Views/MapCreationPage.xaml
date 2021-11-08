@@ -6,10 +6,16 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="polygon-triangle-dropdown" TargetType="Polygon">
-                <Setter Property="Points" Value="10,0 30,0 20,15"/>
-                <Setter Property="Stroke" Value="Blue"/>
-                <Setter Property="StrokeThickness" Value="5"/>
+            <Style x:Key="frame-tools-main" TargetType="Frame" BasedOn="{StaticResource frame-exterior}">
+                <Setter Property="WidthRequest" Value="200"/>
+            </Style>
+            <Style x:Key="label-tools-title" TargetType="Label" BasedOn="{StaticResource label-medium}">
+                <Setter Property="TextDecorations" Value="Underline"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="Padding" Value="10"/>
+            </Style>
+            <Style x:Key="button-tools" TargetType="Button" BasedOn="{StaticResource button-small}">
+                <Setter Property="HeightRequest" Value="60"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -19,66 +25,64 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout Orientation="Horizontal">
+        <Frame Style="{StaticResource frame-main}">
+            <StackLayout Orientation="Horizontal">
             
             
-            <!-- TOOLS -->
-            <Frame WidthRequest="200" BackgroundColor="AliceBlue">
+                <!-- TOOLS -->
                 <StackLayout>
-                    <!-- AREA TOOLS -->
-                    <Frame BackgroundColor="Aqua">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TapAreaTools}"
-                                                  CommandParameter="AreaTools"/>
-                        </Frame.GestureRecognizers>
-                        <StackLayout Orientation="Horizontal">
-                            <Polygon Style="{StaticResource polygon-triangle-dropdown}"/>
-                            <Label Text="AREA TOOLS" Style="{StaticResource label-medium}"/>
-                        </StackLayout>
-                    </Frame>
-                    <Grid>
-                        <Button Text="New Area" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource button-small}"/>
-                        <Button Text="Delete Area" Grid.Row="1" Grid.Column="0" Style="{StaticResource button-small}"/>
-                        <Button Text="Add to Area" Grid.Row="1" Grid.Column="1" Style="{StaticResource button-small}"/>
-                    </Grid>
-                    
-                    <!-- FURNITURE TOOLS -->
-                    <Frame BackgroundColor="Aqua">
-                        <StackLayout Orientation="Horizontal">
-                            <Polygon Style="{StaticResource polygon-triangle-dropdown}"/>
-                            <Label Text="FURNITURE" Style="{StaticResource label-medium}"/>
-                        </StackLayout>
-                    </Frame>
-                    <Grid>
-                        <Button Grid.Row="0" Grid.Column="0" Text="Add New Furniture" Style="{StaticResource button-small}"/>
-                        <Button Grid.Row="0" Grid.Column="1" Text="See All" Style="{StaticResource button-small}"/>
-                    </Grid>
-                    <Frame VerticalOptions="EndAndExpand" BackgroundColor="Chartreuse">
+                    <Frame Style="{StaticResource frame-tools-main}">
                         <StackLayout>
-                            <Button Text="Map Settings" Style="{StaticResource button-big}"/>
-                            <Button Text="Save n Exit" Style="{StaticResource button-big}"/>
+                            <!-- AREA TOOLS -->
+                            <Frame Style="{StaticResource frame-interior}">
+                                <StackLayout>
+                                    <Label Text="AREA TOOLS" Style="{StaticResource label-tools-title}"/>
+                                    <Grid>
+                                        <Button Text="New Area" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource button-tools}"/>
+                                        <Button Text="Delete &#x0a;Area" Grid.Row="1" Grid.Column="0" Style="{StaticResource button-tools}"/>
+                                        <Button Text="Add to &#x0a;Area" Grid.Row="1" Grid.Column="1" Style="{StaticResource button-tools}"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Frame>
+
+                            <!-- FURNITURE TOOLS -->
+                            <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
+                                <StackLayout>
+                                    <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
+                                    <Grid>
+                                        <Button Grid.Row="0" Grid.Column="0" Text="Add New &#x0a;Furniture" Style="{StaticResource button-tools}"/>
+                                        <Button Grid.Row="0" Grid.Column="1" Text="See All" Style="{StaticResource button-tools}"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Frame>
                         </StackLayout>
                     </Frame>
+
+
+                    <!-- MAIN BUTTONS -->
+                    <StackLayout VerticalOptions="End">
+                        <Button Text="Map Settings" Command="{Binding TapMapSettings}" Style="{StaticResource button-big}"/>
+                        <Button Text="Save &amp; Exit" Command="{Binding TapSaveExit}" Style="{StaticResource button-big}"/>
+                    </StackLayout>
                 </StackLayout>
-            </Frame>
+
+
+                <!-- MAP -->
+                <Frame HorizontalOptions="FillAndExpand" Style="{StaticResource frame-exterior}">
+                    <AbsoluteLayout>
+                        <!-- TODO: need to see how it behaves with image -->
+                        <BoxView Color="Purple"
+                                AbsoluteLayout.LayoutBounds="0.5,0.5,900,725"
+                                AbsoluteLayout.LayoutFlags="PositionProportional" />
+                        <Label Text="Centered text"
+                                AbsoluteLayout.LayoutBounds="0.5,0.5,110,25"
+                                AbsoluteLayout.LayoutFlags="PositionProportional" />
+                    </AbsoluteLayout>
+                </Frame>
             
             
             
-            <!-- MAP -->
-            <Frame HorizontalOptions="FillAndExpand" BackgroundColor="BlanchedAlmond">
-                <AbsoluteLayout>
-                    <!-- TODO: need to see how it behaves with image -->
-                    <BoxView Color="Purple"
-                            AbsoluteLayout.LayoutBounds="0.5,0.5,900,725"
-                            AbsoluteLayout.LayoutFlags="PositionProportional" />
-                    <Label Text="Centered text"
-                            AbsoluteLayout.LayoutBounds="0.5,0.5,110,25"
-                            AbsoluteLayout.LayoutFlags="PositionProportional" />
-                </AbsoluteLayout>
-            </Frame>
-            
-            
-            
-        </StackLayout>
+            </StackLayout>
+        </Frame>
     </ContentPage.Content>
 </ContentPage>

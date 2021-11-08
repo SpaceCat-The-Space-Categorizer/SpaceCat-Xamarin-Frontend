@@ -10,17 +10,17 @@ namespace SpaceCat_Xamarin_Frontend
 {
     class MapCreationViewModel : INotifyPropertyChanged
     {
-        ICommand tapAreaTools;
-        public ICommand TapAreaTools { get { return tapAreaTools; } }
+        ICommand tapSaveExit;
+        public ICommand TapSaveExit { get { return tapSaveExit; } }
 
         public MapCreationViewModel()
         {
-            tapAreaTools = new Command(TappedAreaTools);
+            tapSaveExit = new Command(TappedSaveExit);
         }
 
-        void TappedAreaTools (object s)
+        void TappedSaveExit (object s)
         {
-            System.Diagnostics.Debug.WriteLine("Area Tools Tapped!!!");
+            
         }
 
         // INotifyPropertyChanged interface is used to update the UI when variables are altered
