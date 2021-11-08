@@ -9,7 +9,7 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-// View (Building List page) - handles user input and page navigation on Building List content page
+// View (Building List page) - handles user input and page navigation on Building List content page, opens FilePicker
 
 namespace SpaceCat_Xamarin_Frontend
 {

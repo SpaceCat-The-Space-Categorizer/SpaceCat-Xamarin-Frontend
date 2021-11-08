@@ -11,7 +11,7 @@ using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-// View Model (Building List page) - manages buildings in left-hand side list view
+// View Model (Building List page) - manages buildings in left-hand side list view, handles importing new buildings
 
 namespace SpaceCat_Xamarin_Frontend
 {
