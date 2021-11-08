@@ -6,6 +6,8 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
+// View Model (Map Creation page) - manages button clicks currently
+
 namespace SpaceCat_Xamarin_Frontend
 {
     class MapCreationViewModel : INotifyPropertyChanged
@@ -26,6 +28,7 @@ namespace SpaceCat_Xamarin_Frontend
 
         public MapCreationViewModel()
         {
+            // attach command functions to ICommand variables
             tapSettings = new Command(TappedSettings);
             tapNewArea = new Command(TappedNewArea);
             tapDeleteArea = new Command(TappedDeleteArea);
