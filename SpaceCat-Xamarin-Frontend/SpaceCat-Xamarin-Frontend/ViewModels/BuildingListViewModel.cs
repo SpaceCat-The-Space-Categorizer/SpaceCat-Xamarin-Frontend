@@ -75,7 +75,9 @@ namespace SpaceCat_Xamarin_Frontend
 
         public async void ImportBuilding(FileResult file)
         {
-            //
+            // attempts to open and read from provided file, currently prints results to debug output
+            // TODO: parse building json file, make sure provided file contains expected data
+            //          add to building list and default select it
 
             try
             {
@@ -87,7 +89,6 @@ namespace SpaceCat_Xamarin_Frontend
                     {
                         System.Diagnostics.Debug.WriteLine(encode.GetString(b));
                     }
-                    // need to dispose?
                 }
             }
             catch (Exception e)

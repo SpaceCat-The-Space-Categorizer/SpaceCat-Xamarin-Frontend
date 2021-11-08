@@ -61,7 +61,7 @@ namespace SpaceCat_Xamarin_Frontend
         {
             // specifies file types to allow user to choose from and opens the file
             // picker to select that type of file (others are greyed out)
-            // calls import building method from view model with file name
+            // calls import building method from view model with file result
 
             var customFileType =
                 new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
