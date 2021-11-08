@@ -16,6 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="SpaceCat-Universal-Library">
+      <HintPath>..\..\..\SpaceCat-Universal-Library\SpaceCat-Universal-Library\bin\Debug\net5.0\SpaceCat-Universal-Library.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Views\MapCreationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
