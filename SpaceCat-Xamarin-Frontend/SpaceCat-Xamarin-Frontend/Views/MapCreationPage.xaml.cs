@@ -27,10 +27,10 @@ namespace SpaceCat_Xamarin_Frontend
             {
                 case TouchActionType.Pressed:
                     //mouse down
-                    if (((MapCreationViewModel)BindingContext).newAreaToolOn || 
-                        ((MapCreationViewModel)BindingContext).addAreaToolOn)
+                    if (((MapCreationViewModel)BindingContext).NewAreaToolOn || 
+                        ((MapCreationViewModel)BindingContext).AddAreaToolOn)
                     {
-                        DrawArea(new Point(args.Location.X, args.Location.Y), new Point(args.Location.X, args.Location.Y));
+                        DrawArea(new Point(args.Location.X, args.Location.Y), new Point(args.Location.X + 1.0, args.Location.Y + 1.0));
                     }
                     break;
                 case TouchActionType.Moved:
