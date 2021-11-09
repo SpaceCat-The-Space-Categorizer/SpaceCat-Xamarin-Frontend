@@ -24,6 +24,7 @@ namespace SpaceCat_Xamarin_Frontend
 
         private void TappedMap(object sender, TouchActionEventArgs args)
         {
+            Point tapLoc = new Point(args.Location.X, args.Location.Y);
             switch (args.Type)
             {
                 case TouchActionType.Pressed:
@@ -31,7 +32,7 @@ namespace SpaceCat_Xamarin_Frontend
                     if (((MapCreationViewModel)BindingContext).NewAreaToolOn || 
                         ((MapCreationViewModel)BindingContext).AddAreaToolOn)
                     {
-                        DrawArea(new Point(args.Location.X, args.Location.Y), new Point(args.Location.X + 1.0, args.Location.Y + 1.0));
+                        DrawArea(tapLoc, tapLoc);
                     }
                     break;
                 case TouchActionType.Moved:
@@ -44,8 +45,9 @@ namespace SpaceCat_Xamarin_Frontend
 
         public void DrawArea(Point start, Point end)
         {
-            // calls the view model's Create Area method with a point collection and
-            // adds the result to the map
+            // calls the view model's Create Area method with the point collection from provided points and
+            // adds the result to the map with touch action listeners
+
             PointCollection points = new PointCollection { new Point(start.X, start.Y), new Point(end.X, start.Y), new Point(end.X, end.Y), new Point(start.X, end.Y) };
             Polygon anArea = ((MapCreationViewModel)BindingContext).CreateArea(points);
 
@@ -62,6 +64,9 @@ namespace SpaceCat_Xamarin_Frontend
 
         private void TouchedAreaFigure(object sender, TouchActionEventArgs args)
         {
+            // Called when user clicks on existing area polygon
+            // On user tap release calls view model's SelectArea method to select the clicked area polygon
+
             Point tapLoc = new Point(args.Location.X, args.Location.Y);
             if (args.Type == TouchActionType.Released)
             {

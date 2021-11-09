@@ -15,27 +15,18 @@ namespace SpaceCat_Xamarin_Frontend
 {
     class MapCreationViewModel : INotifyPropertyChanged
     {
-        //public Building currentBuilding;
-        //public Floor currentFloor;
-        //public List<Area> Areas;
+        // Areas            - contains all completed area polygons on map
+        // SelectedID       - contains ID of selected area polygon (if none are selected is set to -1)
+        // FigureInProgress - contains area polygon currently being created by user (added to Areas on tap release)
+
         public List<Polygon> Areas;
-        
-        public int SelectedRectID;
-        public Polygon InProgressRect;
+        public int SelectedID;
+        public Polygon FigureInProgress;
         
         public bool NewAreaToolOn;
         public bool AddAreaToolOn;
         public bool DeleteAreaToolOn;
         
-        
-        // ICommands allow button clicks to route to ViewModel instead of using their "Clicked" property
-        public Command MapSettingsCommand { get; set; }
-        public Command NewAreaCommand { get; set; }
-        public Command DeleteAreaCommand { get; set; }
-        public Command AddAreaCommand { get; set; }
-        public Command AddFurnitureCommand { get; set; }
-        public Command ChooseFurnitureCommand { get; set; }
-
         string[] hexAreaColors = new string[]
             { "CCDF3E", "E06666", "F6B26B", "FFD966", "93C47D", "76A5AF",
                 "6FA8DC", "8E7CC3", "C27BA0" };
@@ -48,21 +39,22 @@ namespace SpaceCat_Xamarin_Frontend
 
             //Areas = currentFloor.Areas;
             Areas = new List<Polygon>();
-            SelectedRectID = -1;
+            SelectedID = -1;
 
-            // attach command functions to Command variables
-            MapSettingsCommand = new Command(TappedSettings);
-            NewAreaCommand = new Command(TappedNewArea);
-            DeleteAreaCommand = new Command(TappedDeleteArea);
-            AddAreaCommand = new Command(TappedAddArea);
-            AddFurnitureCommand = new Command(TappedAddFurniture);
-            ChooseFurnitureCommand = new Command(TappedChooseFurniture);
+            // attach command functions to Command variables (defined below area methods)
+            MapSettingsCommand = new Command(ExecuteMapSettings);
+            NewAreaCommand = new Command(ExecuteNewArea);
+            DeleteAreaCommand = new Command(ExecuteDeleteArea);
+            AddAreaCommand = new Command(ExecuteAddArea);
+            AddFurnitureCommand = new Command(ExecuteAddFurniture);
+            ChooseFurnitureCommand = new Command(ExecuteChooseFurniture);
         }
 
         public Polygon CreateArea(PointCollection points)
         {
             // returns a new polygon object from the provided points
             // color of polygon is currently randomized from hexAreaColors array
+
             Brush strokeColor = new SolidColorBrush();
             Brush fillColor = new SolidColorBrush();
             if (NewAreaToolOn)
@@ -74,8 +66,8 @@ namespace SpaceCat_Xamarin_Frontend
             }
             else if (AddAreaToolOn)
             {
-                strokeColor = new SolidColorBrush(Color.FromHex("#" + hexAreaColors[0])); //SelectedArea.DefiningRectangles[0].Stroke;
-                fillColor = new SolidColorBrush(Color.FromHex("#33" + hexAreaColors[0])); //SelectedArea.Fill;
+                strokeColor = new SolidColorBrush(Color.FromHex("#" + hexAreaColors[0]));
+                fillColor = new SolidColorBrush(Color.FromHex("#33" + hexAreaColors[0]));
             }
             Polygon newAreaShape = new Polygon
             {
@@ -86,9 +78,7 @@ namespace SpaceCat_Xamarin_Frontend
             };
             
 
-            //StartLocation = new Point(points[0].X, points[0].Y);
-            //EndLocation = new Point(points[2].X, points[2].Y);
-            InProgressRect = newAreaShape;
+            FigureInProgress = newAreaShape;
             return newAreaShape;
         }
 
@@ -97,28 +87,19 @@ namespace SpaceCat_Xamarin_Frontend
             switch(args.Type)
             {
                 case TouchActionType.Moved:
-                    if (InProgressRect != null)
+                    if (FigureInProgress != null)
                     {
-                        UpdateArea(new Point(args.Location.X, args.Location.Y));
+                        FigureInProgress.Points = ChangeEndPoint(FigureInProgress.Points, new Point(args.Location.X, args.Location.Y));
                     }
                     break;
                 case TouchActionType.Released:  //mouse up
-                    if (InProgressRect != null)
+                    if (FigureInProgress != null)
                     {
                         if (NewAreaToolOn)
-                        {
-                            //TODO: don't add if polygon is too small
-                            Areas.Add(InProgressRect);
-                        }
-                        else if (AddAreaToolOn)
-                        {
-                            // check if area has been selected
-                            if (SelectedRectID >= 0)
-                            {
-                                System.Diagnostics.Debug.WriteLine("I SELECTED A RECTANGLE WOOOOO!");
-                            }
-                        }
-                        InProgressRect = null;
+                            Areas.Add(FigureInProgress);
+                        else if (AddAreaToolOn) 
+                            Areas.Add(FigureInProgress); //TODO: change to add to selected area when implementing add area tool
+                        FigureInProgress = null;
                     }
                     else
                     {
@@ -126,10 +107,6 @@ namespace SpaceCat_Xamarin_Frontend
                         {
                             //TODO: delete area
                             System.Diagnostics.Debug.WriteLine("Sorry! I can't delete rectangles yet... good try tho :)");
-                        }
-                        else
-                        {
-
                         }
                     }
                     NewAreaToolOn = false;
@@ -139,27 +116,19 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
-        public void UpdateArea(Point endPoint)
-        {
-            // updates in progress area shape with current mouse location endpoint
-
-            InProgressRect.Points = ChangeEndPoint(InProgressRect.Points, endPoint);
-
-        }
-
 
         public void SelectArea(Point tapLoc)
         {
-            if (!AddAreaToolOn || !DeleteAreaToolOn)
+            if (!AddAreaToolOn && !DeleteAreaToolOn)
             {
-                if (SelectedRectID >= 0) Areas[SelectedRectID].Opacity = 1;
-                SelectedRectID = -1;
-                foreach (Polygon shape in Areas)
+                if (SelectedID >= 0) Areas[SelectedID].Opacity = 1;
+                SelectedID = -1;
+                for (int i = 0; i < Areas.Count; i++)
                 {
-                    if (Contains(shape, tapLoc))
+                    if (Contains(Areas[i], tapLoc))
                     {
-                        SelectedRectID = Areas.IndexOf(shape);
-                        shape.Opacity = 0.5;
+                        SelectedID = i;
+                        Areas[i].Opacity = 0.5;
                         break;
                     }
                 }
@@ -193,39 +162,47 @@ namespace SpaceCat_Xamarin_Frontend
             else return false;
         }
 
-        // USER INPUT COMMAND HANDLERS
 
-        private void TappedSettings(object s)
+        // USER INPUT COMMAND HANDLERS
+        // Commands allow button clicks to route to ViewModel instead of using their "Clicked" property
+        public Command MapSettingsCommand { get; set; }
+        public Command NewAreaCommand { get; set; }
+        public Command DeleteAreaCommand { get; set; }
+        public Command AddAreaCommand { get; set; }
+        public Command AddFurnitureCommand { get; set; }
+        public Command ChooseFurnitureCommand { get; set; }
+
+        private void ExecuteMapSettings(object s)
         {
             // Handles tapping the map settings button (unimplemented)
             System.Diagnostics.Debug.WriteLine("Tapped Settings!");
         }
 
-        private void TappedNewArea(object s)
+        private void ExecuteNewArea(object s)
         {
             // Handles tapping the new area button
             NewAreaToolOn = true;
         }
 
-        private void TappedDeleteArea(object s)
+        private void ExecuteDeleteArea(object s)
         {
             // Handles tapping the delete area button
             DeleteAreaToolOn = true;
         }
 
-        private void TappedAddArea(object s)
+        private void ExecuteAddArea(object s)
         {
             // Handles tapping the add to area button
             AddAreaToolOn = true;
         }
 
-        private void TappedAddFurniture(object s)
+        private void ExecuteAddFurniture(object s)
         {
             // Handles tapping the add new furniture button (unimplemented)
             System.Diagnostics.Debug.WriteLine("Tapped Add New Furniture!");
         }
 
-        private void TappedChooseFurniture(object s)
+        private void ExecuteChooseFurniture(object s)
         {
             // Handles tapping the choose furniture button (unimplemented)
             System.Diagnostics.Debug.WriteLine("Tapped Choose Furniture!");
