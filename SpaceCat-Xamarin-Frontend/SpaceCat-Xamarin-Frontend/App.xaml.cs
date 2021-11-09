@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SpaceCat;
 
 namespace SpaceCat_Xamarin_Frontend
 {
@@ -9,7 +10,7 @@ namespace SpaceCat_Xamarin_Frontend
         public App()
         {
             InitializeComponent();
-
+            Area temp = new Area();
             MainPage = new MainPage();
         }
 
