@@ -1,5 +1,4 @@
-﻿//using SpaceCat;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -96,13 +95,7 @@ namespace SpaceCat_Xamarin_Frontend
                 Stroke = strokeColor,
                 StrokeThickness = 5
             };
-            // attach toucheffect
-            TouchEffect touchEffect = new TouchEffect
-            {
-                Capture = true
-            };
-            touchEffect.TouchAction += OnTouchEffectAction;
-            newAreaShape.Effects.Add(touchEffect);
+            
 
             StartLocation = new Point(points[0].X, points[0].Y);
             EndLocation = new Point(points[2].X, points[2].Y);
@@ -157,18 +150,26 @@ namespace SpaceCat_Xamarin_Frontend
         {
             // updates in progress area shape with current mouse location endpoint
 
-
             EndLocation = endPoint;
             InProgressRect.Points = new PointCollection { StartLocation, new Point(EndLocation.X, StartLocation.Y), EndLocation, new Point(StartLocation.X, EndLocation.Y) };
         }
 
-        private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
+        
+
+        /*
+        private SpaceCat.Rectangle ConvertPolygon(Polygon rect)
+        {
+            // converts polygon to rectangle
+            SpaceCat.Rectangle result = new SpaceCat.Rectangle((float)rect.Points[0].X, (float)rect.Points[0].Y, (float)rect.Points[2].X, (float)rect.Points[2].Y);
+            return result;
+        }
+        */
+
+        public void test(object sender, TouchActionEventArgs args)
         {
             if ((AddAreaToolOn || DeleteAreaToolOn) && args.Type == TouchActionType.Released)
             {
-                //SelectedRectID = obj.StyleId;
-                
-                foreach(Polygon shape in Areas)
+                foreach (Polygon shape in Areas)
                 {
                     Xamarin.Forms.Rectangle r = new Xamarin.Forms.Rectangle(shape.Points[0].X, shape.Points[0].Y, shape.Points[2].X - shape.Points[0].X, shape.Points[2].Y - shape.Points[0].Y);
                     if (r.Contains(new Point(args.Location.X, args.Location.Y)))
@@ -179,15 +180,6 @@ namespace SpaceCat_Xamarin_Frontend
                 }
             }
         }
-
-        /*
-        private SpaceCat.Rectangle ConvertPolygon(Polygon rect)
-        {
-            // converts polygon to rectangle
-            SpaceCat.Rectangle result = new SpaceCat.Rectangle((float)rect.Points[0].X, (float)rect.Points[0].Y, (float)rect.Points[2].X, (float)rect.Points[2].Y);
-            return result;
-        }
-        */
 
 
         // USER INPUT COMMAND HANDLERS

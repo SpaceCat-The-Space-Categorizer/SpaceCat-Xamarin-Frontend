@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TouchTracking;
+using TouchTracking.Forms;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Shapes;
@@ -47,7 +48,21 @@ namespace SpaceCat_Xamarin_Frontend
             // adds the result to the map
             PointCollection points = new PointCollection { new Point(start.X, start.Y), new Point(end.X, start.Y), new Point(end.X, end.Y), new Point(start.X, end.Y) };
             Polygon anArea = ((MapCreationViewModel)BindingContext).CreateArea(points);
+
+            // attach toucheffect
+            TouchEffect touchEffect = new TouchEffect
+            {
+                Capture = true
+            };
+            touchEffect.TouchAction += OnTouchEffectAction;
+            anArea.Effects.Add(touchEffect);
+
             theMap.Children.Add(anArea);
+        }
+
+        private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
+        {
+            ((MapCreationViewModel)BindingContext).test(sender, args);
         }
 
         public async void ExitPage(object sender, EventArgs e)
@@ -56,7 +71,5 @@ namespace SpaceCat_Xamarin_Frontend
             // TODO: send message back with updated building object
             await Navigation.PopModalAsync();
         }
-
-        
     }
 }
