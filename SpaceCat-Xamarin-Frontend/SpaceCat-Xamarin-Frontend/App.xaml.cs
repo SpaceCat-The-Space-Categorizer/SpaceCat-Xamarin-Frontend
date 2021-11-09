@@ -10,7 +10,6 @@ namespace SpaceCat_Xamarin_Frontend
         public App()
         {
             InitializeComponent();
-            Area temp = new Area();
             MainPage = new MainPage();
         }
 
