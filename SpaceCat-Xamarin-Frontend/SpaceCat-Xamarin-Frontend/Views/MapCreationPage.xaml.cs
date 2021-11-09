@@ -54,15 +54,19 @@ namespace SpaceCat_Xamarin_Frontend
             {
                 Capture = true
             };
-            touchEffect.TouchAction += OnTouchEffectAction;
+            touchEffect.TouchAction += TouchedAreaFigure;
             anArea.Effects.Add(touchEffect);
 
             theMap.Children.Add(anArea);
         }
 
-        private void OnTouchEffectAction(object sender, TouchActionEventArgs args)
+        private void TouchedAreaFigure(object sender, TouchActionEventArgs args)
         {
-            ((MapCreationViewModel)BindingContext).test(sender, args);
+            Point tapLoc = new Point(args.Location.X, args.Location.Y);
+            if (args.Type == TouchActionType.Released)
+            {
+                ((MapCreationViewModel)BindingContext).SelectArea(tapLoc);
+            }
         }
 
         public async void ExitPage(object sender, EventArgs e)
