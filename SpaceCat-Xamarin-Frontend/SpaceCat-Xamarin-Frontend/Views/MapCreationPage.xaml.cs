@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,52 +26,11 @@ namespace SpaceCat_Xamarin_Frontend
         private void TappedMap(object sender, TouchActionEventArgs args)
         {
             Point tapLoc = new Point(args.Location.X, args.Location.Y);
-            switch (args.Type)
+            List<Polygon> figures = ((MapCreationViewModel)BindingContext).AreaCreationHandler(args.Type, tapLoc);
+            theMap.Children.Clear();
+            foreach (Polygon fig in figures)
             {
-                case TouchActionType.Pressed:
-                    //mouse down
-                    if (((MapCreationViewModel)BindingContext).NewAreaToolOn || 
-                        ((MapCreationViewModel)BindingContext).AddAreaToolOn)
-                    {
-                        DrawArea(tapLoc, tapLoc);
-                    }
-                    break;
-                case TouchActionType.Moved:
-                case TouchActionType.Released:
-                    //mouse move or up
-                    ((MapCreationViewModel)BindingContext).AreaCreationHandler(args);
-                    break;
-            }
-        }
-
-        public void DrawArea(Point start, Point end)
-        {
-            // calls the view model's Create Area method with the point collection from provided points and
-            // adds the result to the map with touch action listeners
-
-            PointCollection points = new PointCollection { new Point(start.X, start.Y), new Point(end.X, start.Y), new Point(end.X, end.Y), new Point(start.X, end.Y) };
-            Polygon anArea = ((MapCreationViewModel)BindingContext).CreateArea(points);
-
-            // attach toucheffect
-            TouchEffect touchEffect = new TouchEffect
-            {
-                Capture = true
-            };
-            touchEffect.TouchAction += TouchedAreaFigure;
-            anArea.Effects.Add(touchEffect);
-
-            theMap.Children.Add(anArea);
-        }
-
-        private void TouchedAreaFigure(object sender, TouchActionEventArgs args)
-        {
-            // Called when user clicks on existing area polygon
-            // On user tap release calls view model's SelectArea method to select the clicked area polygon
-
-            Point tapLoc = new Point(args.Location.X, args.Location.Y);
-            if (args.Type == TouchActionType.Released)
-            {
-                ((MapCreationViewModel)BindingContext).SelectArea(tapLoc);
+                theMap.Children.Add(fig);
             }
         }
 

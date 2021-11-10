@@ -71,11 +71,10 @@
 
                 <!-- MAP -->
                 <Frame HorizontalOptions="FillAndExpand" Style="{StaticResource frame-exterior}">
-                    <AbsoluteLayout x:Name="theMap" > 
+                    <AbsoluteLayout x:Name="theMap">
                         <AbsoluteLayout.Effects>
                             <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
                         </AbsoluteLayout.Effects>
-                        <!-- TODO: need to see how it behaves with image -->
                         <BoxView Color="AntiqueWhite"
                                 AbsoluteLayout.LayoutBounds="0,0,900,725"
                                 AbsoluteLayout.LayoutFlags="PositionProportional"/>

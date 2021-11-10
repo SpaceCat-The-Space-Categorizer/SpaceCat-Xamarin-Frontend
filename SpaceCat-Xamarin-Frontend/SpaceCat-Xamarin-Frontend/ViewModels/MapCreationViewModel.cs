@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -19,10 +20,26 @@ namespace SpaceCat_Xamarin_Frontend
         // SelectedID       - contains ID of selected area polygon (if none are selected is set to -1)
         // FigureInProgress - contains area polygon currently being created by user (added to Areas on tap release)
 
-        public List<Polygon> Areas;
-        public int SelectedID;
-        public Polygon FigureInProgress;
-        
+        private List<Polygon> _areas;
+        private int _selectedID;
+        private Polygon _figInProgress;
+
+        public List<Polygon> Areas
+        {
+            get { return _areas; }
+            set { _areas = value; OnPropertyChanged(); }
+        }
+        public int SelectedID
+        {
+            get { return _selectedID; }
+            set { _selectedID = value; OnPropertyChanged(); }
+        }
+        public Polygon FigInProgress
+        {
+            get { return _figInProgress; }
+            set { _figInProgress = value; OnPropertyChanged(); }
+        }
+
         public bool NewAreaToolOn;
         public bool AddAreaToolOn;
         public bool DeleteAreaToolOn;
@@ -33,13 +50,12 @@ namespace SpaceCat_Xamarin_Frontend
 
         public MapCreationViewModel()
         {
+            Areas = new List<Polygon>();
+            SelectedID = -1;
+            
             NewAreaToolOn = false;
             AddAreaToolOn = false;
             DeleteAreaToolOn = false;
-
-            //Areas = currentFloor.Areas;
-            Areas = new List<Polygon>();
-            SelectedID = -1;
 
             // attach command functions to Command variables (defined below area methods)
             MapSettingsCommand = new Command(ExecuteMapSettings);
@@ -76,37 +92,61 @@ namespace SpaceCat_Xamarin_Frontend
                 Stroke = strokeColor,
                 StrokeThickness = 5
             };
-            
 
-            FigureInProgress = newAreaShape;
+            FigInProgress = newAreaShape;
             return newAreaShape;
         }
 
-        public void AreaCreationHandler(TouchActionEventArgs args)
+        public List<Polygon> AreaCreationHandler(TouchActionType tapType, Point tapLoc)
         {
-            switch(args.Type)
+            // INPUT: TAP MOVED
+            // if a figure is in progress: changes point collection as finger moves
+            // INPUT: TAP RELEASED
+            // if a figure is in progress:
+            //      creating new area: adds figure in progress to Areas list
+            //      adding to area: (currently just adds to area list) adds figure to selected area's rect list
+            // if no figure is in progress:
+            //      deleting area: (currently not implemented) removes figure from Area list and map
+
+
+            switch (tapType)
             {
-                case TouchActionType.Moved:
-                    if (FigureInProgress != null)
+                case TouchActionType.Pressed:
+                    //mouse down
+                    if (NewAreaToolOn || AddAreaToolOn)
                     {
-                        FigureInProgress.Points = ChangeEndPoint(FigureInProgress.Points, new Point(args.Location.X, args.Location.Y));
+                        PointCollection points = new PointCollection { tapLoc, tapLoc, tapLoc, tapLoc };
+                        CreateArea(points);
                     }
                     break;
-                case TouchActionType.Released:  //mouse up
-                    if (FigureInProgress != null)
+                case TouchActionType.Moved:
+                    if (FigInProgress != null)
+                    {
+                        FigInProgress.Points = ChangeEndPoint(FigInProgress.Points, tapLoc);
+                    }
+                    break;
+                case TouchActionType.Released:
+                    if (FigInProgress != null)
                     {
                         if (NewAreaToolOn)
-                            Areas.Add(FigureInProgress);
-                        else if (AddAreaToolOn) 
-                            Areas.Add(FigureInProgress); //TODO: change to add to selected area when implementing add area tool
-                        FigureInProgress = null;
+                        {
+                            Areas.Add(FigInProgress);
+                        }
+                        else if (AddAreaToolOn)
+                            Areas.Add(FigInProgress);
+                        FigInProgress = null; //TODO: change to add to selected area when implementing add area tool
                     }
                     else
                     {
+                        SelectArea(tapLoc);
                         if (DeleteAreaToolOn)
                         {
-                            //TODO: delete area
-                            System.Diagnostics.Debug.WriteLine("Sorry! I can't delete rectangles yet... good try tho :)");
+                            if (SelectedID >= 0) //an area is selected
+                            {
+                                Areas.RemoveAt(SelectedID);
+                                SelectedID = -1;
+                            }
+                            DeleteAreaToolOn = false;
                         }
                     }
                     NewAreaToolOn = false;
@@ -114,6 +154,10 @@ namespace SpaceCat_Xamarin_Frontend
                     DeleteAreaToolOn = false;
                     break;
             }
+            List<Polygon> allAreas = Areas;
+            if (FigInProgress != null)
+                allAreas.Add(FigInProgress);
+            return allAreas;
         }
 
 
