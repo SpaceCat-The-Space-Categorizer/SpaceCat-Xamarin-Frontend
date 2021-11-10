@@ -16,25 +16,29 @@ namespace SpaceCat_Xamarin_Frontend
 {
     public class MapCreationViewModel : INotifyPropertyChanged
     {
-        // Areas            - contains all completed area polygons on map
-        // SelectedID       - contains ID of selected area polygon (if none are selected is set to -1)
-        // FigureInProgress - contains area polygon currently being created by user (added to Areas on tap release)
-        
-
         private ObservableCollection<AreaFigure> _figures;
         private int _selectedIndex;
         private int _newFigIndex;
 
+        /// <summary>
+        ///     Contains all of the area figures currently drawn on the map.
+        /// </summary>
         public ObservableCollection<AreaFigure> Figures
         {
             get { return _figures; }
             set { _figures = value; OnPropertyChanged(); }
         }
+        /// <summary>
+        ///     The index of the selected figure in Figures.
+        /// </summary>
         public int SelectedIndex
         {
             get { return _selectedIndex; }
             set { _selectedIndex = value; OnPropertyChanged(); }
         }
+        /// <summary>
+        ///     The index of the figure being drawn if one exists. Default to -1 if not.
+        /// </summary>
         public int NewFigIndex
         {
             get { return _newFigIndex; }
@@ -69,18 +73,18 @@ namespace SpaceCat_Xamarin_Frontend
         }
 
         /// <summary>
-        ///     Handles user input on the blueprint with area tools.
+        ///     Handles user input on the blueprint when using area tools.
         /// </summary>
-        /// <remarks> (depreceated) <br/>
-        ///     INPUT: TAP PRESSED <br/>
-        ///         (using new area/add area tools): Calls CreateArea method and set to FigInProgress. <br/> <br/>
+        /// <remarks>
+        ///     ON TAP PRESSED <br/>
+        ///         If using New or Add Area tools, this creates a new figure and adds it to Figures. <br/> <br/>
         ///         
-        ///     INPUT: TAP MOVED <br/>
-        ///         (figure is in progress) : changes FigInProgress point collection as finger moves with ChangeEndPoint method. <br/> <br/>
+        ///     ON TAP MOVED <br/>
+        ///         When drawing a new figure, this updates the figure with the current tap location. <br/> <br/>
         ///     
-        ///     INPUT: TAP RELEASED <br/>
-        ///         (figure is in progress) : Using NewAreaTool adds figure in progress to Areas list. Using AddAreaTool (currently just adds to area list) adds figure to selected area's rect list. <br/>
-        ///         (no figure is progress): Using DeleteAreaTool removes figure from Area list and map.
+        ///     ON TAP RELEASED <br/>
+        ///         When drawing a new figure, this indicates the figure is complete. <br/>
+        ///         When not drawing a new figure, this calls the SelectArea method for the received tap location.
         /// </remarks>
         /// <param name="tapType">Type of finger tap (pressed, moved, released).</param>
         /// <param name="tapLoc">Location of finger tap.</param>
@@ -119,7 +123,7 @@ namespace SpaceCat_Xamarin_Frontend
                     if (NewFigIndex != -1)
                     {
                         System.Diagnostics.Debug.WriteLine("AREAS COUNT: " + Figures.Count);
-                        NewFigIndex = -1; //TODO: change to add to selected area when implementing add area tool
+                        NewFigIndex = -1;
                     }
                     else 
                         SelectArea(tapLoc);
@@ -131,7 +135,7 @@ namespace SpaceCat_Xamarin_Frontend
         }
 
         /// <summary>
-        ///     Selects the tapped area figure. Deselects any previously selected area figure.
+        ///     Selects any tapped area figure. Deselects any previously selected area figure.
         /// </summary>
         /// <remarks>
         ///     Selects only if no area tools are in use. Selected figures are set to half opacity.
@@ -157,15 +161,26 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
+        /// <summary>
+        ///     Changes the end point of the figure being drawn.
+        /// </summary>
+        /// <param name="points">Previous figure points.</param>
+        /// <param name="newPoint">New desired end point.</param>
+        /// <returns>Altered figure points.</returns>
         public PointCollection ChangeEndPoint(PointCollection points, Point newPoint)
         {
             return new PointCollection() { points[0], new Point(newPoint.X, points[0].Y), newPoint, new Point(points[0].X, newPoint.Y) };
         }
 
+        /// <summary>
+        ///     Determines if the provided point is contained within the bounds of the shape created by
+        ///     the provided point collection.
+        /// </summary>
+        /// <param name="points">The points of a shape.</param>
+        /// <param name="pt">The point to check if contained in shape.</param>
+        /// <returns>Returns true if provided point is within the bounds of the outer points.</returns>
         public bool Contains(PointCollection points, Point pt)
         {
-            // checks if point is within the given figure
-
             if (points.Count > 0)
             {
                 double lowX = points[0].X;
@@ -202,6 +217,10 @@ namespace SpaceCat_Xamarin_Frontend
             System.Diagnostics.Debug.WriteLine("Tapped Settings!");
         }
 
+        /// <summary>
+        ///     Called on click of New Area button, enables New Area tool/disables Add Area tool.
+        /// </summary>
+        /// <param name="s">Not Used</param>
         private void ExecuteNewArea(object s)
         {
             // Handles tapping the new area button
@@ -209,6 +228,24 @@ namespace SpaceCat_Xamarin_Frontend
             NewAreaToolOn = true;
         }
 
+        /// <summary>
+        ///     Called on click of Add Area button, enables Add Area tool/disables New Area tool.
+        /// </summary>
+        /// <param name="s">Not Used</param>
+        private void ExecuteAddArea(object s)
+        {
+            // Handles tapping the add to area button
+            NewAreaToolOn = false;
+            AddAreaToolOn = true;
+        }
+
+        /// <summary>
+        ///     Called on click of Delete Area button. Deletes selected figure.
+        /// </summary>
+        /// <remarks>
+        ///     UPDATE LATER
+        /// </remarks>
+        /// <param name="s">Not Used</param>
         private void ExecuteDeleteArea(object s)
         {
             // Handles tapping the delete area button
@@ -233,13 +270,6 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
-        private void ExecuteAddArea(object s)
-        {
-            // Handles tapping the add to area button
-            NewAreaToolOn = false;
-            AddAreaToolOn = true;
-        }
-
         private void ExecuteAddFurniture(object s)
         {
             // Handles tapping the add new furniture button (unimplemented)
@@ -253,7 +283,9 @@ namespace SpaceCat_Xamarin_Frontend
         }
 
 
-        // INotifyPropertyChanged interface is used to update the UI when variables are altered
+        /// <summary>
+        ///     Indicates that the UI should be updated to reflect some kind of change to bound variables.
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -263,16 +295,26 @@ namespace SpaceCat_Xamarin_Frontend
 
 
         // TESTING FUNCTIONS
+        /// <summary>
+        ///     Runs all method tests when called. Any failures are printed to debug output.
+        /// </summary>
         private void RunUnitTesting()
         {
             // Method to call all unit tests
 
             Test_Contains();
         }
+
+        /// <summary>
+        ///     Tests the Contains method.
+        /// </summary>
+        /// <remarks>
+        ///     To add tests: <br/>
+        ///     Add to ptList (ptCollection index, expected result, and point to check for) <br/>
+        ///     Add to ptCollections to test different point configurations.
+        /// </remarks>
         private void Test_Contains()
         {
-            // TO ADD TESTS: add to ptList: ptCollection index, expected result, and point to check for
-
             PointCollection[] ptCollections = 
                 {
                     new PointCollection { new Point(0,0), new Point(10,0), new Point(10,10), new Point(0,10) },
