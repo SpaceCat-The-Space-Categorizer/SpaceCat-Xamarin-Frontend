@@ -231,12 +231,16 @@ namespace SpaceCat_Xamarin_Frontend
         /// <summary>
         ///     Called on click of Add Area button, enables Add Area tool/disables New Area tool.
         /// </summary>
+        /// <remarks>
+        ///     Will not enable Add Area tool if an area is not selected.
+        /// </remarks>
         /// <param name="s">Not Used</param>
         private void ExecuteAddArea(object s)
         {
             // Handles tapping the add to area button
             NewAreaToolOn = false;
-            AddAreaToolOn = true;
+            if (SelectedIndex > -1)
+                AddAreaToolOn = true;
         }
 
         /// <summary>
