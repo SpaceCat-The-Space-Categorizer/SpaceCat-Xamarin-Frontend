@@ -11,14 +11,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SpaceCat" Version="0.1.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="SpaceCat-Universal-Library">
-      <HintPath>..\..\..\SpaceCat-Universal-Library\SpaceCat-Universal-Library\bin\Debug\net5.0\SpaceCat-Universal-Library.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
