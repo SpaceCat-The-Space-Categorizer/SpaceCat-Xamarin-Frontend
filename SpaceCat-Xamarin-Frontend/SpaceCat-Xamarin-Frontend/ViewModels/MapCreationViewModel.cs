@@ -64,6 +64,9 @@ namespace SpaceCat_Xamarin_Frontend
             AddAreaCommand = new Command(ExecuteAddArea);
             AddFurnitureCommand = new Command(ExecuteAddFurniture);
             ChooseFurnitureCommand = new Command(ExecuteChooseFurniture);
+
+            // TEMP TESTS
+            Test_Contains();
         }
 
         public Polygon CreateArea(PointCollection points)
@@ -186,20 +189,22 @@ namespace SpaceCat_Xamarin_Frontend
 
         public bool Contains(Polygon figure, Point pt)
         {
+            // checks if point is within the given figure
+
             if (figure.Points.Count > 0)
             {
                 double lowX = figure.Points[0].X;
                 double lowY = figure.Points[0].Y;
                 double highX = -1;
                 double highY = -1;
-                foreach (Point p in figure.Points)
+                foreach (Point figPt in figure.Points)
                 {
-                    if (p.X < lowX) lowX = p.X;
-                    if (p.Y < lowY) lowY = p.Y;
-                    if (p.X > highX) highX = p.X;
-                    if (p.Y > highY) highY = p.Y;
+                    if (figPt.X < lowX) lowX = figPt.X;
+                    if (figPt.Y < lowY) lowY = figPt.Y;
+                    if (figPt.X > highX) highX = figPt.X;
+                    if (figPt.Y > highY) highY = figPt.Y;
                 }
-                if (pt.X > lowX && pt.X < highX && pt.Y > lowY && pt.Y < highX)
+                if (pt.X >= lowX && pt.X <= highX && pt.Y >= lowY && pt.Y <= highY)
                     return true;
                 else return false;
             }
@@ -259,5 +264,80 @@ namespace SpaceCat_Xamarin_Frontend
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+
+        // TESTING FUNCTIONS
+        private void Test_Contains()
+        {
+            // TO ADD TESTS: add PointCollection and expected output to ptList
+
+            PointCollection[] ptCollections = 
+                {
+                    new PointCollection { new Point(0,0), new Point(10,0), new Point(10,10), new Point(0,10) },
+                    new PointCollection { new Point(0,10), new Point(0,0), new Point(10,0), new Point(10,10) },
+                    new PointCollection { new Point(5,20), new Point(30,20), new Point(30,40), new Point(5,40) },
+                    new PointCollection { new Point(30,20), new Point(5,40), new Point(5,20), new Point(30,40) },
+                };
+
+            List<(int, bool, Point)> ptList = new List<(int, bool, Point)>
+                {
+                    // TESTS 0-4
+                    (0, true, new Point(5,5)),      // center of figure
+                    (0, true, new Point(1,8)),      // near inner edge
+                    (0, false, new Point(5,-2)),    // above figure, out of screen
+                    (0, false, new Point(-2,5)),    // left of figure, out of screen
+                    (0, false, new Point(-4,-4)),   // above and left of figure, out of screen on both
+ 
+                    // TESTS 5-9
+                    (1, true, new Point(5,5)),      // same as above, different point order
+                    (1, true, new Point(1,8)),
+                    (1, false, new Point(5,-2)),
+                    (1, false, new Point(-2,5)),
+                    (1, false, new Point(-4,-4)),
+
+                    // TESTS 10-19
+                    (2, true, new Point(5,20)),     // starting point
+                    (2, true, new Point(30,40)),    // end point
+                    (2, true, new Point(10,20)),    // top edge
+                    (2, true, new Point(10,40)),    // bottom edge
+                    (2, true, new Point(5,30)),     // left edge
+                    (2, true, new Point(30,30)),    // right edge
+                    (2, false, new Point(15,45)),   // below figure
+                    (2, false, new Point(45,30)),   // right of figure
+                    (2, false, new Point(15,15)),   // above figure
+                    (2, false, new Point(3,30)),    // left of figure
+
+                    // TESTS 20-29
+                    (3, true, new Point(5,20)),     // same as above, different point order
+                    (3, true, new Point(30,40)),
+                    (3, true, new Point(10,20)),
+                    (3, true, new Point(10,40)),
+                    (3, true, new Point(5,30)),
+                    (3, true, new Point(30,30)),
+                    (3, false, new Point(15,45)),
+                    (3, false, new Point(45,30)),
+                    (3, false, new Point(15,15)),
+                    (3, false, new Point(3,30)),
+                };
+
+            Polygon[] figures = new Polygon[ptCollections.Length];
+            for (int i = 0; i < ptCollections.Length; i++)
+            {
+                figures[i] = new Polygon { Points = ptCollections[i] };
+            }
+            
+            foreach ((int, bool, Point) test in ptList)
+            {
+                if (test.Item2 != Contains(figures[test.Item1], test.Item3))
+                    System.Diagnostics.Debug.WriteLine("Test_Contains: Test[" + ptList.IndexOf(test) + "] Failed!");
+            }
+            System.Diagnostics.Debug.WriteLine("Test_Contains: Complete");
+        }
+
+
     }
+
+
+    
 }
