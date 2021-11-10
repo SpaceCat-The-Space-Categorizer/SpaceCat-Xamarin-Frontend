@@ -26,12 +26,7 @@ namespace SpaceCat_Xamarin_Frontend
         private void TappedMap(object sender, TouchActionEventArgs args)
         {
             Point tapLoc = new Point(args.Location.X, args.Location.Y);
-            List<Polygon> figures = ((MapCreationViewModel)BindingContext).AreaCreationHandler(args.Type, tapLoc);
-            theMap.Children.Clear();
-            foreach (Polygon fig in figures)
-            {
-                theMap.Children.Add(fig);
-            }
+            ((MapCreationViewModel)BindingContext).AreaInputHandler(args.Type, tapLoc);
         }
 
         public async void ExitPage(object sender, EventArgs e)

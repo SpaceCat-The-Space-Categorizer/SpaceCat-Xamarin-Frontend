@@ -14,35 +14,35 @@ using Xamarin.Forms.Shapes;
 
 namespace SpaceCat_Xamarin_Frontend
 {
-    class MapCreationViewModel : INotifyPropertyChanged
+    public class MapCreationViewModel : INotifyPropertyChanged
     {
         // Areas            - contains all completed area polygons on map
         // SelectedID       - contains ID of selected area polygon (if none are selected is set to -1)
         // FigureInProgress - contains area polygon currently being created by user (added to Areas on tap release)
+        
 
-        private List<Polygon> _areas;
-        private int _selectedID;
-        private Polygon _figInProgress;
+        private ObservableCollection<AreaFigure> _figures;
+        private int _selectedIndex;
+        private int _newFigIndex;
 
-        public List<Polygon> Areas
+        public ObservableCollection<AreaFigure> Figures
         {
-            get { return _areas; }
-            set { _areas = value; OnPropertyChanged(); }
+            get { return _figures; }
+            set { _figures = value; OnPropertyChanged(); }
         }
-        public int SelectedID
+        public int SelectedIndex
         {
-            get { return _selectedID; }
-            set { _selectedID = value; OnPropertyChanged(); }
+            get { return _selectedIndex; }
+            set { _selectedIndex = value; OnPropertyChanged(); }
         }
-        public Polygon FigInProgress
+        public int NewFigIndex
         {
-            get { return _figInProgress; }
-            set { _figInProgress = value; OnPropertyChanged(); }
+            get { return _newFigIndex; }
+            set { _newFigIndex = value; OnPropertyChanged(); }
         }
 
         public bool NewAreaToolOn;
         public bool AddAreaToolOn;
-        public bool DeleteAreaToolOn;
         
         string[] hexAreaColors = new string[]
             { "CCDF3E", "E06666", "F6B26B", "FFD966", "93C47D", "76A5AF",
@@ -50,12 +50,12 @@ namespace SpaceCat_Xamarin_Frontend
 
         public MapCreationViewModel()
         {
-            Areas = new List<Polygon>();
-            SelectedID = -1;
-            
+            Figures = new ObservableCollection<AreaFigure>();
+            SelectedIndex = -1;
+            NewFigIndex = -1;
+
             NewAreaToolOn = false;
             AddAreaToolOn = false;
-            DeleteAreaToolOn = false;
 
             // attach command functions to Command variables (defined below area methods)
             MapSettingsCommand = new Command(ExecuteMapSettings);
@@ -65,117 +65,92 @@ namespace SpaceCat_Xamarin_Frontend
             AddFurnitureCommand = new Command(ExecuteAddFurniture);
             ChooseFurnitureCommand = new Command(ExecuteChooseFurniture);
 
-            // TEMP TESTS
-            Test_Contains();
+            //RunUnitTesting();   // RUN UNIT TESTS (uncomment to run, results in debug output)
         }
 
-        public Polygon CreateArea(PointCollection points)
+        /// <summary>
+        ///     Handles user input on the blueprint with area tools.
+        /// </summary>
+        /// <remarks> (depreceated) <br/>
+        ///     INPUT: TAP PRESSED <br/>
+        ///         (using new area/add area tools): Calls CreateArea method and set to FigInProgress. <br/> <br/>
+        ///         
+        ///     INPUT: TAP MOVED <br/>
+        ///         (figure is in progress) : changes FigInProgress point collection as finger moves with ChangeEndPoint method. <br/> <br/>
+        ///     
+        ///     INPUT: TAP RELEASED <br/>
+        ///         (figure is in progress) : Using NewAreaTool adds figure in progress to Areas list. Using AddAreaTool (currently just adds to area list) adds figure to selected area's rect list. <br/>
+        ///         (no figure is progress): Using DeleteAreaTool removes figure from Area list and map.
+        /// </remarks>
+        /// <param name="tapType">Type of finger tap (pressed, moved, released).</param>
+        /// <param name="tapLoc">Location of finger tap.</param>
+        public void AreaInputHandler(TouchActionType tapType, Point tapLoc)
         {
-            // returns a new polygon object from the provided points
-            // color of polygon is currently randomized from hexAreaColors array
-
-            Brush strokeColor = new SolidColorBrush();
-            Brush fillColor = new SolidColorBrush();
-            if (NewAreaToolOn)
-            {
-                int randIndex = new Random().Next(hexAreaColors.Length);
-                strokeColor = new SolidColorBrush(Color.FromHex("#" + hexAreaColors[randIndex]));
-                // first string is alpha channel, should be same for every area
-                fillColor = new SolidColorBrush(Color.FromHex("#33" + hexAreaColors[randIndex]));
-            }
-            else if (AddAreaToolOn)
-            {
-                strokeColor = new SolidColorBrush(Color.FromHex("#" + hexAreaColors[0]));
-                fillColor = new SolidColorBrush(Color.FromHex("#33" + hexAreaColors[0]));
-            }
-            Polygon newAreaShape = new Polygon
-            {
-                Points = points,
-                Fill = fillColor,
-                Stroke = strokeColor,
-                StrokeThickness = 5
-            };
-
-            FigInProgress = newAreaShape;
-            return newAreaShape;
-        }
-
-        public List<Polygon> AreaCreationHandler(TouchActionType tapType, Point tapLoc)
-        {
-            // INPUT: TAP MOVED
-            // if a figure is in progress: changes point collection as finger moves
-            // INPUT: TAP RELEASED
-            // if a figure is in progress:
-            //      creating new area: adds figure in progress to Areas list
-            //      adding to area: (currently just adds to area list) adds figure to selected area's rect list
-            // if no figure is in progress:
-            //      deleting area: (currently not implemented) removes figure from Area list and map
-
-
             switch (tapType)
             {
                 case TouchActionType.Pressed:
-                    //mouse down
-                    if (NewAreaToolOn || AddAreaToolOn)
+                    if (NewFigIndex == -1 && (NewAreaToolOn || AddAreaToolOn))
                     {
+                        int randIndex = new Random().Next(hexAreaColors.Length);
                         PointCollection points = new PointCollection { tapLoc, tapLoc, tapLoc, tapLoc };
-                        CreateArea(points);
+                        AreaFigure newFigure = null;
+                        if (NewAreaToolOn)
+                        {
+                            Test_Area newArea = new Test_Area(new List<AreaFigure>(), hexAreaColors[randIndex]) ;
+                            newFigure = new AreaFigure(newArea, points, 1.0);
+                            
+                        }
+                        else if (AddAreaToolOn)
+                        {
+                            newFigure = new AreaFigure(Figures[SelectedIndex].Area, points, 1.0);
+                        }
+
+                        NewFigIndex = Figures.Count;
+                        Figures.Add(newFigure);
                     }
                     break;
                 case TouchActionType.Moved:
-                    if (FigInProgress != null)
+                    if (NewFigIndex != -1)
                     {
-                        FigInProgress.Points = ChangeEndPoint(FigInProgress.Points, tapLoc);
+                        Figures[NewFigIndex].FigPoints = ChangeEndPoint(Figures[NewFigIndex].FigPoints, tapLoc);
                     }
                     break;
                 case TouchActionType.Released:
-                    if (FigInProgress != null)
+                    if (NewFigIndex != -1)
                     {
-                        if (NewAreaToolOn)
-                        {
-                            Areas.Add(FigInProgress);
-                        }
-                        else if (AddAreaToolOn)
-                            Areas.Add(FigInProgress);
-                        FigInProgress = null; //TODO: change to add to selected area when implementing add area tool
+                        System.Diagnostics.Debug.WriteLine("AREAS COUNT: " + Figures.Count);
+                        NewFigIndex = -1; //TODO: change to add to selected area when implementing add area tool
                     }
-                    else
-                    {
+                    else 
                         SelectArea(tapLoc);
-                        if (DeleteAreaToolOn)
-                        {
-                            if (SelectedID >= 0) //an area is selected
-                            {
-                                Areas.RemoveAt(SelectedID);
-                                SelectedID = -1;
-                            }
-                            DeleteAreaToolOn = false;
-                        }
-                    }
+
                     NewAreaToolOn = false;
                     AddAreaToolOn = false;
-                    DeleteAreaToolOn = false;
                     break;
             }
-            List<Polygon> allAreas = Areas;
-            if (FigInProgress != null)
-                allAreas.Add(FigInProgress);
-            return allAreas;
         }
 
-
+        /// <summary>
+        ///     Selects the tapped area figure. Deselects any previously selected area figure.
+        /// </summary>
+        /// <remarks>
+        ///     Selects only if no area tools are in use. Selected figures are set to half opacity.
+        /// </remarks>
+        /// <param name="tapLoc">Location of finger tap.</param>
         public void SelectArea(Point tapLoc)
         {
-            if (!AddAreaToolOn && !DeleteAreaToolOn)
+            if (!AddAreaToolOn && !NewAreaToolOn)
             {
-                if (SelectedID >= 0) Areas[SelectedID].Opacity = 1;
-                SelectedID = -1;
-                for (int i = 0; i < Areas.Count; i++)
+                if (SelectedIndex >= 0) 
+                    Figures[SelectedIndex].Opacity = 1;
+                SelectedIndex = -1;
+
+                for (int i = 0; i < Figures.Count; i++)
                 {
-                    if (Contains(Areas[i], tapLoc))
+                    if (Contains(Figures[i].FigPoints, tapLoc))
                     {
-                        SelectedID = i;
-                        Areas[i].Opacity = 0.5;
+                        SelectedIndex = i;
+                        Figures[i].Opacity = 0.5;
                         break;
                     }
                 }
@@ -187,17 +162,17 @@ namespace SpaceCat_Xamarin_Frontend
             return new PointCollection() { points[0], new Point(newPoint.X, points[0].Y), newPoint, new Point(points[0].X, newPoint.Y) };
         }
 
-        public bool Contains(Polygon figure, Point pt)
+        public bool Contains(PointCollection points, Point pt)
         {
             // checks if point is within the given figure
 
-            if (figure.Points.Count > 0)
+            if (points.Count > 0)
             {
-                double lowX = figure.Points[0].X;
-                double lowY = figure.Points[0].Y;
+                double lowX = points[0].X;
+                double lowY = points[0].Y;
                 double highX = -1;
                 double highY = -1;
-                foreach (Point figPt in figure.Points)
+                foreach (Point figPt in points)
                 {
                     if (figPt.X < lowX) lowX = figPt.X;
                     if (figPt.Y < lowY) lowY = figPt.Y;
@@ -230,18 +205,38 @@ namespace SpaceCat_Xamarin_Frontend
         private void ExecuteNewArea(object s)
         {
             // Handles tapping the new area button
+            AddAreaToolOn = false;
             NewAreaToolOn = true;
         }
 
         private void ExecuteDeleteArea(object s)
         {
             // Handles tapping the delete area button
-            DeleteAreaToolOn = true;
+            if (SelectedIndex > -1) // if an area is selected
+            {
+                // Edit Test_Area list, defining rectangles list or delete entire area
+                if (Figures[SelectedIndex].Area.DefiningRectangles.Count < 2)
+                {
+                    //FUTURE: Remove area from floor
+                }
+                else
+                {
+                    for (int i = 0; i < Figures[SelectedIndex].Area.DefiningRectangles.Count; i++)
+                    {
+                        // delete figure from area rectangles
+                        if (Figures[SelectedIndex].Area.DefiningRectangles[i] == Figures[SelectedIndex])
+                            Figures[SelectedIndex].Area.DefiningRectangles.RemoveAt(i);
+                    }
+                }
+                Figures.RemoveAt(SelectedIndex);
+                SelectedIndex = -1;
+            }
         }
 
         private void ExecuteAddArea(object s)
         {
             // Handles tapping the add to area button
+            NewAreaToolOn = false;
             AddAreaToolOn = true;
         }
 
@@ -268,9 +263,15 @@ namespace SpaceCat_Xamarin_Frontend
 
 
         // TESTING FUNCTIONS
+        private void RunUnitTesting()
+        {
+            // Method to call all unit tests
+
+            Test_Contains();
+        }
         private void Test_Contains()
         {
-            // TO ADD TESTS: add PointCollection and expected output to ptList
+            // TO ADD TESTS: add to ptList: ptCollection index, expected result, and point to check for
 
             PointCollection[] ptCollections = 
                 {
@@ -320,21 +321,14 @@ namespace SpaceCat_Xamarin_Frontend
                     (3, false, new Point(15,15)),
                     (3, false, new Point(3,30)),
                 };
-
-            Polygon[] figures = new Polygon[ptCollections.Length];
-            for (int i = 0; i < ptCollections.Length; i++)
-            {
-                figures[i] = new Polygon { Points = ptCollections[i] };
-            }
             
             foreach ((int, bool, Point) test in ptList)
             {
-                if (test.Item2 != Contains(figures[test.Item1], test.Item3))
+                if (test.Item2 != Contains(ptCollections[test.Item1], test.Item3))
                     System.Diagnostics.Debug.WriteLine("Test_Contains: Test[" + ptList.IndexOf(test) + "] Failed!");
             }
             System.Diagnostics.Debug.WriteLine("Test_Contains: Complete");
         }
-
 
     }
 
