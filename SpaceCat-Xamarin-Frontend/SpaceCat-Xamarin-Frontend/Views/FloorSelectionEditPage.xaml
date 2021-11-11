@@ -8,6 +8,16 @@
         <local:FloorSelectionEditViewModel/>
     </ContentPage.BindingContext>
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame-info-interior" TargetType="Frame" BasedOn="{StaticResource frame-interior}">
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+            <Style x:Key="frame-floorlist-interior" TargetType="Frame" BasedOn="{StaticResource frame-interior}">
+                <Setter Property="WidthRequest" Value="400"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
         <StackLayout Spacing="0">
@@ -19,29 +29,53 @@
 
             <Frame Style="{StaticResource frame-main}">
                 <Frame Style="{StaticResource frame-exterior}">
-                    <StackLayout Orientation="Horizontal">
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
 
-                        <!-- LEFT HAND FRAME-->
-                        <Frame>
-                            <StackLayout>
+                            <!-- LEFT HAND FRAME-->
+                            <Frame Style="{StaticResource frame-info-interior}">
                                 <!-- BUILDING DETAILS FRAME-->
-                                <Frame>
-                                    <Grid RowDefinitions="*, *, 5*" ColumnDefinitions="200, *">
-                                        <Label Grid.Row="0" Grid.Column="0" Text="Building Name" Style="{StaticResource label-medium}"/>
-                                        <Entry Grid.Row="0" Grid.Column="1" Placeholder="A name..."/>
-                                        <Label Grid.Row="1" Grid.Column="0" Text="Date Created" Style="{StaticResource label-medium}"/>
-                                        <Entry Grid.Row="1" Grid.Column="1" Placeholder="A date..."/>
-                                        <Label Grid.Row="2" Grid.Column="0" Text="Additional Notes" Style="{StaticResource label-medium}"/>
-                                        <Entry Grid.Row="2" Grid.Column="1" Placeholder="Add a note..."/>
+                                <Grid RowDefinitions="50, 50, *" ColumnDefinitions="200, *" RowSpacing="15">
+                                    <Label Grid.Row="0" Grid.Column="0" Text="BUILDING NAME" Style="{StaticResource label-medium}"/>
+                                    <Entry Grid.Row="0" Grid.Column="1" Placeholder="A name..." Style="{StaticResource entry-main}"/>
+                                    <Label Grid.Row="1" Grid.Column="0" Text="DATE CREATED" Style="{StaticResource label-medium}"/>
+                                    <Entry Grid.Row="1" Grid.Column="1" Placeholder="A date..." Style="{StaticResource entry-main}"/>
+                                    <Label Grid.Row="2" Grid.Column="0" Text="ADDITIONAL NOTES" Style="{StaticResource label-medium}"/>
+                                    <Entry Grid.Row="2" Grid.Column="1" Placeholder="Add a note..." Style="{StaticResource entry-main}"/>
+                                </Grid>
+                            </Frame>
+
+
+                            <!-- RIGHT HAND FRAME -->
+                            <Frame Style="{StaticResource frame-floorlist-interior}">
+                                <StackLayout>
+                                    <Label Text="FLOORS" Style="{StaticResource label-large}"/>
+
+                                    <ListView  ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <ViewCell>
+                                                    <Frame Style="{StaticResource frame-listItem}">
+                                                        <StackLayout Orientation="Horizontal">
+                                                            <Button Text="X" Style="{StaticResource button-delete}"/>
+                                                            <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
+                                                        </StackLayout>
+                                                    </Frame>
+                                                </ViewCell>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+
+
+                                    <Grid>
+                                        <Button Grid.Column="0" Text="Add New Floor" Style="{StaticResource button-big}"/>
+                                        <Button Grid.Column="1" Text="Edit Floor" Style="{StaticResource button-big}"/>
                                     </Grid>
-                                </Frame>
-                                <Button Text="Save &amp; Exit" Style="{StaticResource button-big}"/>
-                            </StackLayout>
-                        </Frame>
+                                </StackLayout>
+                            </Frame>
 
-
-
-
+                        </StackLayout>
+                        <Button Text="Save &amp; Exit" Style="{StaticResource button-big}"/>
                     </StackLayout>
                 </Frame>
             </Frame>

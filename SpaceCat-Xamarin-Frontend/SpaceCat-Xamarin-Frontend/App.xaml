@@ -29,6 +29,10 @@
                 <Setter Property="Padding" Value="30,10,30,10"/>
             </Style>
 
+            <!-- ENTRY STYLES -->
+            <Style x:Key="entry-main" TargetType="Entry">
+                <Setter Property="BackgroundColor" Value="LightGray"/>
+            </Style>
 
             <!-- EDIT LATER -->
             <Style x:Key="image-floorPlan" TargetType="Label" BasedOn="{StaticResource label-base}">
@@ -63,6 +67,7 @@
                 <Setter Property="BackgroundColor" Value="WhiteSmoke"/>
                 <Setter Property="Padding" Value="15"/>
                 <Setter Property="CornerRadius" Value="0"/>
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
             </Style>
             <Style x:Key="frame-listItem" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="White"/>
@@ -90,12 +95,12 @@
                 <Setter Property="CornerRadius" Value="5"/>
                 <Setter Property="HeightRequest" Value="40"/>
             </Style>
-            <Style x:Key="button-editBuilding" BasedOn="{StaticResource button-small}" TargetType="Button">
+            <Style x:Key="button-edit" BasedOn="{StaticResource button-small}" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="YellowGreen"/>
                 <Setter Property="Margin" Value="0,0,15,0"/>
                 <Setter Property="WidthRequest" Value="80"/>
             </Style>
-            <Style x:Key="button-deleteBuilding" BasedOn="{StaticResource button-small}" TargetType="Button">
+            <Style x:Key="button-delete" BasedOn="{StaticResource button-small}" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="IndianRed"/>
                 <Setter Property="Margin" Value="10,0,5,0"/>
                 <Setter Property="WidthRequest" Value="50"/>
