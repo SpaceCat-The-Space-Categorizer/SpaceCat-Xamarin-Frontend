@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
+             x:Class="SpaceCat_Xamarin_Frontend.FloorSelectionEditPage">
+
+    <ContentPage.BindingContext>
+        <local:FloorSelectionEditViewModel/>
+    </ContentPage.BindingContext>
+
+
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+
+            <!-- TITLE -->
+            <Frame Style="{StaticResource frame-title}">
+                <Label Text="SPACE CAT!" Style="{StaticResource label-title}"/>
+            </Frame>
+
+            <Frame Style="{StaticResource frame-main}">
+                <Frame Style="{StaticResource frame-exterior}">
+                    <StackLayout Orientation="Horizontal">
+
+                        <!-- LEFT HAND FRAME-->
+                        <Frame>
+                            <StackLayout>
+                                <!-- BUILDING DETAILS FRAME-->
+                                <Frame>
+                                    <Grid RowDefinitions="*, *, 5*" ColumnDefinitions="200, *">
+                                        <Label Grid.Row="0" Grid.Column="0" Text="Building Name" Style="{StaticResource label-medium}"/>
+                                        <Entry Grid.Row="0" Grid.Column="1" Placeholder="A name..."/>
+                                        <Label Grid.Row="1" Grid.Column="0" Text="Date Created" Style="{StaticResource label-medium}"/>
+                                        <Entry Grid.Row="1" Grid.Column="1" Placeholder="A date..."/>
+                                        <Label Grid.Row="2" Grid.Column="0" Text="Additional Notes" Style="{StaticResource label-medium}"/>
+                                        <Entry Grid.Row="2" Grid.Column="1" Placeholder="Add a note..."/>
+                                    </Grid>
+                                </Frame>
+                                <Button Text="Save &amp; Exit" Style="{StaticResource button-big}"/>
+                            </StackLayout>
+                        </Frame>
+
+
+
+
+                    </StackLayout>
+                </Frame>
+            </Frame>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

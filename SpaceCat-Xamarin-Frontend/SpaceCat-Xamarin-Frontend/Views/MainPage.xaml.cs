@@ -24,7 +24,7 @@ namespace SpaceCat_Xamarin_Frontend
         {
             // opens a MapCreationPage to create a new building
 
-            Navigation.PushModalAsync(new MapCreationPage());
+            Navigation.PushModalAsync(new FloorSelectionEditPage());
         }
 
         private void Clicked_Import(object sender, EventArgs e)
