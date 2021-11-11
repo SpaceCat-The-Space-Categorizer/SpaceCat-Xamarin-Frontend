@@ -82,6 +82,7 @@
                 <Setter Property="Padding" Value="10,30,10,30"/>
                 <Setter Property="FontSize" Value="20"/>
                 <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
             </Style>
             <Style x:Key="button-small" BasedOn="{StaticResource button-base}" TargetType="Button">
                 <Setter Property="Padding" Value="0"/>
