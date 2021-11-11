@@ -67,7 +67,7 @@
                 <Setter Property="BackgroundColor" Value="WhiteSmoke"/>
                 <Setter Property="Padding" Value="15"/>
                 <Setter Property="CornerRadius" Value="0"/>
-                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <!--<Setter Property="VerticalOptions" Value="FillAndExpand"/>-->
             </Style>
             <Style x:Key="frame-listItem" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="White"/>

@@ -16,6 +16,9 @@
             <Style x:Key="frame-floorlist-interior" TargetType="Frame" BasedOn="{StaticResource frame-interior}">
                 <Setter Property="WidthRequest" Value="400"/>
             </Style>
+            <Style x:Key="button-floors" TargetType="Button" BasedOn="{StaticResource button-big}">
+                <Setter Property="WidthRequest" Value="150"/>
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -51,7 +54,7 @@
                                 <StackLayout>
                                     <Label Text="FLOORS" Style="{StaticResource label-large}"/>
 
-                                    <ListView  ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor}">
+                                    <ListView  ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor, Mode=TwoWay}">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <ViewCell>
@@ -65,12 +68,11 @@
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
                                     </ListView>
-
-
-                                    <Grid>
-                                        <Button Grid.Column="0" Text="Add New Floor" Style="{StaticResource button-big}"/>
-                                        <Button Grid.Column="1" Text="Edit Floor" Style="{StaticResource button-big}"/>
-                                    </Grid>
+                                    
+                                    <StackLayout Orientation="Horizontal" >
+                                        <Button Grid.Column="0" Text="Add New Floor" Style="{StaticResource button-floors}"/>
+                                        <Button Grid.Column="1" Text="Edit Floor" Style="{StaticResource button-floors}"/>
+                                    </StackLayout>
                                 </StackLayout>
                             </Frame>
 

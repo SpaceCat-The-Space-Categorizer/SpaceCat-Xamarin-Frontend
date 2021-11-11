@@ -32,9 +32,22 @@ namespace SpaceCat_Xamarin_Frontend
             Floor a = new Floor(1);
             Floor b = new Floor(2);
             Floor c = new Floor(3);
+            Floor d = new Floor(4);
+            Floor e = new Floor(5);
+            Floor f = new Floor(6);
+            Floor g = new Floor(7);
+            Floor h = new Floor(8);
             Floors.Add(a);
             Floors.Add(b);
             Floors.Add(c);
+            Floors.Add(d);
+            Floors.Add(e);
+            Floors.Add(f);
+            Floors.Add(g);
+            Floors.Add(h);
+
+            if (Floors.Count > 0)
+                SelectedFloor = Floors[0];
         }
 
 
