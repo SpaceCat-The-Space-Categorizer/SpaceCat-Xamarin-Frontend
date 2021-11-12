@@ -20,6 +20,12 @@
             <Style x:Key="label-buildingInfo-last" TargetType="Label" BasedOn="{StaticResource label-small}">
                 <Setter Property="VerticalOptions" Value="EndAndExpand"/>
             </Style>
+            <Style x:Key="frame-buildingList-exterior" TargetType="Frame" BasedOn="{StaticResource frame-exterior}">
+                <Setter Property="Margin" Value="15"/>
+            </Style>
+            <Style x:Key="frame-buildingList-interior" TargetType="Frame" BasedOn="{StaticResource frame-interior}">
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -37,15 +43,15 @@
             </Frame>
 
             <Frame Style="{StaticResource frame-main}">
-                <Frame Style="{StaticResource frame-exterior}">
+                <Frame Style="{StaticResource frame-buildingList-exterior}">
                     <!-- Main Layout -->
                     <StackLayout Orientation="Horizontal" Spacing="0">
                         
                         
                         <!-- BUILDING LIST FRAME -->
-                        <Frame Style="{StaticResource frame-exterior}">
+                        <Frame> <!-- took out style -->
                             <StackLayout>
-                                <Frame Style="{StaticResource frame-interior}">
+                                <Frame Style="{StaticResource frame-buildingList-interior}">
                                     <StackLayout>
                                         <Label Text="Current Building" Style="{StaticResource label-subtitle}"/>
                                         <ListView x:Name="lvBuildings" ItemsSource="{Binding Buildings}" SelectedItem="{Binding SelectedBuilding}">
@@ -75,10 +81,10 @@
 
                         
                         <!-- BUILDING INFO FRAME -->
-                        <Frame Style="{StaticResource frame-exterior}">
+                        <Frame> <!-- took out style -->
                             <StackLayout>
                                 <Label Text="Building Info" Style="{StaticResource label-subtitle}"/>
-                                <Frame Style="{StaticResource frame-interior}">
+                                <Frame Style="{StaticResource frame-buildingList-interior}">
                                     <StackLayout>
                                         <Label Text="{Binding SelectedBuilding.BuildingName}" Style="{StaticResource label-medium}"/>
                                         <Label Text="{Binding SelectedBuilding.BuildingDate}" Style="{StaticResource label-small}"/>

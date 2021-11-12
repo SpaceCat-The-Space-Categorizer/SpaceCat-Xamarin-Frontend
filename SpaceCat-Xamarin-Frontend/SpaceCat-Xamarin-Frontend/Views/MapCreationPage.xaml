@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:tt="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms"
+             xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
+             x:Class="SpaceCat_Xamarin_Frontend.MapCreationPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame-tools-main" TargetType="Frame" BasedOn="{StaticResource frame-exterior}">
+                <Setter Property="WidthRequest" Value="200"/>
+            </Style>
+            <Style x:Key="label-tools-title" TargetType="Label" BasedOn="{StaticResource label-medium}">
+                <Setter Property="TextDecorations" Value="Underline"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="Padding" Value="0,0,0,15"/>
+            </Style>
+            <Style x:Key="button-tools" TargetType="Button" BasedOn="{StaticResource button-small}">
+                <Setter Property="HeightRequest" Value="60"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <local:MapCreationViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <Frame Style="{StaticResource frame-main}">
+            <StackLayout Orientation="Horizontal">
+            
+            
+                <!-- TOOLS -->
+                <StackLayout>
+                    <Frame Style="{StaticResource frame-tools-main}">
+                        <StackLayout>
+                            <!-- AREA TOOLS -->
+                            <Frame Style="{StaticResource frame-interior}">
+                                <StackLayout>
+                                    <Label Text="AREA TOOLS" Style="{StaticResource label-tools-title}"/>
+                                    <Grid>
+                                        <Button Text="New Area" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding NewAreaCommand}" Style="{StaticResource button-tools}"/>
+                                        <Button Text="Delete &#x0a;Area" Grid.Row="1" Grid.Column="0" Command="{Binding DeleteAreaCommand}" Style="{StaticResource button-tools}"/>
+                                        <Button Text="Add to &#x0a;Area" Grid.Row="1" Grid.Column="1" Command="{Binding AddAreaCommand}" Style="{StaticResource button-tools}"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Frame>
+
+                            <!-- FURNITURE TOOLS -->
+                            <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
+                                <StackLayout>
+                                    <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
+                                    <Grid>
+                                        <Button Grid.Row="0" Grid.Column="0" Text="Add New &#x0a;Furniture" Command="{Binding AddFurnitureCommand}" Style="{StaticResource button-tools}"/>
+                                        <Button Grid.Row="0" Grid.Column="1" Text="Choose &#x0a;Furniture" Command="{Binding ChooseFurnitureCommand}" Style="{StaticResource button-tools}"/>
+                                    </Grid>
+                                </StackLayout>
+                            </Frame>
+                        </StackLayout>
+                    </Frame>
+
+
+                    <!-- MAIN BUTTONS -->
+                    <StackLayout VerticalOptions="End">
+                        <Button Text="Map Settings" Command="{Binding MapSettingsCommand}" Style="{StaticResource button-big}"/>
+                        <Button Text="Save &amp; Exit" Clicked="ExitPage" Style="{StaticResource button-big}"/>
+                    </StackLayout>
+                </StackLayout>
+
+
+                <!-- MAP -->
+                <Frame HorizontalOptions="FillAndExpand" Style="{StaticResource frame-exterior}">
+
+                    <AbsoluteLayout x:Name="theMap" BindableLayout.ItemsSource="{Binding Figures}">
+
+                        <AbsoluteLayout.Effects>
+                            <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
+                        </AbsoluteLayout.Effects>
+
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding Area.FillColor}" Stroke="{Binding Area.StrokeColor}" StrokeThickness="5"/>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+
+                    </AbsoluteLayout>
+                </Frame>
+                
+            
+            
+            </StackLayout>
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>
