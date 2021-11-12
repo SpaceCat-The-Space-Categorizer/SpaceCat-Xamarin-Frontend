@@ -13,10 +13,10 @@ namespace SpaceCat_Xamarin_Frontend
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FloorSelectionEditPage : ContentPage
     {
-        public FloorSelectionEditPage()//Building thisBuilding)
+        public FloorSelectionEditPage(Building thisBuilding)
         {
-            //((FloorSelectionEditViewModel)BindingContext).ThisBuilding = thisBuilding;
             InitializeComponent();
+            ((FloorSelectionEditViewModel)BindingContext).ThisBuilding = thisBuilding;
         }
 
         private async void Tapped_NewFloor(object sender, EventArgs e)
@@ -34,6 +34,7 @@ namespace SpaceCat_Xamarin_Frontend
         private async void Tapped_SaveExit(object sender, EventArgs e)
         {
             // TODO: add updated floors list to building floors
+            ((FloorSelectionEditViewModel)BindingContext).SaveExit();
             await Navigation.PopModalAsync();
         }
     }
