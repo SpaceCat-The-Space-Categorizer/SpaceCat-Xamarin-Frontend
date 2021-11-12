@@ -22,6 +22,7 @@ namespace SpaceCat_Xamarin_Frontend
         public MapCreationPage(Floor map)
         {
             InitializeComponent();
+            ((MapCreationViewModel)BindingContext).LoadFloor(map);
         }
 
         private void TappedMap(object sender, TouchActionEventArgs args)
