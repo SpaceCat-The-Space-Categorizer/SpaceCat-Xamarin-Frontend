@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpaceCat;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace SpaceCat_Xamarin_Frontend
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapCreationPage : ContentPage
     {
-        public MapCreationPage()
+        public MapCreationPage(Floor map)
         {
             InitializeComponent();
         }

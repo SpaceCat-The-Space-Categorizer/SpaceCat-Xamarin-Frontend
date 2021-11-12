@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpaceCat;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -23,7 +24,7 @@ namespace SpaceCat_Xamarin_Frontend
         private void Clicked_Create(object sender, EventArgs e)
         {
             // opens a MapCreationPage to create a new building
-
+            //Building b = new Building("A Fackin Building");
             Navigation.PushModalAsync(new FloorSelectionEditPage());
         }
 
@@ -54,7 +55,7 @@ namespace SpaceCat_Xamarin_Frontend
 
         private void Clicked_Analysis(object sender, EventArgs e)
         {
-
+            
         }
 
         private async void FilePickBuilding()

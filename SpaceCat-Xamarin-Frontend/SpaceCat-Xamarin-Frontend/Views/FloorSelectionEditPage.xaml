@@ -70,14 +70,14 @@
                                     </ListView>
                                     
                                     <StackLayout Orientation="Horizontal" >
-                                        <Button Grid.Column="0" Text="Add New Floor" Style="{StaticResource button-floors}"/>
-                                        <Button Grid.Column="1" Text="Edit Floor" Style="{StaticResource button-floors}"/>
+                                        <Button Grid.Column="0" Text="New Floor" Clicked="Tapped_NewFloor" Style="{StaticResource button-floors}"/>
+                                        <Button Grid.Column="1" Text="Edit Floor" Clicked="Tapped_EditFloor" CommandParameter="{Binding SelectedFloor}" Style="{StaticResource button-floors}"/>
                                     </StackLayout>
                                 </StackLayout>
                             </Frame>
 
                         </StackLayout>
-                        <Button Text="Save &amp; Exit" Style="{StaticResource button-big}"/>
+                        <Button Text="Save &amp; Exit" Clicked="Tapped_SaveExit" Style="{StaticResource button-big}"/>
                     </StackLayout>
                 </Frame>
             </Frame>

@@ -5,13 +5,16 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Xamarin.Forms;
 
 namespace SpaceCat_Xamarin_Frontend
 {
     class FloorSelectionEditViewModel
     {
-        public ObservableCollection<Floor> _floors;
-        public Floor _selected;
+        public  Building ThisBuilding;
+
+        private ObservableCollection<Floor> _floors;
+        private Floor _selected;
 
         public ObservableCollection<Floor> Floors
         {
@@ -24,6 +27,8 @@ namespace SpaceCat_Xamarin_Frontend
             get { return _selected; }
             set { _selected = value; OnPropertyChanged(); }
         }
+
+        //public Command NewFloorCommand { get; set; }
 
         public FloorSelectionEditViewModel()
         {
@@ -48,8 +53,16 @@ namespace SpaceCat_Xamarin_Frontend
 
             if (Floors.Count > 0)
                 SelectedFloor = Floors[0];
+
+            //NewFloorCommand = new Command(ExecuteNewFloor);
         }
 
+        public Floor ExecuteNewFloor()
+        {
+            Floor newFloor = new Floor(Floors.Count);
+            Floors.Add(newFloor);
+            return newFloor;
+        }
 
         // INotifyPropertyChanged interface is used to update the UI when variables are altered
         public event PropertyChangedEventHandler PropertyChanged;
