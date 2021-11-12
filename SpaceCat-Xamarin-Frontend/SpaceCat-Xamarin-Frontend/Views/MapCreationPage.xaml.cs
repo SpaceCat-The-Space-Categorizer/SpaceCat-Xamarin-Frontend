@@ -33,8 +33,8 @@ namespace SpaceCat_Xamarin_Frontend
 
         public async void ExitPage(object sender, EventArgs e)
         {
-            // navigates back to landing page
-            // TODO: send message back with updated building object
+            // TODO: send message back with updated floor object
+            MessagingCenter.Send(this, "UpdateFloor", ((MapCreationViewModel)BindingContext).ThisFloor);
             await Navigation.PopModalAsync();
         }
     }

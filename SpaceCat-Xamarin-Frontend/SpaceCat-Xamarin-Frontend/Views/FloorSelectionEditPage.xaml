@@ -61,6 +61,7 @@
                                                     <Frame Style="{StaticResource frame-listItem}">
                                                         <StackLayout Orientation="Horizontal">
                                                             <Button Text="X" Style="{StaticResource button-delete}"/>
+                                                            <Label Text="Floor " Style="{StaticResource label-medium}"/>
                                                             <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
                                                         </StackLayout>
                                                     </Frame>
