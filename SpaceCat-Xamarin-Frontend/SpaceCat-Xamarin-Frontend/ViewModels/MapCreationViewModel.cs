@@ -74,7 +74,7 @@ namespace SpaceCat_Xamarin_Frontend
             AddFurnitureCommand = new Command(ExecuteAddFurniture);
             ChooseFurnitureCommand = new Command(ExecuteChooseFurniture);
 
-            //RunUnitTesting();   // RUN UNIT TESTS (uncomment to run, results in debug output)
+            RunUnitTesting();   // RUN UNIT TESTS (uncomment to run, results in debug output)
         }
 
         public void LoadFloor(Floor map)
@@ -383,7 +383,8 @@ namespace SpaceCat_Xamarin_Frontend
 
 
 
-        // TESTING FUNCTIONS
+        // TEST METHOD FUNCTIONS
+
         /// <summary>
         ///     Runs all method tests when called. Any failures are printed to debug output.
         /// </summary>
@@ -392,6 +393,7 @@ namespace SpaceCat_Xamarin_Frontend
             // Method to call all unit tests
 
             Test_Contains();
+            Test_ParsePoints();
         }
 
         /// <summary>
@@ -459,6 +461,39 @@ namespace SpaceCat_Xamarin_Frontend
                     System.Diagnostics.Debug.WriteLine("Test_Contains: Test[" + ptList.IndexOf(test) + "] Failed!");
             }
             System.Diagnostics.Debug.WriteLine("Test_Contains: Complete");
+        }
+
+        /// <summary>
+        ///     Tests the ParsePoints method.
+        /// </summary>
+        /// <remarks>
+        ///     To add tests: <br/>
+        ///     Add a PointCollection to ptCollections, and an array of 4 doubles that is expected from parsing
+        ///     the added points.
+        /// </remarks>
+        private void Test_ParsePoints()
+        {
+            PointCollection[] ptCollections =
+                {
+                    new PointCollection { new Point(0,0), new Point(10,0), new Point(10,10), new Point(0,10) },
+                    new PointCollection { new Point(0,10), new Point(0,0), new Point(10,0), new Point(10,10) },
+                    new PointCollection { new Point(5,20), new Point(30,20), new Point(30,40), new Point(5,40) },
+                    new PointCollection { new Point(30,20), new Point(5,40), new Point(5,20), new Point(30,40) },
+                };
+            double[][] expectedResults =
+                {
+                    new double[] { 0, 0, 10, 10 },
+                    new double[] { 0, 0, 10, 10 },
+                    new double[] { 5, 20, 30, 40 },
+                    new double[] { 5, 20, 30, 40 },
+                };
+
+            for (int i = 0; i < ptCollections.Length; i++)
+            {
+                if (ParsePoints(ptCollections[i]) == expectedResults[i])
+                    System.Diagnostics.Debug.WriteLine("Test_ParsePoints: Test[" + i + "] Failed!");
+            }
+            System.Diagnostics.Debug.WriteLine("Test_ParsePoints: Complete");
         }
 
     }
