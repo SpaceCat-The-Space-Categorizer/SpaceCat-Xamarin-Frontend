@@ -11,10 +11,14 @@ namespace SpaceCat_Xamarin_Frontend
 {
     class FloorSelectionEditViewModel
     {
-        public Building ThisBuilding;
-
+        private Building _thisBuilding;
         private ObservableCollection<Floor> _floors;
         private Floor _selected;
+        public Building ThisBuilding
+        {
+            get { return _thisBuilding; }
+            set { _thisBuilding = value; OnPropertyChanged(); }
+        }
         public ObservableCollection<Floor> Floors
         {
             get { return _floors; }
