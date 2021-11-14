@@ -28,7 +28,8 @@ namespace SpaceCat_Xamarin_Frontend
         private async void Tapped_EditFloor(object sender, EventArgs e)
         {
             Floor editFloor = ((FloorSelectionEditViewModel)BindingContext).SelectedFloor;
-            await Navigation.PushModalAsync(new MapCreationPage(editFloor));
+            if (editFloor != null)
+                await Navigation.PushModalAsync(new MapCreationPage(editFloor));
         }
 
         private void Tapped_DeleteFloor(object sender, EventArgs e)

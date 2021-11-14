@@ -33,6 +33,7 @@
             <Style x:Key="entry-main" TargetType="Entry">
                 <Setter Property="BackgroundColor" Value="LightGray"/>
                 <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="VerticalTextAlignment" Value="Start"/>
             </Style>
 
             <!-- EDIT LATER -->
