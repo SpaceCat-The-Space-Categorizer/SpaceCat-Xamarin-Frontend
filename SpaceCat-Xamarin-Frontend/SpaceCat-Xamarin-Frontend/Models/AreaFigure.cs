@@ -71,7 +71,10 @@ namespace SpaceCat_Xamarin_Frontend
             Area = area;
             //ensure Rectangle's start and end points aren't the same
             if (startPoint.X == endPoint.X || startPoint.Y == endPoint.Y)
-                Rect = new SpaceCat.Rectangle(startPoint.X, startPoint.Y, endPoint.X + 1, endPoint.Y + 1);
+            {
+                endPoint = endPoint.Offset(1,1);
+                Rect = new SpaceCat.Rectangle(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y);
+            }
             else
                 Rect = new SpaceCat.Rectangle(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y);
             Start = startPoint;

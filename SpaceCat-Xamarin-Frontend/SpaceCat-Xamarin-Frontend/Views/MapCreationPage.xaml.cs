@@ -19,10 +19,12 @@ namespace SpaceCat_Xamarin_Frontend
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapCreationPage : ContentPage
     {
-        public MapCreationPage(Floor thisFloor)
+        private bool NewFloor;
+        public MapCreationPage(Floor thisFloor, bool newFloor)
         {
             InitializeComponent();
             ((MapCreationViewModel)BindingContext).LoadFloor(thisFloor);
+            NewFloor = newFloor;
         }
 
         private void TappedMap(object sender, TouchActionEventArgs args)
@@ -34,7 +36,7 @@ namespace SpaceCat_Xamarin_Frontend
         public async void ExitPage(object sender, EventArgs e)
         {
             Floor updatedFloor = ((MapCreationViewModel)BindingContext).UpdateFloor();
-            MessagingCenter.Send(this, "UpdateFloor", updatedFloor);
+            MessagingCenter.Send(this, "UpdateFloor", (updatedFloor, NewFloor));
             await Navigation.PopModalAsync();
         }
     }

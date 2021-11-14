@@ -22,14 +22,14 @@ namespace SpaceCat_Xamarin_Frontend
         private async void Tapped_NewFloor(object sender, EventArgs e)
         {
             Floor newFloor = ((FloorSelectionEditViewModel)BindingContext).ExecuteNewFloor();
-            await Navigation.PushModalAsync(new MapCreationPage(newFloor));
+            await Navigation.PushModalAsync(new MapCreationPage(newFloor, true));
         }
 
         private async void Tapped_EditFloor(object sender, EventArgs e)
         {
             Floor editFloor = ((FloorSelectionEditViewModel)BindingContext).SelectedFloor;
             if (editFloor != null)
-                await Navigation.PushModalAsync(new MapCreationPage(editFloor));
+                await Navigation.PushModalAsync(new MapCreationPage(editFloor, false));
         }
 
         private void Tapped_DeleteFloor(object sender, EventArgs e)

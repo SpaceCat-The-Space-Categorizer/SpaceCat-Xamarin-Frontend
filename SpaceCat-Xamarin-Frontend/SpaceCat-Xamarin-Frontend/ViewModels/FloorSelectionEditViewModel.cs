@@ -30,26 +30,22 @@ namespace SpaceCat_Xamarin_Frontend
             set { _selected = value; OnPropertyChanged(); }
         }
 
-        private bool NewFloorAdded;
-
         public FloorSelectionEditViewModel()
         {
             Floors = new ObservableCollection<Floor>();
-            NewFloorAdded = false;
 
             // receive updated floor from floor editing page
-            MessagingCenter.Subscribe<MapCreationPage, Floor>(this, "UpdateFloor",
+            MessagingCenter.Subscribe<MapCreationPage, (Floor, bool)>(this, "UpdateFloor",
                 (page, floor) =>
                 {
-                    Floors.Add(floor);
-                    if (!NewFloorAdded)
+                    Floors.Add(floor.Item1);
+                    if (!floor.Item2)     //if it's not a new floor
                     {
                         int ogIndex = Floors.IndexOf(SelectedFloor);
                         Floors.RemoveAt(ogIndex);
                         Floors.Move(Floors.Count - 1, ogIndex);
                     }
                     SelectedFloor = Floors[0];
-                    NewFloorAdded = false;
                 });
         }
 
@@ -67,7 +63,6 @@ namespace SpaceCat_Xamarin_Frontend
         public Floor ExecuteNewFloor()
         {
             Floor newFloor = new Floor(Floors.Count + 1);
-            NewFloorAdded = true;
             return newFloor;
         }
 
