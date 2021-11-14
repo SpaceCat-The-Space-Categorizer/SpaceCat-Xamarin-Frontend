@@ -16,7 +16,7 @@ namespace SpaceCat_Xamarin_Frontend
         public FloorSelectionEditPage(Building thisBuilding)
         {
             InitializeComponent();
-            ((FloorSelectionEditViewModel)BindingContext).ThisBuilding = thisBuilding;
+            ((FloorSelectionEditViewModel)BindingContext).LoadBuilding(thisBuilding);
         }
 
         private async void Tapped_NewFloor(object sender, EventArgs e)
@@ -31,9 +31,15 @@ namespace SpaceCat_Xamarin_Frontend
             await Navigation.PushModalAsync(new MapCreationPage(editFloor));
         }
 
+        private void Tapped_DeleteFloor(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            Floor floor = ((FloorSelectionEditViewModel)BindingContext).Floors.Where(f => f.FloorNumber == (int)btn.CommandParameter).FirstOrDefault();
+            ((FloorSelectionEditViewModel)BindingContext).Floors.Remove(floor);
+        }
+
         private async void Tapped_SaveExit(object sender, EventArgs e)
         {
-            // TODO: add updated floors list to building floors
             ((FloorSelectionEditViewModel)BindingContext).SaveExit();
             await Navigation.PopModalAsync();
         }

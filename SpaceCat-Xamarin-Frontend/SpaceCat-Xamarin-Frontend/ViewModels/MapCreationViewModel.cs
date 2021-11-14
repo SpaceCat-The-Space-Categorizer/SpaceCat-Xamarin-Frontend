@@ -102,7 +102,7 @@ namespace SpaceCat_Xamarin_Frontend
             }
 
             // create area figure and add to figures
-            AreaFigure newFigure = new AreaFigure(thisArea, origin, origin.Offset(1,1), 1.0);
+            AreaFigure newFigure = new AreaFigure(thisArea, origin, origin, 1.0);
             FigInProgress = true;
             Figures.Add(newFigure);
         }

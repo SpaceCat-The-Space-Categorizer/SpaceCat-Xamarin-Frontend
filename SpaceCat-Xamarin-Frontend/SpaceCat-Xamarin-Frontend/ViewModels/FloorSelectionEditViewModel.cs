@@ -15,58 +15,63 @@ namespace SpaceCat_Xamarin_Frontend
 
         private ObservableCollection<Floor> _floors;
         private Floor _selected;
-
         public ObservableCollection<Floor> Floors
         {
             get { return _floors; }
             set { _floors = value; OnPropertyChanged(); }
         }
-
         public Floor SelectedFloor
         {
             get { return _selected; }
             set { _selected = value; OnPropertyChanged(); }
         }
 
-        //public Command NewFloorCommand { get; set; }
+        private bool NewFloorAdded;
 
         public FloorSelectionEditViewModel()
         {
             Floors = new ObservableCollection<Floor>();
-            
-            if (Floors.Count > 0)
-                SelectedFloor = Floors[0];
+            NewFloorAdded = false;
 
+            // receive updated floor from floor editing page
             MessagingCenter.Subscribe<MapCreationPage, Floor>(this, "UpdateFloor",
                 (page, floor) =>
                 {
-                    if (ThisBuilding.Floors.Count > 0)
+                    Floors.Add(floor);
+                    if (!NewFloorAdded)
                     {
-                        for (int i = 0; i < ThisBuilding.Floors.Count; i++)
-                        {
-                            if (ThisBuilding.Floors[i] == SelectedFloor)
-                            {
-                                ThisBuilding.Floors[i] = floor;
-                                break;
-                            }
-                        }
+                        int ogIndex = Floors.IndexOf(SelectedFloor);
+                        Floors.RemoveAt(ogIndex);
+                        Floors.Move(Floors.Count - 1, ogIndex);
                     }
-                    else
-                        ThisBuilding.AddFloor(floor);
+                    SelectedFloor = Floors[0];
+                    NewFloorAdded = false;
                 });
+        }
 
-            //NewFloorCommand = new Command(ExecuteNewFloor);
+        public void LoadBuilding(Building thisBuilding)
+        {
+            ThisBuilding = thisBuilding;
+            if (ThisBuilding.Floors.Count > 0)
+            {
+                foreach (Floor f in ThisBuilding.Floors)
+                    Floors.Add(f);
+                SelectedFloor = Floors[0];
+            }
         }
 
         public Floor ExecuteNewFloor()
         {
-            Floor newFloor = new Floor(Floors.Count);
-            Floors.Add(newFloor);
+            Floor newFloor = new Floor(Floors.Count + 1);
+            NewFloorAdded = true;
             return newFloor;
         }
 
         public void SaveExit()
         {
+            ThisBuilding.Floors.Clear();
+            foreach (Floor f in Floors)
+                ThisBuilding.AddFloor(f);
             MessagingCenter.Send(this, "UpdateBuilding", ThisBuilding);
         }
 
