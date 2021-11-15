@@ -12,7 +12,6 @@ namespace SpaceCat_Xamarin_Frontend
     public class AreaFigure : INotifyPropertyChanged
     {
         private Area _area;    // area figure belongs to
-        private SpaceCat.Rectangle _rect;
         private PointCollection _points;
         private Point _start;
         private Point _end;
@@ -24,11 +23,6 @@ namespace SpaceCat_Xamarin_Frontend
         {
             get { return _area; }
             set { _area = value; OnPropertyChanged(); }
-        }
-        public SpaceCat.Rectangle Rect
-        {
-            get { return _rect; }
-            set { _rect = value; OnPropertyChanged(); }
         }
         public PointCollection FigPoints
         {
@@ -69,14 +63,6 @@ namespace SpaceCat_Xamarin_Frontend
         public AreaFigure(Area area, Point startPoint, Point endPoint, double opacity)
         {
             Area = area;
-            //ensure Rectangle's start and end points aren't the same
-            if (startPoint.X == endPoint.X || startPoint.Y == endPoint.Y)
-            {
-                endPoint = endPoint.Offset(1,1);
-                Rect = new SpaceCat.Rectangle(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y);
-            }
-            else
-                Rect = new SpaceCat.Rectangle(startPoint.X, startPoint.Y, endPoint.X, endPoint.Y);
             Start = startPoint;
             End = endPoint;
             Opacity = opacity;
@@ -88,7 +74,6 @@ namespace SpaceCat_Xamarin_Frontend
         public AreaFigure(Area area, SpaceCat.Rectangle rect, double opacity)
         {
             Area = area;
-            Rect = rect;
             Start = new Point(rect.TopLeft.Item1, rect.TopLeft.Item2);
             End = new Point(rect.BottomRight.Item1, rect.BottomRight.Item2);
             Opacity = opacity;
@@ -117,14 +102,23 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="newEndPoint">New desired end point.</param>
         public void ChangeEndPoint(Point newEndPoint)
         {
-            if (Start.X == newEndPoint.X)
-                newEndPoint.X += 0.1;
-            if (Start.Y == newEndPoint.Y)
-                newEndPoint.Y += 0.1;
-            Rect = new SpaceCat.Rectangle(Start.X, Start.Y, newEndPoint.X, newEndPoint.Y);
-
             End = newEndPoint;
             AssignPoints();
+        }
+
+        /// <summary>
+        ///     Tries to create a rectangle from the AreaFigure's Start and End points.
+        /// </summary>
+        /// <returns>The resulting rectangle.</returns>
+        public SpaceCat.Rectangle GetRectangle()
+        {
+            SpaceCat.Rectangle result = null;
+            try { 
+                result = new SpaceCat.Rectangle(Start.X, Start.Y, End.X, End.Y); }
+            catch (Exception e) { 
+                System.Diagnostics.Debug.WriteLine("Exception in AreaFigure at GetRectangle: " + e); }
+
+            return result;
         }
 
 

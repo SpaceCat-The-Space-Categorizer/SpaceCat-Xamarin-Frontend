@@ -146,7 +146,7 @@ namespace SpaceCat_Xamarin_Frontend
                                 break;
                             }
                         }
-                        NewAreaList[affectedArea].AddAreaRectangle(Figures[Figures.Count - 1].Rect);
+                        NewAreaList[affectedArea].AddAreaRectangle(Figures[Figures.Count - 1].GetRectangle());
 
                         FigInProgress = false;
                     }
@@ -256,7 +256,7 @@ namespace SpaceCat_Xamarin_Frontend
                 if (NewAreaList[affectedArea].DefiningRectangles.Count <= 1)
                     NewAreaList.RemoveAt(affectedArea);
                 else
-                    NewAreaList[affectedArea].RemoveRectangle(Figures[SelectedIndex].Rect);
+                    NewAreaList[affectedArea].RemoveRectangle(Figures[SelectedIndex].GetRectangle());
 
                 Figures.RemoveAt(SelectedIndex);
                 SelectedIndex = -1;
