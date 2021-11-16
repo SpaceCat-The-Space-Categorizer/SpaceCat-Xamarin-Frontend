@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpaceCat;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -70,6 +71,12 @@ namespace SpaceCat_Xamarin_Frontend
                         Buildings.Move(oldI, newI);
                         OnPropertyChanged("Buildings");
                     }
+                });
+
+            MessagingCenter.Subscribe<FloorSelectionEditViewModel, Building>(this, "UpdateBuilding",
+                (page, building) =>
+                {
+                    //Add/update building
                 });
         }
 
