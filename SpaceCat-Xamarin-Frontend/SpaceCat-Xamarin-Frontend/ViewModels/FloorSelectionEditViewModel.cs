@@ -60,12 +60,6 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
-        public Floor ExecuteNewFloor()
-        {
-            Floor newFloor = new Floor(Floors.Count + 1);
-            return newFloor;
-        }
-
         public void SaveExit()
         {
             ThisBuilding.Floors.Clear();
