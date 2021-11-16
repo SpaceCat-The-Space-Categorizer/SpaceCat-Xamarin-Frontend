@@ -79,7 +79,7 @@
 
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
-                                <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding Area.FillColor}" Stroke="{Binding Area.StrokeColor}" StrokeThickness="5"/>
+                                <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>
 

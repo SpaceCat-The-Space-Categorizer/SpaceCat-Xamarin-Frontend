@@ -23,9 +23,6 @@
             <Style x:Key="frame-buildingList-exterior" TargetType="Frame" BasedOn="{StaticResource frame-exterior}">
                 <Setter Property="Margin" Value="15"/>
             </Style>
-            <Style x:Key="frame-buildingList-interior" TargetType="Frame" BasedOn="{StaticResource frame-interior}">
-                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
-            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -51,7 +48,7 @@
                         <!-- BUILDING LIST FRAME -->
                         <Frame> <!-- took out style -->
                             <StackLayout>
-                                <Frame Style="{StaticResource frame-buildingList-interior}">
+                                <Frame Style="{StaticResource frame-interior}">
                                     <StackLayout>
                                         <Label Text="Current Building" Style="{StaticResource label-subtitle}"/>
                                         <ListView x:Name="lvBuildings" ItemsSource="{Binding Buildings}" SelectedItem="{Binding SelectedBuilding}">
@@ -60,8 +57,8 @@
                                                     <ViewCell>
                                                         <Frame Style="{StaticResource frame-listItem}">
                                                             <StackLayout Orientation="Horizontal">
-                                                                <Button Text="X" Clicked="Clicked_Delete" CommandParameter="{Binding BuildingID}" Style="{StaticResource button-deleteBuilding}"/>
-                                                                <Button Text="EDIT" Clicked="Clicked_Edit" CommandParameter="{Binding BuildingID}" Style="{StaticResource button-editBuilding}"/>
+                                                                <Button Text="X" Clicked="Clicked_Delete" CommandParameter="{Binding BuildingID}" Style="{StaticResource button-delete}"/>
+                                                                <Button Text="EDIT" Clicked="Clicked_Edit" CommandParameter="{Binding BuildingID}" Style="{StaticResource button-edit}"/>
                                                                 <Label Text="{Binding BuildingName}" Style="{StaticResource label-buildingList-main}"/>
                                                                 <Label Text="{Binding BuildingDate}" Style="{StaticResource label-buildingList-last}"/>
                                                             </StackLayout>
@@ -84,7 +81,7 @@
                         <Frame> <!-- took out style -->
                             <StackLayout>
                                 <Label Text="Building Info" Style="{StaticResource label-subtitle}"/>
-                                <Frame Style="{StaticResource frame-buildingList-interior}">
+                                <Frame Style="{StaticResource frame-interior}">
                                     <StackLayout>
                                         <Label Text="{Binding SelectedBuilding.BuildingName}" Style="{StaticResource label-medium}"/>
                                         <Label Text="{Binding SelectedBuilding.BuildingDate}" Style="{StaticResource label-small}"/>
