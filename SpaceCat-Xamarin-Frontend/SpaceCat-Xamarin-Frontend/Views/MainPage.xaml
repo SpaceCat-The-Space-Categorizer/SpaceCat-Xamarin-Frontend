@@ -57,10 +57,10 @@
                                                     <ViewCell>
                                                         <Frame Style="{StaticResource frame-listItem}">
                                                             <StackLayout Orientation="Horizontal">
-                                                                <Button Text="X" Clicked="Clicked_Delete" CommandParameter="{Binding BuildingID}" Style="{StaticResource button-delete}"/>
-                                                                <Button Text="EDIT" Clicked="Clicked_Edit" CommandParameter="{Binding BuildingID}" Style="{StaticResource button-edit}"/>
-                                                                <Label Text="{Binding BuildingName}" Style="{StaticResource label-buildingList-main}"/>
-                                                                <Label Text="{Binding BuildingDate}" Style="{StaticResource label-buildingList-last}"/>
+                                                                <Button Text="X" Clicked="Clicked_Delete" CommandParameter="{Binding Name}" Style="{StaticResource button-delete}"/>
+                                                                <Button Text="EDIT" Clicked="Clicked_Edit" CommandParameter="{Binding Name}" Style="{StaticResource button-edit}"/>
+                                                                <Label Text="{Binding Name}" Style="{StaticResource label-buildingList-main}"/>
+                                                                <Label Text="{Binding Date}" Style="{StaticResource label-buildingList-last}"/>
                                                             </StackLayout>
                                                         </Frame>
                                                     </ViewCell>
@@ -83,10 +83,10 @@
                                 <Label Text="Building Info" Style="{StaticResource label-subtitle}"/>
                                 <Frame Style="{StaticResource frame-interior}">
                                     <StackLayout>
-                                        <Label Text="{Binding SelectedBuilding.BuildingName}" Style="{StaticResource label-medium}"/>
-                                        <Label Text="{Binding SelectedBuilding.BuildingDate}" Style="{StaticResource label-small}"/>
-                                        <Label Text="{Binding SelectedBuilding.BuildingFloorplan}" Style="{StaticResource image-floorPlan}"/>
-                                        <Label Text="{Binding SelectedBuilding.BuildingStatus}" Style="{StaticResource label-buildingInfo-last}"/>
+                                        <Label Text="{Binding SelectedBuilding.Name}" Style="{StaticResource label-medium}"/>
+                                        <Label Text="{Binding SelectedBuilding.Date}" Style="{StaticResource label-small}"/>
+                                        <!--<Label Text="{Binding SelectedBuilding.BuildingFloorplan}" Style="{StaticResource image-floorPlan}"/>
+                                        <Label Text="{Binding SelectedBuilding.BuildingStatus}" Style="{StaticResource label-buildingInfo-last}"/>-->
                                     </StackLayout>
                                 </Frame>
                                 <Button Text="Start a Building Survey" Command="{Binding GoToSurveyMode}" Style="{StaticResource button-big}"/>

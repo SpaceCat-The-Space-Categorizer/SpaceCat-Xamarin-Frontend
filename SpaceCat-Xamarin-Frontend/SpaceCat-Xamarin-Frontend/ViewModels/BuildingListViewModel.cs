@@ -23,14 +23,14 @@ namespace SpaceCat_Xamarin_Frontend
         // "SelectedBuilding" is used in the landing page XAML to update the right-hand side building info
         //          - will likely be used when moving between pages as well
 
-        private ObservableCollection<Test_Building> _buildings;
-        private Test_Building _selected;
-        public ObservableCollection<Test_Building> Buildings
+        private ObservableCollection<BuildingListItem> _buildings;
+        private BuildingListItem _selected;
+        public ObservableCollection<BuildingListItem> Buildings
         {
             get { return _buildings; }
             set { _buildings = value; OnPropertyChanged(); }
         }
-        public Test_Building SelectedBuilding
+        public BuildingListItem SelectedBuilding
         {
             get { return _selected; }
             set { _selected = value; OnPropertyChanged(); }
@@ -38,45 +38,36 @@ namespace SpaceCat_Xamarin_Frontend
 
         public BuildingListViewModel()
         {
-            Buildings = new ObservableCollection<Test_Building>();
+            Buildings = new ObservableCollection<BuildingListItem>();
 
-            // TEMPORARY - until Building class implemented, placeholder data to test UI for the building list view
-            Buildings.Add(new Test_Building(1, "Building 1", "Fall 2022", "*layout*", "Ready for Survey"));
-            Buildings.Add(new Test_Building(2, "Building 2", "Spring 2022", "*layout*", "Ready for Survey"));
-            Buildings.Add(new Test_Building(3, "Building 3", "Spring 2021", "*layout*", "Outdated"));
-            Buildings.Add(new Test_Building(4, "Building 4", "Fall 2021", "*layout*", "Outdated"));
+            // TEMPORARY - placeholder data to test UI for the building list view
+            Buildings.Add(new BuildingListItem(new Building("Building 1")));
+            Buildings.Add(new BuildingListItem(new Building("Building 2")));
+            Buildings.Add(new BuildingListItem(new Building("Building 3")));
+            Buildings.Add(new BuildingListItem(new Building("Building 4")));
 
             /* Messaging Center subscribes to recieve messages sent from other pages -
                in this case it's recieving the new or editted building object from the Test-MapCreatePage
-               so it can be added to the building list on the landing page
-            */
-            MessagingCenter.Subscribe<Test_MapCreatePage, Test_Building>(this, "CreateBuilding", 
+               so it can be added to the building list on the landing page */
+
+            MessagingCenter.Subscribe<FloorSelectionEditViewModel, (Building, bool)>(this, "UpdateBuilding",
                 (page, building) =>
                 {
-                    if (building.BuildingID == 0)   //if it's a newly added building
+                    //Add building
+                    if (building.Item2)
                     {
-                        building.BuildingID = Buildings.Count + 1;
-                        Buildings.Add(building);
-                    }
-                    else                            //if it's a building that has been editted
-                    {
-                        // the editted building's ID is matched to its uneditted version still in the Buildings collection,
-                        // the old version's index is noted and that building is removed from the list,
-                        // the editted version is added to the end of the list, then moved to the previously noted index
-                        Test_Building oldBuilding = Buildings.Where(build => build.BuildingID == building.BuildingID).FirstOrDefault();
-                        int newI = Buildings.IndexOf(oldBuilding);
-                        Buildings.Remove(oldBuilding);
-                        Buildings.Add(building);
-                        int oldI = Buildings.IndexOf(building);
-                        Buildings.Move(oldI, newI);
+                        Buildings.Add(new BuildingListItem(building.Item1));
+                        Buildings.Move(Buildings.Count - 1, 0);
                         OnPropertyChanged("Buildings");
                     }
-                });
-
-            MessagingCenter.Subscribe<FloorSelectionEditViewModel, Building>(this, "UpdateBuilding",
-                (page, building) =>
-                {
-                    //Add/update building
+                    else //update building
+                    {
+                        BuildingListItem oldBuilding = Buildings.FirstOrDefault(build => build.Build.Name == building.Item1.Name);
+                        Buildings.Remove(oldBuilding);
+                        Buildings.Add(new BuildingListItem(building.Item1));
+                        Buildings.Move(Buildings.Count - 1, 0);
+                        OnPropertyChanged("Buildings");
+                    }
                 });
         }
 
