@@ -21,12 +21,22 @@ namespace SpaceCat_Xamarin_Frontend
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Opens a FloorSelectionEditPage with a new building.
+        /// </summary>
+        /// <param name="sender">The Create New Building button object.</param>
+        /// <param name="e">The event associated with the button.</param>
         private void Clicked_Create(object sender, EventArgs e)
         {
             // opens a MapCreationPage to create a new building
             Navigation.PushModalAsync(new FloorSelectionEditPage(new Building("A Fackin Building"), true));
         }
 
+        /// <summary>
+        /// Calls the file picker method FilePickBuilding.
+        /// </summary>
+        /// <param name="sender">The Import Building button object.</param>
+        /// <param name="e">The event associated with the button.</param>
         private void Clicked_Import(object sender, EventArgs e)
         {
             // calls the file picker method for building maps
@@ -34,6 +44,11 @@ namespace SpaceCat_Xamarin_Frontend
             // TODO: check if imported file is already on list (and potentially select it if it is)
         }
 
+        /// <summary>
+        /// Gets the building associated with the tapped edit button and opens a FloorSelection page to edit that building.
+        /// </summary>
+        /// <param name="sender">The edit button object.</param>
+        /// <param name="e">The event associated with the button.</param>
         private void Clicked_Edit(object sender, EventArgs e)
         {
             // gets the building associated with the edit button selected and opens a Test_MapCreatePage to edit that building
@@ -43,10 +58,13 @@ namespace SpaceCat_Xamarin_Frontend
             Navigation.PushModalAsync(new FloorSelectionEditPage(building.Build, false));
         }
 
+        /// <summary>
+        /// Gets the building associated with the tapped delete button and removes that building from the list view.
+        /// </summary>
+        /// <param name="sender">The delete button object.</param>
+        /// <param name="e">The event associated with the button.</param>
         private void Clicked_Delete(object sender, EventArgs e)
         {
-            // gets the building associated with the delete button selected and removes that building from the list view
-
             Button btn = (Button)sender;
             BuildingListItem building = ((BuildingListViewModel)BindingContext).Buildings.Where(build => build.Build.Name == (string)btn.CommandParameter).FirstOrDefault();
             ((BuildingListViewModel)BindingContext).Buildings.Remove(building);
@@ -57,6 +75,9 @@ namespace SpaceCat_Xamarin_Frontend
             
         }
 
+        /// <summary>
+        /// Opens a file picker allowing the user to select a building from a list of accepted file types.
+        /// </summary>
         private async void FilePickBuilding()
         {
             // specifies file types to allow user to choose from and opens the file

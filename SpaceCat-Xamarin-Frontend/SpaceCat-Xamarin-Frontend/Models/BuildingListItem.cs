@@ -7,6 +7,9 @@ using System.Text;
 
 namespace SpaceCat_Xamarin_Frontend
 {
+    /// <summary>
+    ///     ListView data container for the building list on the landing page.
+    /// </summary>
     public class BuildingListItem
     {
         private Building _build;
@@ -28,11 +31,15 @@ namespace SpaceCat_Xamarin_Frontend
             set { _date = value; OnPropertyChanged(); }
         }
 
-        public BuildingListItem (Building b)
+        /// <summary>
+        ///     Initalizes a new instance of the BuildingListItem class.
+        /// </summary>
+        /// <param name="building">The building to base this BuildingListItem object on.</param>
+        public BuildingListItem (Building building)
         {
-            Build = b;
-            Name = b.Name;
-            Date = b.DateCreated;
+            Build = building;
+            Name = building.Name;
+            Date = building.DateCreated;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -51,7 +51,7 @@
                                 <Frame Style="{StaticResource frame-interior}">
                                     <StackLayout>
                                         <Label Text="Current Building" Style="{StaticResource label-subtitle}"/>
-                                        <ListView x:Name="lvBuildings" ItemsSource="{Binding Buildings}" SelectedItem="{Binding SelectedBuilding}">
+                                        <ListView x:Name="lvBuildings" ItemsSource="{Binding Buildings}" SelectedItem="{Binding SelectedBuilding, Mode=TwoWay}">
                                             <ListView.ItemTemplate>
                                                 <DataTemplate>
                                                     <ViewCell>
