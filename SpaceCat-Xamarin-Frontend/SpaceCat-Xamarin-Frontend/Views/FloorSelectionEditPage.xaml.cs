@@ -26,7 +26,7 @@ namespace SpaceCat_Xamarin_Frontend
             bool cancel = true;
             bool accept = false;
             
-            while (!accept)
+            while (!accept && name != null)
             {
                 string result = await DisplayPromptAsync("New Floor", "On which floor is this floorplan located? : ", "OK", "Cancel", "", 5, Keyboard.Numeric, "");
                 try
@@ -44,7 +44,7 @@ namespace SpaceCat_Xamarin_Frontend
                 }
             }
             
-            if (name != null && !cancel)
+            if (!cancel)
                 await Navigation.PushModalAsync(new MapCreationPage(new Floor(number), true));
         }
 
