@@ -26,10 +26,23 @@ namespace SpaceCat_Xamarin_Frontend
         /// </summary>
         /// <param name="sender">The Create New Building button object.</param>
         /// <param name="e">The event associated with the button.</param>
-        private void Clicked_Create(object sender, EventArgs e)
+        private async void Clicked_Create(object sender, EventArgs e)
         {
             // opens a MapCreationPage to create a new building
-            Navigation.PushModalAsync(new FloorSelectionEditPage(new Building("A Fackin Building"), true));
+            string name = null;
+            bool accept = false;
+            while (!accept)
+            {
+                name = await DisplayPromptAsync("New Building", "What is the name of this building?", "OK", "Cancel", "", 50, Keyboard.Default, "");
+                if (name != "" && name != null)
+                    accept = true;
+                else if (name == null)
+                    break;
+                else
+                    await DisplayAlert("New Building", "Invalid name, try again!", "OK");
+            }
+            if (accept)
+                await Navigation.PushModalAsync(new FloorSelectionEditPage(new Building(name), true));
         }
 
         /// <summary>
