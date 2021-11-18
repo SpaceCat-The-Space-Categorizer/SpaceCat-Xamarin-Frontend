@@ -18,19 +18,22 @@ namespace SpaceCat_Xamarin_Frontend
 {
     public class BuildingListViewModel : INotifyPropertyChanged
     {
-        // "Buildings" contains list of buildings displayed in list view
-        //          - Observable Collections notify the UI when the list has been altered or appended
-        // "SelectedBuilding" is used in the landing page XAML to update the right-hand side building info
-        //          - will likely be used when moving between pages as well
+        private ObservableCollection<BuildingListItem> _buildings;
+        private BuildingListItem _selected;
 
-        private ObservableCollection<Test_Building> _buildings;
-        private Test_Building _selected;
-        public ObservableCollection<Test_Building> Buildings
+        /// <summary>
+        /// Contains list of BuildingListItems representing buildings displayed in the list view on the landing page.
+        /// </summary>
+        /// <remarks>Observable Collections notify the UI when the list has been altered or appended.</remarks>
+        public ObservableCollection<BuildingListItem> Buildings
         {
             get { return _buildings; }
             set { _buildings = value; OnPropertyChanged(); }
         }
-        public Test_Building SelectedBuilding
+        /// <summary>
+        /// Used in the landing page XAML to update the right-hand side containing the selected building info.
+        /// </summary>
+        public BuildingListItem SelectedBuilding
         {
             get { return _selected; }
             set { _selected = value; OnPropertyChanged(); }
@@ -38,51 +41,54 @@ namespace SpaceCat_Xamarin_Frontend
 
         public BuildingListViewModel()
         {
-            Buildings = new ObservableCollection<Test_Building>();
-
-            // TEMPORARY - until Building class implemented, placeholder data to test UI for the building list view
-            Buildings.Add(new Test_Building(1, "Building 1", "Fall 2022", "*layout*", "Ready for Survey"));
-            Buildings.Add(new Test_Building(2, "Building 2", "Spring 2022", "*layout*", "Ready for Survey"));
-            Buildings.Add(new Test_Building(3, "Building 3", "Spring 2021", "*layout*", "Outdated"));
-            Buildings.Add(new Test_Building(4, "Building 4", "Fall 2021", "*layout*", "Outdated"));
+            Buildings = new ObservableCollection<BuildingListItem>();
+            LoadBuildings();
 
             /* Messaging Center subscribes to recieve messages sent from other pages -
-               in this case it's recieving the new or editted building object from the Test-MapCreatePage
-               so it can be added to the building list on the landing page
-            */
-            MessagingCenter.Subscribe<Test_MapCreatePage, Test_Building>(this, "CreateBuilding", 
+               in this case it's recieving the new or editted building object from the FloorSelectionEditPage
+               so it can be added to the building list on the landing page */
+
+            MessagingCenter.Subscribe<FloorSelectionEditViewModel, (Building, bool)>(this, "UpdateBuilding",
                 (page, building) =>
                 {
-                    if (building.BuildingID == 0)   //if it's a newly added building
+                    //Add building
+                    if (building.Item2)
                     {
-                        building.BuildingID = Buildings.Count + 1;
-                        Buildings.Add(building);
+                        Buildings.Add(new BuildingListItem(building.Item1));
+                        Buildings.Move(Buildings.Count - 1, 0);
+                        OnPropertyChanged("Buildings");
                     }
-                    else                            //if it's a building that has been editted
+                    else //update building
                     {
-                        // the editted building's ID is matched to its uneditted version still in the Buildings collection,
-                        // the old version's index is noted and that building is removed from the list,
-                        // the editted version is added to the end of the list, then moved to the previously noted index
-                        Test_Building oldBuilding = Buildings.Where(build => build.BuildingID == building.BuildingID).FirstOrDefault();
-                        int newI = Buildings.IndexOf(oldBuilding);
+                        BuildingListItem oldBuilding = Buildings.FirstOrDefault(build => build.Build.Name == building.Item1.Name);
                         Buildings.Remove(oldBuilding);
-                        Buildings.Add(building);
-                        int oldI = Buildings.IndexOf(building);
-                        Buildings.Move(oldI, newI);
+                        Buildings.Add(new BuildingListItem(building.Item1));
+                        Buildings.Move(Buildings.Count - 1, 0);
                         OnPropertyChanged("Buildings");
                     }
                 });
-
-            MessagingCenter.Subscribe<FloorSelectionEditViewModel, Building>(this, "UpdateBuilding",
-                (page, building) =>
-                {
-                    //Add/update building
-                });
         }
 
+        /// <summary>
+        /// UPDATE LATER: Currently adds temporary placeholder data to Buildings to test UI
+        /// </summary>
+        public void LoadBuildings()
+        {
+            Buildings.Add(new BuildingListItem(new Building("Building 1")));
+            Buildings.Add(new BuildingListItem(new Building("Building 2")));
+            Buildings.Add(new BuildingListItem(new Building("Building 3")));
+            Buildings.Add(new BuildingListItem(new Building("Building 4")));
+
+            if (Buildings.Count > 0)
+                SelectedBuilding = Buildings[0];
+        }
+
+        /// <summary>
+        /// Attempts to open and read the provided file.
+        /// </summary>
+        /// <param name="file">The file chosed in the file picker.</param>
         public async void ImportBuilding(FileResult file)
         {
-            // attempts to open and read from provided file, currently prints results to debug output
             // TODO: parse building json file, make sure provided file contains expected data
             //          add to building list and default select it
 
@@ -105,8 +111,10 @@ namespace SpaceCat_Xamarin_Frontend
         }
 
 
-        // INotifyPropertyChanged interface is used to update the UI when variables are altered
         public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        ///     Indicates that the UI should be updated to reflect some kind of change to bound variables.
+        /// </summary>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

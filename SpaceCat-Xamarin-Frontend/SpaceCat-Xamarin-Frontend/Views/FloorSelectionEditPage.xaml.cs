@@ -13,9 +13,10 @@ namespace SpaceCat_Xamarin_Frontend
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FloorSelectionEditPage : ContentPage
     {
-        public FloorSelectionEditPage(Building thisBuilding)
+        public FloorSelectionEditPage(Building thisBuilding, bool newBuild)
         {
             InitializeComponent();
+            ((FloorSelectionEditViewModel)BindingContext).NewBuild = newBuild;
             ((FloorSelectionEditViewModel)BindingContext).LoadBuilding(thisBuilding);
         }
 
