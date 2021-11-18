@@ -89,7 +89,7 @@
                                         <Label Text="{Binding SelectedBuilding.BuildingStatus}" Style="{StaticResource label-buildingInfo-last}"/>
                                     </StackLayout>
                                 </Frame>
-                                <Button Text="Start a Building Survey" Command="{Binding GoToSurveyMode}" Style="{StaticResource button-big}"/>
+                                <Button Text="Start a Building Survey" Clicked="Clicked_Survey" Style="{StaticResource button-big}"/>
                                 <Button x:Name="buttonNote" Text="Data Analysis and Export" Clicked="Clicked_Analysis" Style="{StaticResource button-big}"/>
                             </StackLayout>
                         </Frame>

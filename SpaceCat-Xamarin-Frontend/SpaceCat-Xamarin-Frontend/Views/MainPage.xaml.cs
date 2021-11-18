@@ -52,6 +52,12 @@ namespace SpaceCat_Xamarin_Frontend
             ((BuildingListViewModel)BindingContext).Buildings.Remove(building);
         }
 
+        private void Clicked_Survey(object sender, EventArgs e)
+        {
+            Building building = new Building("I am surveying");
+            Navigation.PushModalAsync(new FloorSelectionViewPage(building));
+        }
+
         private void Clicked_Analysis(object sender, EventArgs e)
         {
             

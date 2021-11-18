@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
+             x:Class="SpaceCat_Xamarin_Frontend.FloorSelectionViewPage">
+
+    <ContentPage.BindingContext>
+        <local:FloorSelectionViewViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="frame-info-interior" TargetType="Frame" BasedOn="{StaticResource frame-interior}">
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+            </Style>
+            <Style x:Key="frame-floorlist-interior" TargetType="Frame" BasedOn="{StaticResource frame-interior}">
+                <Setter Property="WidthRequest" Value="400"/>
+            </Style>
+            <Style x:Key="button-floors" TargetType="Button" BasedOn="{StaticResource button-big}">
+                <Setter Property="WidthRequest" Value="150"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+
+            <!-- TITLE -->
+            <Frame Style="{StaticResource frame-title}">
+                <Label Text="SPACE CAT!" Style="{StaticResource label-title}"/>
+            </Frame>
+
+            <Frame Style="{StaticResource frame-main}">
+                <Frame Style="{StaticResource frame-exterior}">
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+
+                            <!-- LEFT HAND FRAME-->
+                            <Frame Style="{StaticResource frame-info-interior}">
+                                <!-- BUILDING DETAILS FRAME-->
+                                <Grid RowDefinitions="50, 50, *" ColumnDefinitions="200, *" RowSpacing="15">
+                                    <Label Grid.Row="0" Grid.Column="0" Text="BUILDING NAME" Style="{StaticResource label-medium}"/>
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding ThisBuilding.Name}" Style="{StaticResource label-medium}"/>
+                                    <Label Grid.Row="1" Grid.Column="0" Text="DATE CREATED" Style="{StaticResource label-medium}"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding ThisBuilding.DateCreated}" Style="{StaticResource label-medium}"/>
+                                    <Label Grid.Row="2" Grid.Column="0" Text="ADDITIONAL NOTES" Style="{StaticResource label-medium}"/>
+                                    <Label Grid.Row="2" Grid.Column="1" Text="None..." Style="{StaticResource label-medium}"/>
+                                </Grid>
+                            </Frame>
+
+
+                            <!-- RIGHT HAND FRAME -->
+                            <Frame Style="{StaticResource frame-floorlist-interior}">
+                                <StackLayout>
+                                    <Label Text="FLOORS" Style="{StaticResource label-large}"/>
+
+                                    <ListView  ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor, Mode=TwoWay}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <ViewCell>
+                                                    <Frame Style="{StaticResource frame-listItem}">
+                                                        <StackLayout Orientation="Horizontal">
+                                                            <Label Text="Floor " Style="{StaticResource label-medium}"/>
+                                                            <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
+                                                        </StackLayout>
+                                                    </Frame>
+                                                </ViewCell>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    
+                                    <StackLayout Orientation="Horizontal" >
+                                        <Button Text="Edit Floor" Clicked="Tapped_SurveyFloor" Style="{StaticResource button-floors}"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame>
+
+                        </StackLayout>
+                        <Button Text="Save &amp; Exit - Survey Complete" Clicked="Tapped_SaveExit" Style="{StaticResource button-big}"/>
+                    </StackLayout>
+                </Frame>
+            </Frame>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
