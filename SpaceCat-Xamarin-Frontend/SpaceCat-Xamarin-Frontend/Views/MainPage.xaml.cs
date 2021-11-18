@@ -21,12 +21,35 @@ namespace SpaceCat_Xamarin_Frontend
             InitializeComponent();
         }
 
-        private void Clicked_Create(object sender, EventArgs e)
+        /// <summary>
+        /// Opens a FloorSelectionEditPage with a new building.
+        /// </summary>
+        /// <param name="sender">The Create New Building button object.</param>
+        /// <param name="e">The event associated with the button.</param>
+        private async void Clicked_Create(object sender, EventArgs e)
         {
             // opens a MapCreationPage to create a new building
-            Navigation.PushModalAsync(new FloorSelectionEditPage(new Building("A Fackin Building")));
+            string name = null;
+            bool accept = false;
+            while (!accept)
+            {
+                name = await DisplayPromptAsync("New Building", "What is the name of this building?", "OK", "Cancel", "", 50, Keyboard.Default, "");
+                if (name != "" && name != null)
+                    accept = true;
+                else if (name == null)
+                    break;
+                else
+                    await DisplayAlert("New Building", "Invalid name, try again!", "OK");
+            }
+            if (accept)
+                await Navigation.PushModalAsync(new FloorSelectionEditPage(new Building(name), true));
         }
 
+        /// <summary>
+        /// Calls the file picker method FilePickBuilding.
+        /// </summary>
+        /// <param name="sender">The Import Building button object.</param>
+        /// <param name="e">The event associated with the button.</param>
         private void Clicked_Import(object sender, EventArgs e)
         {
             // calls the file picker method for building maps
@@ -34,21 +57,29 @@ namespace SpaceCat_Xamarin_Frontend
             // TODO: check if imported file is already on list (and potentially select it if it is)
         }
 
+        /// <summary>
+        /// Gets the building associated with the tapped edit button and opens a FloorSelection page to edit that building.
+        /// </summary>
+        /// <param name="sender">The edit button object.</param>
+        /// <param name="e">The event associated with the button.</param>
         private void Clicked_Edit(object sender, EventArgs e)
         {
             // gets the building associated with the edit button selected and opens a Test_MapCreatePage to edit that building
 
             Button btn = (Button)sender;
-            Test_Building building = ((BuildingListViewModel)BindingContext).Buildings.Where(build => build.BuildingID == (int)btn.CommandParameter).FirstOrDefault();
-            Navigation.PushModalAsync(new Test_MapCreatePage(building));
+            BuildingListItem building = ((BuildingListViewModel)BindingContext).Buildings.Where(build => build.Build.Name == (string)btn.CommandParameter).FirstOrDefault();
+            Navigation.PushModalAsync(new FloorSelectionEditPage(building.Build, false));
         }
 
+        /// <summary>
+        /// Gets the building associated with the tapped delete button and removes that building from the list view.
+        /// </summary>
+        /// <param name="sender">The delete button object.</param>
+        /// <param name="e">The event associated with the button.</param>
         private void Clicked_Delete(object sender, EventArgs e)
         {
-            // gets the building associated with the delete button selected and removes that building from the list view
-
             Button btn = (Button)sender;
-            Test_Building building = ((BuildingListViewModel)BindingContext).Buildings.Where(build => build.BuildingID == (int)btn.CommandParameter).FirstOrDefault();
+            BuildingListItem building = ((BuildingListViewModel)BindingContext).Buildings.Where(build => build.Build.Name == (string)btn.CommandParameter).FirstOrDefault();
             ((BuildingListViewModel)BindingContext).Buildings.Remove(building);
         }
 
@@ -63,6 +94,9 @@ namespace SpaceCat_Xamarin_Frontend
             
         }
 
+        /// <summary>
+        /// Opens a file picker allowing the user to select a building from a list of accepted file types.
+        /// </summary>
         private async void FilePickBuilding()
         {
             // specifies file types to allow user to choose from and opens the file
