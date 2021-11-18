@@ -85,8 +85,11 @@ namespace SpaceCat_Xamarin_Frontend
 
         private void Clicked_Survey(object sender, EventArgs e)
         {
-            Building building = new Building("I am surveying");
-            Navigation.PushModalAsync(new FloorSelectionViewPage(building));
+            if (((BuildingListViewModel)BindingContext).SelectedBuilding != null)
+            {
+                Navigation.PushModalAsync(new FloorSelectionViewPage(((BuildingListViewModel)BindingContext).SelectedBuilding.Build));
+            }
+            
         }
 
         private void Clicked_Analysis(object sender, EventArgs e)

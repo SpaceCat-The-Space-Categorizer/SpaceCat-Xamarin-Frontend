@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:tt="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms"
              xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
              x:Class="SpaceCat_Xamarin_Frontend.DataEntryPage">
 
@@ -11,23 +12,40 @@
 
 
     <ContentPage.Content>
-        <StackLayout Orientation="Horizontal">
+        <Frame Style="{StaticResource frame-main}">
+            <AbsoluteLayout>
             
-            <!-- COUNTER BUTTONS -->
-            <Frame>
-                <StackLayout VerticalOptions="Center">
-                    <Button Text="Add"/>
-                    <Button Text="Minus"/>
-                </StackLayout>
-            </Frame>
+                <!-- MAP -->
+                <Frame AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="SizeProportional" Style="{StaticResource frame-exterior}">
+                    <AbsoluteLayout>
+                        
+                        <AbsoluteLayout.Effects>
+                            <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
+                        </AbsoluteLayout.Effects>
+                        
+                        <BoxView BackgroundColor="AliceBlue" WidthRequest="700" HeightRequest="500"/>
 
-            <!-- MAP -->
-            <Frame HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                <AbsoluteLayout>
-                    <BoxView BackgroundColor="AliceBlue" WidthRequest="700" HeightRequest="500"/>
-                </AbsoluteLayout>
-            </Frame>
-            
-        </StackLayout>
+                        <Frame>
+                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </AbsoluteLayout>
+                        </Frame>
+                    </AbsoluteLayout>
+                </Frame>
+
+                <!-- COUNTER BUTTONS -->
+                <Frame AbsoluteLayout.LayoutBounds="1, 0.2" AbsoluteLayout.LayoutFlags="PositionProportional" Style="{StaticResource frame-exterior}">
+                    <StackLayout VerticalOptions="Center">
+                        <Button Text="Add" Style="{StaticResource button-big}" />
+                        <Button Text="Minus" Style="{StaticResource button-big}" />
+                    </StackLayout>
+                </Frame>
+
+            </AbsoluteLayout>
+        </Frame>
     </ContentPage.Content>
 </ContentPage>

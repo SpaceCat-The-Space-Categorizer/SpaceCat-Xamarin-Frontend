@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TouchTracking;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,6 +16,13 @@ namespace SpaceCat_Xamarin_Frontend
         public DataEntryPage(Floor thisFloor)
         {
             InitializeComponent();
+            ((DataEntryViewModel)BindingContext).LoadFloor(thisFloor);
+        }
+
+        private void TappedMap(object sender, TouchActionEventArgs args)
+        {
+            Point tapLoc = new Point(args.Location.X, args.Location.Y);
+            
         }
     }
 }
