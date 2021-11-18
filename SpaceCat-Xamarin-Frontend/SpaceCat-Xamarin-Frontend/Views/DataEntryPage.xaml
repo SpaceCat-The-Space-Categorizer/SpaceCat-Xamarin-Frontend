@@ -11,10 +11,23 @@
 
 
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Orientation="Horizontal">
+            
+            <!-- COUNTER BUTTONS -->
+            <Frame>
+                <StackLayout VerticalOptions="Center">
+                    <Button Text="Add"/>
+                    <Button Text="Minus"/>
+                </StackLayout>
+            </Frame>
+
+            <!-- MAP -->
+            <Frame HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <AbsoluteLayout>
+                    <BoxView BackgroundColor="AliceBlue" WidthRequest="700" HeightRequest="500"/>
+                </AbsoluteLayout>
+            </Frame>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
