@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Xamarin.Forms;
 
 namespace SpaceCat_Xamarin_Frontend
 {
@@ -33,7 +34,28 @@ namespace SpaceCat_Xamarin_Frontend
                 {
                     Figures.Add(new AreaFigure(a, rect, 1.0));
                 }
+                foreach(Furniture furn in a.ContainedFurniture)
+                {
+                    //add furniture items
+                }
             }
+        }
+
+        public bool SelectionHandler(Point tapLoc)
+        {
+            foreach(AreaFigure fig in Figures)
+            {
+                if (MapUtilities.Contains(fig.FigPoints, tapLoc))
+                {
+                    foreach(Furniture furn in fig.Area.ContainedFurniture)
+                    {
+                        //if furn contains taploc, select furniture, bring up add/minus buttons
+                        return true;
+                    }
+                    return true; //temp
+                }
+            }
+            return false;
         }
 
 

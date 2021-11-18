@@ -38,7 +38,7 @@
                 </Frame>
 
                 <!-- COUNTER BUTTONS -->
-                <Frame AbsoluteLayout.LayoutBounds="1, 0.2" AbsoluteLayout.LayoutFlags="PositionProportional" Style="{StaticResource frame-exterior}">
+                <Frame x:Name="CounterFrame" AbsoluteLayout.LayoutBounds="1, 0.2" AbsoluteLayout.LayoutFlags="PositionProportional" Style="{StaticResource frame-exterior}">
                     <StackLayout VerticalOptions="Center">
                         <Button Text="Add" Style="{StaticResource button-big}" />
                         <Button Text="Minus" Style="{StaticResource button-big}" />

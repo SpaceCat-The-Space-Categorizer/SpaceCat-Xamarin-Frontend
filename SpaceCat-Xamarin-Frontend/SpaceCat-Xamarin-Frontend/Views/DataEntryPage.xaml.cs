@@ -21,8 +21,15 @@ namespace SpaceCat_Xamarin_Frontend
 
         private void TappedMap(object sender, TouchActionEventArgs args)
         {
-            Point tapLoc = new Point(args.Location.X, args.Location.Y);
-            
+            if (args.Type == TouchActionType.Released)
+            {
+                Point tapLoc = new Point(args.Location.X, args.Location.Y);
+                bool furnitureSelected = ((DataEntryViewModel)BindingContext).SelectionHandler(tapLoc);
+                if (furnitureSelected)
+                    CounterFrame.IsVisible = true;
+                else
+                    CounterFrame.IsVisible = false;
+            }
         }
     }
 }
