@@ -11,6 +11,7 @@ namespace SpaceCat_Xamarin_Frontend
 {
     class FloorSelectionEditViewModel
     {
+        public bool NewBuild;
         private Building _thisBuilding;
         private ObservableCollection<Floor> _floors;
         private Floor _selected;
@@ -65,7 +66,7 @@ namespace SpaceCat_Xamarin_Frontend
             ThisBuilding.Floors.Clear();
             foreach (Floor f in Floors)
                 ThisBuilding.AddFloor(f);
-            MessagingCenter.Send(this, "UpdateBuilding", ThisBuilding);
+            MessagingCenter.Send(this, "UpdateBuilding", (ThisBuilding, NewBuild));
         }
 
         // INotifyPropertyChanged interface is used to update the UI when variables are altered
