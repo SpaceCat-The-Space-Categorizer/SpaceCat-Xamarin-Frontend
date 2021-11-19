@@ -46,7 +46,7 @@
                         
                         
                         <!-- BUILDING LIST FRAME -->
-                        <Frame> <!-- took out style -->
+                        <Frame>
                             <StackLayout>
                                 <Frame Style="{StaticResource frame-interior}">
                                     <StackLayout>

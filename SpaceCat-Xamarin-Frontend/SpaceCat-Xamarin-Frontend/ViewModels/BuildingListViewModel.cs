@@ -79,6 +79,9 @@ namespace SpaceCat_Xamarin_Frontend
             Buildings.Add(new BuildingListItem(new Building("Building 3")));
             Buildings.Add(new BuildingListItem(new Building("Building 4")));
 
+            System.Diagnostics.Debug.WriteLine("HERE I AM");
+            System.Diagnostics.Debug.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+
             if (Buildings.Count > 0)
                 SelectedBuilding = Buildings[0];
         }
