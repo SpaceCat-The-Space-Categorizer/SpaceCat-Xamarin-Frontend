@@ -54,6 +54,19 @@
                                         <Button Grid.Row="0" Grid.Column="0" Text="Add New &#x0a;Furniture" Command="{Binding AddFurnitureCommand}" Style="{StaticResource button-tools}"/>
                                         <Button Grid.Row="0" Grid.Column="1" Text="Choose &#x0a;Furniture" Command="{Binding ChooseFurnitureCommand}" Style="{StaticResource button-tools}"/>
                                     </Grid>
+                                    
+                                    <ListView ItemsSource="{Binding Shapes}" SelectedItem="{Binding SelectedShape}">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <ViewCell>
+                                                    <Frame Style="{StaticResource frame-listItem}">
+                                                        <Image Source="{Binding Source}" ScaleX="{Binding ScaleX}" ScaleY="{Binding ScaleY}"/>
+                                                    </Frame>
+                                                </ViewCell>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    
                                 </StackLayout>
                             </Frame>
                         </StackLayout>

@@ -26,6 +26,10 @@ namespace SpaceCat_Xamarin_Frontend
         private ObservableCollection<AreaFigure> _figures;
         private int _selectedIndex;
 
+        private ObservableCollection<FurnitureShape> _shapes;
+        private FurnitureShape _selectedShape;
+        private ObservableCollection<FurnitureShape> _items;
+
         /// <summary>
         ///     Contains all of the area figures currently drawn on the map.
         /// </summary>
@@ -43,6 +47,22 @@ namespace SpaceCat_Xamarin_Frontend
             set { _selectedIndex = value; OnPropertyChanged(); }
         }
 
+        public ObservableCollection<FurnitureShape> Shapes
+        {
+            get { return _shapes; }
+            set { _shapes = value; OnPropertyChanged(); }
+        }
+        public FurnitureShape SelectedShape
+        {
+            get { return _selectedShape; }
+            set { _selectedShape = value; OnPropertyChanged(); }
+        }
+        public ObservableCollection<FurnitureShape> Items
+        {
+            get { return _items; }
+            set { _items = value; OnPropertyChanged(); }
+        }
+
         public MapCreationViewModel()
         {
             NewAreaToolOn = false;
@@ -52,6 +72,9 @@ namespace SpaceCat_Xamarin_Frontend
 
             Figures = new ObservableCollection<AreaFigure>();
             SelectedIndex = -1;
+
+            Shapes = new ObservableCollection<FurnitureShape>();
+            Items = new ObservableCollection<FurnitureShape>();
 
             // attach command functions to Command variables (defined below area methods)
             MapSettingsCommand = new Command(ExecuteMapSettings);
@@ -78,7 +101,12 @@ namespace SpaceCat_Xamarin_Frontend
                 {
                     Figures.Add(new AreaFigure(anArea, rect, 1.0));
                 }
+                foreach (Furniture furn in anArea.ContainedFurniture)
+                {
+                    Items.Add(new FurnitureShape(furn));
+                }
             }
+            // add furnitureblueprints to shapes
         }
 
         /// <summary>
