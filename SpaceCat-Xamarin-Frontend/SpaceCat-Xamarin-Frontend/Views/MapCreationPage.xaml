@@ -79,7 +79,7 @@
                         </AbsoluteLayout.Effects>
 
                         <Frame Padding="0">
-                            <AbsoluteLayout BackgroundColor="Chartreuse" BindableLayout.ItemsSource="{Binding Figures}">
+                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
                                         <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
@@ -89,7 +89,7 @@
                         </Frame>
 
                         <Frame Padding="0">
-                            <AbsoluteLayout BackgroundColor="Aqua" BindableLayout.ItemsSource="{Binding Shapes}">
+                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Shapes}">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
                                         <Image Source="{Binding Source}" AbsoluteLayout.LayoutBounds="{Binding Bounds}"/>
