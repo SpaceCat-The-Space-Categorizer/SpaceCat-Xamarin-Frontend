@@ -18,6 +18,7 @@ namespace SpaceCat_Xamarin_Frontend
         private bool AddAreaToolOn;
         private bool FigInProgress;
         private List<Area> NewAreaList;
+        private List<FurnitureBlueprint> Templates;
         
         private string[] hexAreaColors = new string[]
             { "CCDF3E", "E06666", "F6B26B", "FFD966", "93C47D", "76A5AF",
@@ -27,8 +28,7 @@ namespace SpaceCat_Xamarin_Frontend
         private int _selectedIndex;
 
         private ObservableCollection<FurnitureShape> _shapes;
-        private FurnitureShape _selectedShape;
-        private ObservableCollection<FurnitureShape> _items;
+        private int _selectedShape;
 
         public Grid Presets;
 
@@ -54,15 +54,10 @@ namespace SpaceCat_Xamarin_Frontend
             get { return _shapes; }
             set { _shapes = value; OnPropertyChanged(); }
         }
-        public FurnitureShape SelectedShape
+        public int SelectedShape
         {
             get { return _selectedShape; }
             set { _selectedShape = value; OnPropertyChanged(); }
-        }
-        public ObservableCollection<FurnitureShape> Items
-        {
-            get { return _items; }
-            set { _items = value; OnPropertyChanged(); }
         }
 
         public MapCreationViewModel()
@@ -71,20 +66,19 @@ namespace SpaceCat_Xamarin_Frontend
             AddAreaToolOn = false;
             FigInProgress = false;
             NewAreaList = new List<Area>();
+            Templates = new List<FurnitureBlueprint>();
 
             Figures = new ObservableCollection<AreaFigure>();
             SelectedIndex = -1;
 
             Shapes = new ObservableCollection<FurnitureShape>();
-            Items = new ObservableCollection<FurnitureShape>();
+            SelectedShape = -1;
 
             // attach command functions to Command variables (defined below area methods)
             MapSettingsCommand = new Command(ExecuteMapSettings);
             NewAreaCommand = new Command(ExecuteNewArea);
             DeleteAreaCommand = new Command(ExecuteDeleteArea);
             AddAreaCommand = new Command(ExecuteAddArea);
-            AddFurnitureCommand = new Command(ExecuteAddFurniture);
-            ChooseFurnitureCommand = new Command(ExecuteChooseFurniture);
 
             //MapUtilities.RunUnitTesting();   // RUN UNIT TESTS (uncomment to run, results in debug output)
         }
@@ -105,33 +99,33 @@ namespace SpaceCat_Xamarin_Frontend
                 }
                 foreach (Furniture furn in anArea.ContainedFurniture)
                 {
-                    //Items.Add(new FurnitureShape(furn));
+                    //Shapes.Add();
                 }
             }
-            /*foreach (FurnitureBlueprint bp in thisFloor.floorBuilding.FurniturePresets)
+
+            Templates.Add(new FurnitureBlueprint("table1.png", 4));
+            Templates.Add(new FurnitureBlueprint("table1v2.png", 4));
+            Templates.Add(new FurnitureBlueprint("table2.png", 6));
+            Templates.Add(new FurnitureBlueprint("table3.png", 4));
+            Templates.Add(new FurnitureBlueprint("table4.png", 2));
+            Templates.Add(new FurnitureBlueprint("table4v2.png", 2));
+            Templates.Add(new FurnitureBlueprint("table5.png", 2));
+            Templates.Add(new FurnitureBlueprint("table5v2.png", 2));
+            Templates.Add(new FurnitureBlueprint("table6.png", 1));
+            Templates.Add(new FurnitureBlueprint("table6v2.png", 1));
+            Templates.Add(new FurnitureBlueprint("table6v3.png", 1));
+            Templates.Add(new FurnitureBlueprint("table6v4.png", 1));
+            Templates.Add(new FurnitureBlueprint("table7.png", 6));
+            Templates.Add(new FurnitureBlueprint("table7v2.png", 6));
+
+            ImageButton[] buttons = new ImageButton[Templates.Count];
+            for (int i = 0; i < Templates.Count; i++)
             {
-                // add furnitureblueprints to shapes
-                Shapes.Add(new FurnitureShape(bp));
-            }*/
+                buttons[i] = FurniturePreset(Templates[i].Filepath);
+            }
 
             //define num presets
-            return new ImageButton[]
-                {
-                    FurniturePreset("table1.png"    ),
-                    FurniturePreset("table1v2.png"  ),
-                    FurniturePreset("table2.png"    ),
-                    FurniturePreset("table3.png"    ),
-                    FurniturePreset("table4.png"    ),
-                    FurniturePreset("table4v2.png"  ),
-                    FurniturePreset("table5.png"    ),
-                    FurniturePreset("table5v2.png"  ),
-                    FurniturePreset("table6.png"    ),
-                    FurniturePreset("table6v2.png"  ),
-                    FurniturePreset("table6v3.png"  ),
-                    FurniturePreset("table6v4.png"  ),
-                    FurniturePreset("table7.png"    ),
-                    FurniturePreset("table7v2.png"  )
-                };
+            return buttons;
             
             
         }
@@ -170,7 +164,7 @@ namespace SpaceCat_Xamarin_Frontend
         /// </remarks>
         /// <param name="tapType">Type of finger tap (pressed, moved, released).</param>
         /// <param name="tapLoc">Location of finger tap.</param>
-        public void AreaInputHandler(TouchActionType tapType, Point tapLoc)
+        public void MapInputHandler(TouchActionType tapType, Point tapLoc, object sender)
         {
             switch (tapType)
             {
@@ -180,12 +174,30 @@ namespace SpaceCat_Xamarin_Frontend
                         if (NewAreaToolOn)      CreateFigure(true, tapLoc);
                         else if (AddAreaToolOn) CreateFigure(false, tapLoc);
                     }
+                    else
+                    {
+                        for (int i = 0; i < Shapes.Count; i++)
+                        {
+                            if (MapUtilities.ShapeContains(Shapes[i], tapLoc))
+                            {
+                                SelectedShape = i;
+                                break;
+                            }
+                        }
+                    }
                     break;
                 case TouchActionType.Moved:
                     if (FigInProgress)
                     {
                         Figures[Figures.Count - 1].ChangeEndPoint(tapLoc);
                     }
+                    else if (SelectedShape != -1)
+                    {
+                        /*Shapes.Add(new FurnitureShape(Shapes[SelectedShape], tapLoc));
+                        Shapes.RemoveAt(SelectedShape);*/
+                        
+                        Shapes[SelectedShape].Move(tapLoc);
+                    }    
                     break;
                 case TouchActionType.Released:
                     if (FigInProgress)
@@ -204,6 +216,11 @@ namespace SpaceCat_Xamarin_Frontend
                         NewAreaList[affectedArea].AddAreaRectangle(Figures[Figures.Count - 1].GetRectangle());
 
                         FigInProgress = false;
+                    }
+                    else if (SelectedShape != -1)
+                    {
+                        Shapes[SelectedShape].Move(tapLoc);
+                        SelectedShape = -1;
                     }
                     else 
                         SelectArea(tapLoc);
@@ -250,8 +267,26 @@ namespace SpaceCat_Xamarin_Frontend
                 BorderColor = Color.Black,
                 BorderWidth = 1,
                 CornerRadius = 5,
-                HeightRequest = 60
+                HeightRequest = 60,
+                CommandParameter = fileName
             };
+        }
+
+        public void AddNewFurniture(ImageButton imgButton)
+        {
+            // Handles tapping the add new furniture button (unimplemented)
+            System.Diagnostics.Debug.WriteLine("Tapped Add New Furniture!");
+
+            foreach (FurnitureBlueprint blueprint in Templates)
+            {
+                if (blueprint.Filepath == (string)imgButton.CommandParameter)
+                {
+                    Shapes.Add(new FurnitureShape(blueprint, imgButton));
+                    break;
+                }
+            }
+
+
         }
 
         /// <summary>
@@ -270,8 +305,6 @@ namespace SpaceCat_Xamarin_Frontend
         public Command NewAreaCommand { get; set; }
         public Command AddAreaCommand { get; set; }
         public Command DeleteAreaCommand { get; set; }
-        public Command AddFurnitureCommand { get; set; }
-        public Command ChooseFurnitureCommand { get; set; }
         public Command MapSettingsCommand { get; set; }
 
         /// <summary>
@@ -329,18 +362,6 @@ namespace SpaceCat_Xamarin_Frontend
                 Figures.RemoveAt(SelectedIndex);
                 SelectedIndex = -1;
             }
-        }
-
-        private void ExecuteAddFurniture(object s)
-        {
-            // Handles tapping the add new furniture button (unimplemented)
-            System.Diagnostics.Debug.WriteLine("Tapped Add New Furniture!");
-        }
-
-        private void ExecuteChooseFurniture(object s)
-        {
-            // Handles tapping the choose furniture button (unimplemented)
-            System.Diagnostics.Debug.WriteLine("Tapped Choose Furniture!");
         }
 
         private void ExecuteMapSettings(object s)

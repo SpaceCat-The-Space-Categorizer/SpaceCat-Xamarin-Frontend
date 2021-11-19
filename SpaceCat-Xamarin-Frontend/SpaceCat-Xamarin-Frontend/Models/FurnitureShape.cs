@@ -10,45 +10,47 @@ namespace SpaceCat_Xamarin_Frontend
 {
     public class FurnitureShape
     {
-        private FurnitureBlueprint _furn;
-        private ImageSource _source;
-        private double _scaleX;
-        private double _scaleY;
-        public FurnitureBlueprint Furn
+        private ImageButton ImgButton;
+        private Furniture _furn;
+        private string _source;
+        private Xamarin.Forms.Rectangle _bounds;
+        public Furniture Furn
         {
             get { return _furn; }
             set { _furn = value; OnPropertyChanged(); }
         }
-        public ImageSource Source
+        public string Source
         {
             get { return _source; }
             set { _source = value; OnPropertyChanged(); }
         }
-        public double ScaleX
+        public Xamarin.Forms.Rectangle Bounds
         {
-            get { return _scaleX; }
-            set { _scaleX = value; OnPropertyChanged(); }
-        }
-        public double ScaleY
-        {
-            get { return _scaleY; }
-            set { _scaleY = value; OnPropertyChanged(); }
+            get { return _bounds; }
+            set { _bounds = value; OnPropertyChanged(); }
         }
 
-        /*public FurnitureShape(Furniture myFurn)
+        public FurnitureShape(FurnitureBlueprint blueprint, ImageButton imgButton)
         {
-            Furn = myFurn;
-            Source = myFurn.Filepath;
-            ScaleX = myFurn.StretchX;
-            ScaleY = myFurn.StretchY;
-        }*/
-
-        public FurnitureShape(FurnitureBlueprint blueprint)
-        {
-            Furn = blueprint;
+            ImgButton = imgButton;
+            Furn = blueprint.NewInstance();
             Source = blueprint.Filepath;
-            ScaleX = 1;
-            ScaleY = 1;
+            Bounds = new Xamarin.Forms.Rectangle(0, 0, 100.0 * Furn.StretchX, 100.0 * Furn.StretchY);
+            Furn.Corner = new Tuple<double,double>(Bounds.X, Bounds.Y);
+        }
+
+        public FurnitureShape(FurnitureShape oldShape, Point newLoc)
+        {
+            Furn = oldShape.Furn;
+            Source = oldShape.Source;
+            Bounds = new Xamarin.Forms.Rectangle(newLoc.X, newLoc.Y, oldShape.Bounds.Width, oldShape.Bounds.Height);
+        }
+
+        public void Move(Point newLoc)
+        {
+            Bounds = new Xamarin.Forms.Rectangle(newLoc.X, newLoc.Y, Bounds.Width, Bounds.Height);
+            Furn.Corner = new Tuple<double, double>(Bounds.X, Bounds.Y);
+            //AbsoluteLayout.SetLayoutBounds(ImgButton, Bounds);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

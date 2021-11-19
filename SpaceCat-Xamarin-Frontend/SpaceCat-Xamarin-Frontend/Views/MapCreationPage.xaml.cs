@@ -28,6 +28,7 @@ namespace SpaceCat_Xamarin_Frontend
             int column = 0;
             for (int i = 0; i < presets.Length; i++)
             {
+                presets[i].Clicked += Tapped_NewFurniture;
                 FurniturePresetList.Children.Add(presets[i], column, i / 2);
                 if (column == 0)
                     column = 1;
@@ -39,7 +40,13 @@ namespace SpaceCat_Xamarin_Frontend
         private void TappedMap(object sender, TouchActionEventArgs args)
         {
             Point tapLoc = new Point(args.Location.X, args.Location.Y);
-            ((MapCreationViewModel)BindingContext).AreaInputHandler(args.Type, tapLoc);
+            ((MapCreationViewModel)BindingContext).MapInputHandler(args.Type, tapLoc, sender);
+        }
+
+        private void Tapped_NewFurniture(object sender, EventArgs e)
+        {
+            ImageButton ib = (ImageButton)sender;
+            ((MapCreationViewModel)BindingContext).AddNewFurniture(ib);
         }
 
         public async void ExitPage(object sender, EventArgs e)
