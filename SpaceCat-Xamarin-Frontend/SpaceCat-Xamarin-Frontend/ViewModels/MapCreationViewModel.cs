@@ -164,8 +164,9 @@ namespace SpaceCat_Xamarin_Frontend
         /// </remarks>
         /// <param name="tapType">Type of finger tap (pressed, moved, released).</param>
         /// <param name="tapLoc">Location of finger tap.</param>
-        public void MapInputHandler(TouchActionType tapType, Point tapLoc, object sender)
+        public int MapInputHandler(TouchActionType tapType, Point tapLoc)
         {
+            int movedIndex = -1;
             switch (tapType)
             {
                 case TouchActionType.Pressed:
@@ -193,10 +194,8 @@ namespace SpaceCat_Xamarin_Frontend
                     }
                     else if (SelectedShape != -1)
                     {
-                        /*Shapes.Add(new FurnitureShape(Shapes[SelectedShape], tapLoc));
-                        Shapes.RemoveAt(SelectedShape);*/
-                        
                         Shapes[SelectedShape].Move(tapLoc);
+                        movedIndex = SelectedShape;
                     }    
                     break;
                 case TouchActionType.Released:
@@ -229,6 +228,7 @@ namespace SpaceCat_Xamarin_Frontend
                     AddAreaToolOn = false;
                     break;
             }
+            return movedIndex;
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace SpaceCat_Xamarin_Frontend
             {
                 if (blueprint.Filepath == (string)imgButton.CommandParameter)
                 {
-                    Shapes.Add(new FurnitureShape(blueprint, imgButton));
+                    Shapes.Add(new FurnitureShape(blueprint));
                     break;
                 }
             }

@@ -40,7 +40,12 @@ namespace SpaceCat_Xamarin_Frontend
         private void TappedMap(object sender, TouchActionEventArgs args)
         {
             Point tapLoc = new Point(args.Location.X, args.Location.Y);
-            ((MapCreationViewModel)BindingContext).MapInputHandler(args.Type, tapLoc, sender);
+            int movedIndex = ((MapCreationViewModel)BindingContext).MapInputHandler(args.Type, tapLoc);
+            if (movedIndex != -1)
+            {
+                Xamarin.Forms.Rectangle newBounds = ((MapCreationViewModel)BindingContext).Shapes[movedIndex].Bounds;
+                AbsoluteLayout.SetLayoutBounds(mapFurniture.Children.ElementAt(movedIndex), newBounds);
+            }
         }
 
         private void Tapped_NewFurniture(object sender, EventArgs e)

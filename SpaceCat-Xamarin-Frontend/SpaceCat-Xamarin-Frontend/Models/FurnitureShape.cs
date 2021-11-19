@@ -10,7 +10,6 @@ namespace SpaceCat_Xamarin_Frontend
 {
     public class FurnitureShape
     {
-        private ImageButton ImgButton;
         private Furniture _furn;
         private string _source;
         private Xamarin.Forms.Rectangle _bounds;
@@ -30,9 +29,8 @@ namespace SpaceCat_Xamarin_Frontend
             set { _bounds = value; OnPropertyChanged(); }
         }
 
-        public FurnitureShape(FurnitureBlueprint blueprint, ImageButton imgButton)
+        public FurnitureShape(FurnitureBlueprint blueprint)
         {
-            ImgButton = imgButton;
             Furn = blueprint.NewInstance();
             Source = blueprint.Filepath;
             Bounds = new Xamarin.Forms.Rectangle(0, 0, 100.0 * Furn.StretchX, 100.0 * Furn.StretchY);
