@@ -6,6 +6,9 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TouchTracking;
 using Xamarin.Forms;
+using Xamarin.Essentials;
+using System.IO;
+
 
 // View Model (Map Creation page) - manages button clicks currently
 
@@ -25,6 +28,7 @@ namespace SpaceCat_Xamarin_Frontend
 
         private ObservableCollection<AreaFigure> _figures;
         private int _selectedIndex;
+        private ImageSource _mapImage;
 
         /// <summary>
         ///     Contains all of the area figures currently drawn on the map.
@@ -41,6 +45,12 @@ namespace SpaceCat_Xamarin_Frontend
         {
             get { return _selectedIndex; }
             set { _selectedIndex = value; OnPropertyChanged(); }
+        }
+
+        public ImageSource MapImage
+        {
+            get { return _mapImage; }
+            set { _mapImage = value; OnPropertyChanged(); }
         }
 
         public MapCreationViewModel()
@@ -275,10 +285,31 @@ namespace SpaceCat_Xamarin_Frontend
             System.Diagnostics.Debug.WriteLine("Tapped Choose Furniture!");
         }
 
-        private void ExecuteMapSettings(object s)
+        private async void ExecuteMapSettings(object s)
         {
             // Handles tapping the map settings button (unimplemented)
             System.Diagnostics.Debug.WriteLine("Tapped Settings!");
+
+            // open file picker
+            try
+            {
+                var result = await FilePicker.PickAsync(new PickOptions
+                {
+                    PickerTitle = "Please select a floorplan file",
+                    FileTypes = FilePickerFileType.Images,
+                });
+                if (result != null)
+                {
+                    MapImage = ImageSource.FromFile(result.FullPath);
+                   
+
+                }
+            }
+            catch (Exception e)
+            {
+                // exit fail
+                System.Diagnostics.Debug.WriteLine("Exception on MapCreationViewModel.cs in ImportFloorplan(e2): " + e);
+            }
         }
 
 

@@ -71,17 +71,23 @@
                 <!-- MAP -->
                 <Frame HorizontalOptions="FillAndExpand" Style="{StaticResource frame-exterior}">
 
-                    <AbsoluteLayout x:Name="theMap" BindableLayout.ItemsSource="{Binding Figures}">
-
+                    <AbsoluteLayout>
+                        
                         <AbsoluteLayout.Effects>
                             <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
                         </AbsoluteLayout.Effects>
 
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
+                        <Image Source="{Binding MapImage}" Aspect="Fill"/>
+
+                        <Frame>
+                            <AbsoluteLayout x:Name="theMap" BindableLayout.ItemsSource="{Binding Figures}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </AbsoluteLayout>
+                        </Frame>
 
                     </AbsoluteLayout>
                 </Frame>
