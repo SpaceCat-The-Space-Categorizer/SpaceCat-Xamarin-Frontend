@@ -26,7 +26,7 @@ namespace SpaceCat_Xamarin_Frontend
             await Navigation.PopModalAsync();
         }
 
-        private async void Clicked_Export(object sender, EventArgs e)
+        private void Clicked_Export(object sender, EventArgs e)
         {
             ((AnalysisViewModel)BindingContext).CSVExport_Clicked();
         }
