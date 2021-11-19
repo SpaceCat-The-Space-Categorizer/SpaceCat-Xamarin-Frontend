@@ -30,6 +30,8 @@ namespace SpaceCat_Xamarin_Frontend
         private FurnitureShape _selectedShape;
         private ObservableCollection<FurnitureShape> _items;
 
+        public Grid Presets;
+
         /// <summary>
         ///     Contains all of the area figures currently drawn on the map.
         /// </summary>
@@ -91,7 +93,7 @@ namespace SpaceCat_Xamarin_Frontend
         ///     Loads any existing areas from the selected floor onto the map.
         /// </summary>
         /// <param name="thisFloor">The selected floor being loaded. (Or a new floor)</param>
-        public void LoadFloor(Floor thisFloor)
+        public ImageButton[] LoadFloor(Floor thisFloor)
         {
             ThisFloor = thisFloor;
             NewAreaList = thisFloor.Areas;
@@ -103,10 +105,35 @@ namespace SpaceCat_Xamarin_Frontend
                 }
                 foreach (Furniture furn in anArea.ContainedFurniture)
                 {
-                    Items.Add(new FurnitureShape(furn));
+                    //Items.Add(new FurnitureShape(furn));
                 }
             }
-            // add furnitureblueprints to shapes
+            /*foreach (FurnitureBlueprint bp in thisFloor.floorBuilding.FurniturePresets)
+            {
+                // add furnitureblueprints to shapes
+                Shapes.Add(new FurnitureShape(bp));
+            }*/
+
+            //define num presets
+            return new ImageButton[]
+                {
+                    FurniturePreset("table1.png"    ),
+                    FurniturePreset("table1v2.png"  ),
+                    FurniturePreset("table2.png"    ),
+                    FurniturePreset("table3.png"    ),
+                    FurniturePreset("table4.png"    ),
+                    FurniturePreset("table4v2.png"  ),
+                    FurniturePreset("table5.png"    ),
+                    FurniturePreset("table5v2.png"  ),
+                    FurniturePreset("table6.png"    ),
+                    FurniturePreset("table6v2.png"  ),
+                    FurniturePreset("table6v3.png"  ),
+                    FurniturePreset("table6v4.png"  ),
+                    FurniturePreset("table7.png"    ),
+                    FurniturePreset("table7v2.png"  )
+                };
+            
+            
         }
 
         /// <summary>
@@ -212,6 +239,19 @@ namespace SpaceCat_Xamarin_Frontend
                     }
                 }
             }
+        }
+
+        public ImageButton FurniturePreset(string fileName)
+        {
+            return new ImageButton
+            {
+                Source = fileName,
+                BackgroundColor = Color.White,
+                BorderColor = Color.Black,
+                BorderWidth = 1,
+                CornerRadius = 5,
+                HeightRequest = 60
+            };
         }
 
         /// <summary>

@@ -10,11 +10,11 @@ namespace SpaceCat_Xamarin_Frontend
 {
     public class FurnitureShape
     {
-        private Furniture _furn;
+        private FurnitureBlueprint _furn;
         private ImageSource _source;
         private double _scaleX;
         private double _scaleY;
-        public Furniture Furn
+        public FurnitureBlueprint Furn
         {
             get { return _furn; }
             set { _furn = value; OnPropertyChanged(); }
@@ -35,20 +35,20 @@ namespace SpaceCat_Xamarin_Frontend
             set { _scaleY = value; OnPropertyChanged(); }
         }
 
-        public FurnitureShape(Furniture myFurn)
+        /*public FurnitureShape(Furniture myFurn)
         {
             Furn = myFurn;
             Source = myFurn.Filepath;
             ScaleX = myFurn.StretchX;
             ScaleY = myFurn.StretchY;
-        }
+        }*/
 
         public FurnitureShape(FurnitureBlueprint blueprint)
         {
-            Furn = blueprint.NewInstance();
+            Furn = blueprint;
             Source = blueprint.Filepath;
-            ScaleX = Furn.StretchX;
-            ScaleY = Furn.StretchY;
+            ScaleX = 1;
+            ScaleY = 1;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

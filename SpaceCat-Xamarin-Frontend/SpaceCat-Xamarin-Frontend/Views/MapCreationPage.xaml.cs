@@ -23,8 +23,17 @@ namespace SpaceCat_Xamarin_Frontend
         public MapCreationPage(Floor thisFloor, bool newFloor)
         {
             InitializeComponent();
-            ((MapCreationViewModel)BindingContext).LoadFloor(thisFloor);
             NewFloor = newFloor;
+            ImageButton[] presets = ((MapCreationViewModel)BindingContext).LoadFloor(thisFloor);
+            int column = 0;
+            for (int i = 0; i < presets.Length; i++)
+            {
+                FurniturePresetList.Children.Add(presets[i], column, i / 2);
+                if (column == 0)
+                    column = 1;
+                else
+                    column = 0;
+            }
         }
 
         private void TappedMap(object sender, TouchActionEventArgs args)

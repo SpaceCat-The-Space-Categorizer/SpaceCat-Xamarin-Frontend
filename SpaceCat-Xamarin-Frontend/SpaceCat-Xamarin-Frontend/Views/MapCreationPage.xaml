@@ -46,27 +46,15 @@
                                 </StackLayout>
                             </Frame>
 
-                            <!-- FURNITURE TOOLS -->
+                            <!-- FURNITURE -->
                             <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
-                                    <Grid>
-                                        <Button Grid.Row="0" Grid.Column="0" Text="Add New &#x0a;Furniture" Command="{Binding AddFurnitureCommand}" Style="{StaticResource button-tools}"/>
-                                        <Button Grid.Row="0" Grid.Column="1" Text="Choose &#x0a;Furniture" Command="{Binding ChooseFurnitureCommand}" Style="{StaticResource button-tools}"/>
-                                    </Grid>
-                                    
-                                    <ListView ItemsSource="{Binding Shapes}" SelectedItem="{Binding SelectedShape}">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <ViewCell>
-                                                    <Frame Style="{StaticResource frame-listItem}">
-                                                        <Image Source="{Binding Source}" ScaleX="{Binding ScaleX}" ScaleY="{Binding ScaleY}"/>
-                                                    </Frame>
-                                                </ViewCell>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                    
+                                    <ScrollView>
+                                        <Grid x:Name="FurniturePresetList">
+
+                                        </Grid>
+                                    </ScrollView>
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
