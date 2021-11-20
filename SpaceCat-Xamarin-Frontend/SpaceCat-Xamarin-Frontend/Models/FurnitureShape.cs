@@ -13,22 +13,35 @@ namespace SpaceCat_Xamarin_Frontend
         private Furniture _furn;
         private string _source;
         private Xamarin.Forms.Rectangle _bounds;
+        /// <summary>
+        /// The furniture object associated with this shape.
+        /// </summary>
         public Furniture Furn
         {
             get { return _furn; }
             set { _furn = value; OnPropertyChanged(); }
         }
+        /// <summary>
+        /// The file name of the image representing the furniture.
+        /// </summary>
         public string Source
         {
             get { return _source; }
             set { _source = value; OnPropertyChanged(); }
         }
+        /// <summary>
+        /// Contains the X location, Y location, width, and height of the furniture image.
+        /// </summary>
         public Xamarin.Forms.Rectangle Bounds
         {
             get { return _bounds; }
             set { _bounds = value; OnPropertyChanged(); }
         }
 
+        /// <summary>
+        /// Used for creating new furniture.
+        /// </summary>
+        /// <param name="blueprint">The blueprint to use for creating this furniture shape.</param>
         public FurnitureShape(FurnitureBlueprint blueprint)
         {
             Furn = blueprint.NewInstance();
@@ -37,18 +50,25 @@ namespace SpaceCat_Xamarin_Frontend
             Furn.Corner = new Tuple<double,double>(Bounds.X, Bounds.Y);
         }
 
-        public FurnitureShape(FurnitureShape oldShape, Point newLoc)
+        /// <summary>
+        /// Used for recreating existing furniture.
+        /// </summary>
+        /// <param name="existingFurn">The pre-existing furniture object.</param>
+        public FurnitureShape(Furniture existingFurn)
         {
-            Furn = oldShape.Furn;
-            Source = oldShape.Source;
-            Bounds = new Xamarin.Forms.Rectangle(newLoc.X, newLoc.Y, oldShape.Bounds.Width, oldShape.Bounds.Height);
+            Furn = existingFurn;
+            Source = existingFurn.Filepath;
+            Bounds = new Xamarin.Forms.Rectangle(existingFurn.Corner.Item1, existingFurn.Corner.Item2, 100.0 * Furn.StretchX, 100.0 * Furn.StretchY);
         }
 
+        /// <summary>
+        /// Moves this object to a new location.
+        /// </summary>
+        /// <param name="newLoc">The location to move the object to.</param>
         public void Move(Point newLoc)
         {
             Bounds = new Xamarin.Forms.Rectangle(newLoc.X, newLoc.Y, Bounds.Width, Bounds.Height);
             Furn.Corner = new Tuple<double, double>(Bounds.X, Bounds.Y);
-            //AbsoluteLayout.SetLayoutBounds(ImgButton, Bounds);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -35,7 +35,7 @@
                     <Frame Style="{StaticResource frame-tools-main}">
                         <StackLayout>
                             <!-- AREA TOOLS -->
-                            <Frame Style="{StaticResource frame-interior}">
+                            <Frame HeightRequest="300" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="AREA TOOLS" Style="{StaticResource label-tools-title}"/>
                                     <Grid>
@@ -47,9 +47,11 @@
                             </Frame>
 
                             <!-- FURNITURE -->
+                            
                             <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
+                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Style="{StaticResource button-tools}"/>
                                     <ScrollView>
                                         <Grid x:Name="FurniturePresetList">
                                             

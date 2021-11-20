@@ -16,6 +16,7 @@ namespace SpaceCat_Xamarin_Frontend
         private Floor ThisFloor;
         private bool NewAreaToolOn;
         private bool AddAreaToolOn;
+        private bool DeleteFurnitureOn;
         private bool FigInProgress;
         private List<Area> NewAreaList;
         private List<FurnitureBlueprint> Templates;
@@ -25,15 +26,15 @@ namespace SpaceCat_Xamarin_Frontend
                 "6FA8DC", "8E7CC3", "C27BA0" };
 
         private ObservableCollection<AreaFigure> _figures;
-        private int _selectedIndex;
+        private int _SelectedFigure;
 
         private ObservableCollection<FurnitureShape> _shapes;
-        private int _selectedShape;
+        private int _movingShape;
 
         public Grid Presets;
 
         /// <summary>
-        ///     Contains all of the area figures currently drawn on the map.
+        /// Contains all of the area figures currently drawn on the map.
         /// </summary>
         public ObservableCollection<AreaFigure> Figures
         {
@@ -41,50 +42,58 @@ namespace SpaceCat_Xamarin_Frontend
             set { _figures = value; OnPropertyChanged(); }
         }
         /// <summary>
-        ///     The index of the selected figure in Figures.
+        /// The index of the selected figure in Figures.
         /// </summary>
-        public int SelectedIndex
+        public int SelectedFigure
         {
-            get { return _selectedIndex; }
-            set { _selectedIndex = value; OnPropertyChanged(); }
+            get { return _SelectedFigure; }
+            set { _SelectedFigure = value; OnPropertyChanged(); }
         }
-
+        /// <summary>
+        /// Contains all of the furniture currently drawn on the map.
+        /// </summary>
         public ObservableCollection<FurnitureShape> Shapes
         {
             get { return _shapes; }
             set { _shapes = value; OnPropertyChanged(); }
         }
-        public int SelectedShape
+        /// <summary>
+        /// The index of the shape being moved in Shapes.
+        /// </summary>
+        public int MovingShape
         {
-            get { return _selectedShape; }
-            set { _selectedShape = value; OnPropertyChanged(); }
+            get { return _movingShape; }
+            set { _movingShape = value; OnPropertyChanged(); }
         }
 
         public MapCreationViewModel()
         {
             NewAreaToolOn = false;
             AddAreaToolOn = false;
+            DeleteFurnitureOn = false;
             FigInProgress = false;
             NewAreaList = new List<Area>();
             Templates = new List<FurnitureBlueprint>();
 
             Figures = new ObservableCollection<AreaFigure>();
-            SelectedIndex = -1;
+            SelectedFigure = -1;
 
             Shapes = new ObservableCollection<FurnitureShape>();
-            SelectedShape = -1;
+            MovingShape = -1;
 
             // attach command functions to Command variables (defined below area methods)
             MapSettingsCommand = new Command(ExecuteMapSettings);
             NewAreaCommand = new Command(ExecuteNewArea);
             DeleteAreaCommand = new Command(ExecuteDeleteArea);
+            DeleteFurnitureCommand = new Command(ExecuteDeleteFurniture);
             AddAreaCommand = new Command(ExecuteAddArea);
 
             //MapUtilities.RunUnitTesting();   // RUN UNIT TESTS (uncomment to run, results in debug output)
         }
 
         /// <summary>
-        ///     Loads any existing areas from the selected floor onto the map.
+        /// Loads any existing areas and furniture from the selected floor onto the map. Also loads
+        /// all furniture presets.
         /// </summary>
         /// <param name="thisFloor">The selected floor being loaded. (Or a new floor)</param>
         public ImageButton[] LoadFloor(Floor thisFloor)
@@ -99,7 +108,7 @@ namespace SpaceCat_Xamarin_Frontend
                 }
                 foreach (Furniture furn in anArea.ContainedFurniture)
                 {
-                    //Shapes.Add();
+                    Shapes.Add(new FurnitureShape(furn));
                 }
             }
 
@@ -131,7 +140,26 @@ namespace SpaceCat_Xamarin_Frontend
         }
 
         /// <summary>
-        ///     Creates a new AreaFigure when adding an area rectangle using area tools.
+        /// Defines an ImageButton for furniture presets with the given image file name.
+        /// </summary>
+        /// <param name="fileName">The name of the image file to display on the button.</param>
+        /// <returns>The ImageButton object representing a furniture preset.</returns>
+        public ImageButton FurniturePreset(string fileName)
+        {
+            return new ImageButton
+            {
+                Source = fileName,
+                BackgroundColor = Color.White,
+                BorderColor = Color.Black,
+                BorderWidth = 1,
+                CornerRadius = 5,
+                HeightRequest = 60,
+                CommandParameter = fileName
+            };
+        }
+
+        /// <summary>
+        /// Creates a new AreaFigure when adding an area rectangle using area tools.
         /// </summary>
         /// <param name="isNewArea">Is true when the figure doesn't belong to the same area as an existing AreaFigure.</param>
         /// <param name="origin">The tap location where the user started drawing the figure.</param>
@@ -147,7 +175,7 @@ namespace SpaceCat_Xamarin_Frontend
             }
             else
             {
-                thisArea = Figures[SelectedIndex].Area;
+                thisArea = Figures[SelectedFigure].Area;
             }
 
             // create area figure and add to figures
@@ -157,11 +185,8 @@ namespace SpaceCat_Xamarin_Frontend
         }
 
         /// <summary>
-        ///     Handles user input on the blueprint when using area tools.
+        /// Handles user input on the blueprint during map interaction.
         /// </summary>
-        /// <remarks>
-        ///     Needs to be updated for adding furniture tools.
-        /// </remarks>
         /// <param name="tapType">Type of finger tap (pressed, moved, released).</param>
         /// <param name="tapLoc">Location of finger tap.</param>
         public int MapInputHandler(TouchActionType tapType, Point tapLoc)
@@ -175,13 +200,13 @@ namespace SpaceCat_Xamarin_Frontend
                         if (NewAreaToolOn)      CreateFigure(true, tapLoc);
                         else if (AddAreaToolOn) CreateFigure(false, tapLoc);
                     }
-                    else
+                    else if (!DeleteFurnitureOn)
                     {
                         for (int i = 0; i < Shapes.Count; i++)
                         {
                             if (MapUtilities.ShapeContains(Shapes[i], tapLoc))
                             {
-                                SelectedShape = i;
+                                MovingShape = i;
                                 break;
                             }
                         }
@@ -192,10 +217,10 @@ namespace SpaceCat_Xamarin_Frontend
                     {
                         Figures[Figures.Count - 1].ChangeEndPoint(tapLoc);
                     }
-                    else if (SelectedShape != -1)
+                    else if (MovingShape != -1)
                     {
-                        Shapes[SelectedShape].Move(tapLoc);
-                        movedIndex = SelectedShape;
+                        Shapes[MovingShape].Move(tapLoc);
+                        movedIndex = MovingShape;
                     }    
                     break;
                 case TouchActionType.Released:
@@ -216,10 +241,22 @@ namespace SpaceCat_Xamarin_Frontend
 
                         FigInProgress = false;
                     }
-                    else if (SelectedShape != -1)
+                    else if (MovingShape != -1)
                     {
-                        Shapes[SelectedShape].Move(tapLoc);
-                        SelectedShape = -1;
+                        Shapes[MovingShape].Move(tapLoc);
+                        MovingShape = -1;
+                    }
+                    else if (DeleteFurnitureOn)
+                    {
+                        for (int i = 0; i < Shapes.Count; i++)
+                        {
+                            if (MapUtilities.ShapeContains(Shapes[i], tapLoc))
+                            {
+                                Shapes.RemoveAt(i);
+                                DeleteFurnitureOn = false;
+                                break;
+                            }
+                        }
                     }
                     else 
                         SelectArea(tapLoc);
@@ -232,25 +269,26 @@ namespace SpaceCat_Xamarin_Frontend
         }
 
         /// <summary>
-        ///     Selects any tapped area figure. Deselects any previously selected area figure.
+        /// Selects any tapped area figure. Deselects any previously selected area figure. 
+        /// Selected figures are set to half opacity.
         /// </summary>
         /// <remarks>
-        ///     Selects only if no area tools are in use. Selected figures are set to half opacity.
+        /// Selects only if no area tools are in use.
         /// </remarks>
         /// <param name="tapLoc">Location of finger tap.</param>
         public void SelectArea(Point tapLoc)
         {
             if (!AddAreaToolOn && !NewAreaToolOn)
             {
-                if (SelectedIndex >= 0) 
-                    Figures[SelectedIndex].Opacity = 1;
-                SelectedIndex = -1;
+                if (SelectedFigure >= 0) 
+                    Figures[SelectedFigure].Opacity = 1;
+                SelectedFigure = -1;
 
                 for (int i = 0; i < Figures.Count; i++)
                 {
                     if (MapUtilities.Contains(Figures[i].FigPoints, tapLoc))
                     {
-                        SelectedIndex = i;
+                        SelectedFigure = i;
                         Figures[i].Opacity = 0.5;
                         break;
                     }
@@ -258,25 +296,12 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
-        public ImageButton FurniturePreset(string fileName)
-        {
-            return new ImageButton
-            {
-                Source = fileName,
-                BackgroundColor = Color.White,
-                BorderColor = Color.Black,
-                BorderWidth = 1,
-                CornerRadius = 5,
-                HeightRequest = 60,
-                CommandParameter = fileName
-            };
-        }
-
+        /// <summary>
+        /// Creates a new furniture shape from the selected preset and adds it to the map.
+        /// </summary>
+        /// <param name="imgButton">The ImageButton with the furniture preset selected by the user.</param>
         public void AddNewFurniture(ImageButton imgButton)
         {
-            // Handles tapping the add new furniture button (unimplemented)
-            System.Diagnostics.Debug.WriteLine("Tapped Add New Furniture!");
-
             foreach (FurnitureBlueprint blueprint in Templates)
             {
                 if (blueprint.Filepath == (string)imgButton.CommandParameter)
@@ -290,11 +315,33 @@ namespace SpaceCat_Xamarin_Frontend
         }
 
         /// <summary>
-        ///     Updates the current floor's list of areas with any changes made during floor editing.
+        /// Updates the current floor's list of areas with any changes made during floor editing and
+        /// any furniture within them.
         /// </summary>
+        /// <remarks>
+        /// TODO: ADD POP-UP NOTIFYING USER OF ANY FURNITURE NOT IN AN AREA, AS IT WILL BE DELETED!
+        /// </remarks>
         /// <returns>The current floor with new and updated areas.</returns>
         public Floor UpdateFloor()
         {
+            foreach (FurnitureShape shape in Shapes)
+            {
+                foreach (AreaFigure fig in Figures)
+                {
+                    if (MapUtilities.Contains(fig.FigPoints, shape.Bounds.Center))
+                    {
+                        foreach (Area anArea in NewAreaList)
+                        {
+                            if (anArea == fig.Area)
+                            {
+                                anArea.AddFurniture(shape.Furn);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
             ThisFloor.Areas = NewAreaList;
             return ThisFloor;
         }
@@ -305,6 +352,7 @@ namespace SpaceCat_Xamarin_Frontend
         public Command NewAreaCommand { get; set; }
         public Command AddAreaCommand { get; set; }
         public Command DeleteAreaCommand { get; set; }
+        public Command DeleteFurnitureCommand { get; set; }
         public Command MapSettingsCommand { get; set; }
 
         /// <summary>
@@ -314,6 +362,7 @@ namespace SpaceCat_Xamarin_Frontend
         private void ExecuteNewArea(object s)
         {
             AddAreaToolOn = false;
+            DeleteFurnitureOn = false;
             NewAreaToolOn = true;
         }
 
@@ -327,7 +376,8 @@ namespace SpaceCat_Xamarin_Frontend
         private void ExecuteAddArea(object s)
         {
             NewAreaToolOn = false;
-            if (SelectedIndex > -1)
+            DeleteFurnitureOn = false;
+            if (SelectedFigure > -1)
                 AddAreaToolOn = true;
         }
 
@@ -340,13 +390,13 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="s">Not Used</param>
         private void ExecuteDeleteArea(object s)
         {
-            if (SelectedIndex > -1) // if an area is selected
+            if (SelectedFigure > -1) // if an area is selected
             {
                 // look for affected area in NewAreaList
                 int affectedArea = -1;
                 for (int i = 0; i < NewAreaList.Count; i++)
                 {
-                    if (NewAreaList[i] == Figures[SelectedIndex].Area)
+                    if (NewAreaList[i] == Figures[SelectedFigure].Area)
                     {
                         affectedArea = i;
                         break;
@@ -357,11 +407,22 @@ namespace SpaceCat_Xamarin_Frontend
                 if (NewAreaList[affectedArea].DefiningRectangles.Count <= 1)
                     NewAreaList.RemoveAt(affectedArea);
                 else
-                    NewAreaList[affectedArea].RemoveRectangle(Figures[SelectedIndex].GetRectangle());
+                    NewAreaList[affectedArea].RemoveRectangle(Figures[SelectedFigure].GetRectangle());
 
-                Figures.RemoveAt(SelectedIndex);
-                SelectedIndex = -1;
+                Figures.RemoveAt(SelectedFigure);
+                SelectedFigure = -1;
             }
+        }
+
+        /// <summary>
+        /// Called on a click of the Delete Furniture button. Enables Delete Furniture tool.
+        /// </summary>
+        /// <param name="s">Not Used.</param>
+        private void ExecuteDeleteFurniture(object s)
+        {
+            NewAreaToolOn = false;
+            AddAreaToolOn = false;
+            DeleteFurnitureOn = true;
         }
 
         private void ExecuteMapSettings(object s)
