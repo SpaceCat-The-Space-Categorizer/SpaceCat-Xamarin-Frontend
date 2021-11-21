@@ -56,9 +56,29 @@ namespace SpaceCat_Xamarin_Frontend
 
         public async void ExitPage(object sender, EventArgs e)
         {
-            Floor updatedFloor = ((MapCreationViewModel)BindingContext).UpdateFloor();
-            MessagingCenter.Send(this, "UpdateFloor", (updatedFloor, NewFloor));
-            await Navigation.PopModalAsync();
+            Floor updatedFloor = ((MapCreationViewModel)BindingContext).UpdateFloor(false);
+            bool userContinue = false;
+            if (updatedFloor == null)
+                userContinue = await FreeFurnitureWarning();
+            
+            if (updatedFloor != null)
+            {
+                MessagingCenter.Send(this, "UpdateFloor", (updatedFloor, NewFloor));
+                await Navigation.PopModalAsync();
+            }
+            else if (userContinue)
+            {
+                updatedFloor = ((MapCreationViewModel)BindingContext).UpdateFloor(true);
+                MessagingCenter.Send(this, "UpdateFloor", (updatedFloor, NewFloor));
+                await Navigation.PopModalAsync();
+            }
+        }
+
+        public async Task<bool> FreeFurnitureWarning()
+        {
+            return await DisplayAlert("Furniture not placed in area!",
+                        "Any furniture not placed in inside a defined area will be deleted! Are you sure you want to continue?",
+                        "Continue Save", "Cancel");
         }
     }
 }

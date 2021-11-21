@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using TouchTracking;
 using Xamarin.Forms;
 
@@ -321,11 +322,22 @@ namespace SpaceCat_Xamarin_Frontend
         /// <remarks>
         /// TODO: ADD POP-UP NOTIFYING USER OF ANY FURNITURE NOT IN AN AREA, AS IT WILL BE DELETED!
         /// </remarks>
+        /// <param name="ignoreFreeFurniture">True if UpdateFloor has been called and user indicated to ignore furniture
+        /// not within areas.</param>
         /// <returns>The current floor with new and updated areas.</returns>
-        public Floor UpdateFloor()
+        public Floor UpdateFloor(bool ignoreFreeFurniture)
         {
+            foreach(Area a in NewAreaList)
+            {
+                a.ContainedFurniture.Clear();
+            }
             foreach (FurnitureShape shape in Shapes)
             {
+                if (Figures.Count < 1)
+                {
+                    if (!ignoreFreeFurniture)
+                        return null;
+                }
                 foreach (AreaFigure fig in Figures)
                 {
                     if (MapUtilities.Contains(fig.FigPoints, shape.Bounds.Center))
@@ -340,6 +352,9 @@ namespace SpaceCat_Xamarin_Frontend
                         }
                         break;
                     }
+                    //furniture not inside area, display warning
+                    if (!ignoreFreeFurniture)
+                        return null;
                 }
             }
             ThisFloor.Areas = NewAreaList;
@@ -347,9 +362,9 @@ namespace SpaceCat_Xamarin_Frontend
         }
 
 
-        // USER INPUT COMMAND HANDLERS
-        // Commands allow button clicks to route to ViewModel instead of using their "Clicked" property
-        public Command NewAreaCommand { get; set; }
+// USER INPUT COMMAND HANDLERS
+// Commands allow button clicks to route to ViewModel instead of using their "Clicked" property
+public Command NewAreaCommand { get; set; }
         public Command AddAreaCommand { get; set; }
         public Command DeleteAreaCommand { get; set; }
         public Command DeleteFurnitureCommand { get; set; }
