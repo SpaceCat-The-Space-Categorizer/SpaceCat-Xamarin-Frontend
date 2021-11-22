@@ -319,12 +319,10 @@ namespace SpaceCat_Xamarin_Frontend
         /// Updates the current floor's list of areas with any changes made during floor editing and
         /// any furniture within them.
         /// </summary>
-        /// <remarks>
-        /// TODO: ADD POP-UP NOTIFYING USER OF ANY FURNITURE NOT IN AN AREA, AS IT WILL BE DELETED!
-        /// </remarks>
         /// <param name="ignoreFreeFurniture">True if UpdateFloor has been called and user indicated to ignore furniture
         /// not within areas.</param>
-        /// <returns>The current floor with new and updated areas.</returns>
+        /// <returns>The current floor with new and updated areas. Null if furniture outside of areas has been
+        /// found and user has not indicated approval for their deletion.</returns>
         public Floor UpdateFloor(bool ignoreFreeFurniture)
         {
             foreach(Area a in NewAreaList)
@@ -364,9 +362,9 @@ namespace SpaceCat_Xamarin_Frontend
         }
 
 
-// USER INPUT COMMAND HANDLERS
-// Commands allow button clicks to route to ViewModel instead of using their "Clicked" property
-public Command NewAreaCommand { get; set; }
+        // USER INPUT COMMAND HANDLERS
+        // Commands allow button clicks to route to ViewModel instead of using their "Clicked" property
+        public Command NewAreaCommand { get; set; }
         public Command AddAreaCommand { get; set; }
         public Command DeleteAreaCommand { get; set; }
         public Command DeleteFurnitureCommand { get; set; }
