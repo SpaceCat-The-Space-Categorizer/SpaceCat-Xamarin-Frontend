@@ -132,20 +132,6 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="table1.png" />
-    <Content Include="table1v2.png" />
-    <Content Include="table2.png" />
-    <Content Include="table3.png" />
-    <Content Include="table4.png" />
-    <Content Include="table4v2.png" />
-    <Content Include="table5.png" />
-    <Content Include="table5v2.png" />
-    <Content Include="table6.png" />
-    <Content Include="table6v2.png" />
-    <Content Include="table6v3.png" />
-    <Content Include="table6v4.png" />
-    <Content Include="table7.png" />
-    <Content Include="table7v2.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -159,7 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SpaceCat">
-      <Version>0.3.1</Version>
+      <Version>0.3.3</Version>
     </PackageReference>
     <PackageReference Include="TouchTracking">
       <Version>1.2.0</Version>
