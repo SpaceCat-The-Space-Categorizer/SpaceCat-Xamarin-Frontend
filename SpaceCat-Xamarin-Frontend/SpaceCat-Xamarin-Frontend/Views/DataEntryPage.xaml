@@ -34,6 +34,17 @@
                                 </BindableLayout.ItemTemplate>
                             </AbsoluteLayout>
                         </Frame>
+
+                        <Frame Padding="0">
+                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Shapes}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Source}" AbsoluteLayout.LayoutBounds="{Binding Bounds}"/>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </AbsoluteLayout>
+                        </Frame>
+
                     </AbsoluteLayout>
                 </Frame>
 

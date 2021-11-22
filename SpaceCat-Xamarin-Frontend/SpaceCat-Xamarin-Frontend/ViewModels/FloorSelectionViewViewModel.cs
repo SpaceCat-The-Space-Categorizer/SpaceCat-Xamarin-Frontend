@@ -35,7 +35,7 @@ namespace SpaceCat_Xamarin_Frontend
             Floors = new ObservableCollection<Floor>();
 
             // TEMP FLOORS
-            Floors.Add(new Floor(1));
+            //Floors.Add(new Floor(1));
 
             // receive updated floor from floor survey page
             MessagingCenter.Subscribe<DataEntryPage, AreaSurvey[]>(this, "SaveFloorSurvey",

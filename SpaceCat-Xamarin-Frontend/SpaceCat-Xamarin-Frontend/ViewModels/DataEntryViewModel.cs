@@ -13,30 +13,37 @@ namespace SpaceCat_Xamarin_Frontend
     {
         private Floor thisFloor;
         private ObservableCollection<AreaFigure> _figures;
+        private ObservableCollection<FurnitureShape> _shapes;
 
         public ObservableCollection<AreaFigure> Figures
         {
             get { return _figures; }
             set { _figures = value; OnPropertyChanged(); }
         }
+        public ObservableCollection<FurnitureShape> Shapes
+        {
+            get { return _shapes; }
+            set { _shapes = value; OnPropertyChanged(); }
+        }
 
         public DataEntryViewModel()
         {
             Figures = new ObservableCollection<AreaFigure>();
+            Shapes = new ObservableCollection<FurnitureShape>();
         }
 
         public void LoadFloor(Floor aFloor)
         {
             thisFloor = aFloor;
-            foreach(Area a in thisFloor.Areas)
+            foreach(Area anArea in thisFloor.Areas)
             {
-                foreach(SpaceCat.Rectangle rect in a.DefiningRectangles)
+                foreach(SpaceCat.Rectangle rect in anArea.DefiningRectangles)
                 {
-                    Figures.Add(new AreaFigure(a, rect, 1.0));
+                    Figures.Add(new AreaFigure(anArea, rect, 1.0));
                 }
-                foreach(Furniture furn in a.ContainedFurniture)
+                foreach(Furniture furn in anArea.ContainedFurniture)
                 {
-                    //add furniture items
+                    Shapes.Add(new FurnitureShape(furn));
                 }
             }
         }
