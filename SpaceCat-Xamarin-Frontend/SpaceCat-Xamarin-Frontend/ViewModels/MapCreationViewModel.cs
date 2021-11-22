@@ -333,6 +333,7 @@ namespace SpaceCat_Xamarin_Frontend
             }
             foreach (FurnitureShape shape in Shapes)
             {
+                bool figFound = false;
                 if (Figures.Count < 1)
                 {
                     if (!ignoreFreeFurniture)
@@ -347,15 +348,16 @@ namespace SpaceCat_Xamarin_Frontend
                             if (anArea == fig.Area)
                             {
                                 anArea.AddFurniture(shape.Furn);
+                                figFound = true;
                                 break;
                             }
                         }
                         break;
                     }
-                    //furniture not inside area, display warning
-                    if (!ignoreFreeFurniture)
-                        return null;
                 }
+                //furniture not inside area, display warning
+                if (!ignoreFreeFurniture && !figFound)
+                    return null;
             }
             ThisFloor.Areas = NewAreaList;
             return ThisFloor;
