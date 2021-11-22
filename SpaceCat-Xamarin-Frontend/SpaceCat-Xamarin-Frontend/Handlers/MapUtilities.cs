@@ -41,6 +41,28 @@ namespace SpaceCat_Xamarin_Frontend
             else return false;
         }
 
+        /// <summary>
+        ///     Determines if the provided point is contained within the bounds of the provided image.
+        /// </summary>
+        /// <param name="img">The image to check for containment.</param>
+        /// <param name="pt">The point to check if contained in image.</param>
+        /// <returns>Returns true if provided point is within the bounds of the image.</returns>
+        public static bool ShapeContains(FurnitureShape img, Point pt)
+        {
+            if (img != null)
+            {
+                double lowX = img.Bounds.X;
+                double lowY = img.Bounds.Y;
+                double highX = lowX + img.Bounds.Width;
+                double highY = lowY + img.Bounds.Height;
+
+                if (pt.X >= lowX && pt.X <= highX && pt.Y >= lowY && pt.Y <= highY)
+                    return true;
+                else return false;
+            }
+            else return false;
+        }
+
 
         /// <summary>
         ///     Converts a point collection into 4 doubles representing the top left x and y coordinates of 
