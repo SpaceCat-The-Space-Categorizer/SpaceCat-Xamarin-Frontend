@@ -22,6 +22,9 @@ namespace SpaceCat_Xamarin_Frontend
 
         private async void Tapped_NewFloor(object sender, EventArgs e)
         {
+            b1.IsEnabled = false;
+            b2.IsEnabled = false;
+            b3.IsEnabled = false;
             string name = await DisplayPromptAsync("New Floor", "Enter a name for the new floor: ", "OK", "Cancel", "a name...");
             int number = 0;
             bool cancel = true;
@@ -44,7 +47,11 @@ namespace SpaceCat_Xamarin_Frontend
                     await DisplayAlert("New Floor", "The new floor number needs to be a whole number!", "OK");
                 }
             }
-            
+
+            b1.IsEnabled = true;
+            b2.IsEnabled = true;
+            b3.IsEnabled = true;
+
             if (!cancel)
                 await Navigation.PushModalAsync(new MapCreationPage(new Floor(number), true));
         }
