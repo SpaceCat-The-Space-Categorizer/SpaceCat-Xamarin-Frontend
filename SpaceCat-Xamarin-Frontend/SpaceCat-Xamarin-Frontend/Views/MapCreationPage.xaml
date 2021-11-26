@@ -35,7 +35,7 @@
                     <Frame Style="{StaticResource frame-tools-main}">
                         <StackLayout>
                             <!-- AREA TOOLS -->
-                            <Frame Style="{StaticResource frame-interior}">
+                            <Frame HeightRequest="300" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="AREA TOOLS" Style="{StaticResource label-tools-title}"/>
                                     <Grid>
@@ -46,14 +46,17 @@
                                 </StackLayout>
                             </Frame>
 
-                            <!-- FURNITURE TOOLS -->
+                            <!-- FURNITURE -->
+                            
                             <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
-                                    <Grid>
-                                        <Button Grid.Row="0" Grid.Column="0" Text="Add New &#x0a;Furniture" Command="{Binding AddFurnitureCommand}" Style="{StaticResource button-tools}"/>
-                                        <Button Grid.Row="0" Grid.Column="1" Text="Choose &#x0a;Furniture" Command="{Binding ChooseFurnitureCommand}" Style="{StaticResource button-tools}"/>
-                                    </Grid>
+                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Style="{StaticResource button-tools}"/>
+                                    <ScrollView>
+                                        <Grid x:Name="FurniturePresetList">
+                                            
+                                        </Grid>
+                                    </ScrollView>
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
@@ -71,17 +74,31 @@
                 <!-- MAP -->
                 <Frame HorizontalOptions="FillAndExpand" Style="{StaticResource frame-exterior}">
 
-                    <AbsoluteLayout x:Name="theMap" BindableLayout.ItemsSource="{Binding Figures}">
+                    <AbsoluteLayout>
 
                         <AbsoluteLayout.Effects>
                             <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
                         </AbsoluteLayout.Effects>
 
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
+                        <Frame Padding="0">
+                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </AbsoluteLayout>
+                        </Frame>
+
+                        <Frame Padding="0">
+                            <AbsoluteLayout x:Name="mapFurniture" BindableLayout.ItemsSource="{Binding Shapes}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Source="{Binding Source}" AbsoluteLayout.LayoutBounds="{Binding Bounds}"/>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </AbsoluteLayout>
+                        </Frame>
 
                     </AbsoluteLayout>
                 </Frame>
