@@ -16,16 +16,16 @@
             <AbsoluteLayout>
             
                 <!-- MAP -->
-                <Frame AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="SizeProportional" Style="{StaticResource frame-exterior}">
+                <Frame AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="SizeProportional" Style="{StaticResource frame-exterior}"> <!-- HorizontalOptions="FillAndExpand" -->
                     <AbsoluteLayout>
                         
                         <AbsoluteLayout.Effects>
                             <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
                         </AbsoluteLayout.Effects>
-                        
-                        <BoxView BackgroundColor="AliceBlue" WidthRequest="700" HeightRequest="500"/>
 
-                        <Frame>
+                        <Image Source="sampleFloorplan.jpg" Aspect="AspectFill"/>
+
+                        <Frame Padding="0">
                             <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
