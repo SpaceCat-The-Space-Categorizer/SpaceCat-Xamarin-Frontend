@@ -53,7 +53,7 @@ namespace SpaceCat_Xamarin_Frontend
             b3.IsEnabled = true;
 
             if (!cancel)
-                await Navigation.PushModalAsync(new MapCreationPage(new Floor(number), true));
+                await Navigation.PushModalAsync(new MapCreationPage(new Floor(number, name), true));
         }
 
         private async void Tapped_EditFloor(object sender, EventArgs e)
