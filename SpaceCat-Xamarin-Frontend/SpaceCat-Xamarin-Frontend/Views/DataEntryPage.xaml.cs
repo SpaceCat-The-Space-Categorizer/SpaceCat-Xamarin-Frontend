@@ -43,6 +43,10 @@ namespace SpaceCat_Xamarin_Frontend
                     CounterFrame.IsVisible = false;
                 }
             }
+            else if (((DataEntryViewModel)BindingContext).SelectedFigureIndex == -1)
+            {
+                CounterFrame.IsVisible = false;
+            }
         }
 
         private void TappedAddAreaNote(object sender, EventArgs e)

@@ -26,10 +26,16 @@ namespace SpaceCat_Xamarin_Frontend
             set { _shapes = value; OnPropertyChanged(); }
         }
 
+        // SelectedFurnitureIndex is the index from SelectedFigureIndex's Area.ContainedFurniture
+        public int SelectedFigureIndex;
+        private int SelectedFurnitureIndex;
+
         public DataEntryViewModel()
         {
             Figures = new ObservableCollection<AreaFigure>();
             Shapes = new ObservableCollection<FurnitureShape>();
+            SelectedFigureIndex = -1;
+            SelectedFurnitureIndex = -1;
         }
 
         public void LoadFloor(Floor aFloor)
@@ -50,17 +56,25 @@ namespace SpaceCat_Xamarin_Frontend
 
         public string SelectionHandler(Point tapLoc)
         {
-            foreach(AreaFigure fig in Figures)
+            for (int i = 0; i < Figures.Count; i++)
             {
-                if (MapUtilities.Contains(fig.FigPoints, tapLoc))
+                if (MapUtilities.Contains(Figures[i].FigPoints, tapLoc))
                 {
-                    foreach(Furniture furn in fig.Area.ContainedFurniture)
+                    SelectedFigureIndex = i;
+                    int j = 0;
+                    foreach (Furniture furn in Figures[i].Area.ContainedFurniture)
                     {
                         //if furn contains taploc, select furniture, bring up add/minus buttons
                         if (MapUtilities.ShapeContains(new FurnitureShape(furn), tapLoc))
+                        {
+                            SelectedFurnitureIndex = j;
                             return "furniture";
+                        }
+
+                        j++;
                     }
-                    return "area"; //temp
+
+                    return "area";
                 }
             }
             return "none";
