@@ -7,11 +7,17 @@ using Xamarin.Forms.Shapes;
 namespace SpaceCat_Xamarin_Frontend
 {
     /// <summary>
-    ///     Contains helper functions for creating floor maps, and their unit tests.
+    ///     Contains custom colors, helper functions for creating floor maps, and their unit tests.
     /// </summary>
     public static class MapUtilities
     {
-        
+        /// <summary>
+        /// List of 6 character strings representing hex colors to attribute to areas.
+        /// </summary>
+        public static string[] HexAreaColors = new string[]
+            { "CCDF3E", "E06666", "F6B26B", "FFD966", "93C47D", "76A5AF",
+                "6FA8DC", "8E7CC3", "C27BA0" };
+
         /// <summary>
         ///     Determines if the provided point is contained within the bounds of the shape created by
         ///     the provided point collection.
