@@ -80,7 +80,9 @@
                             <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
                         </AbsoluteLayout.Effects>
 
-                        <Image Source="sampleFloorplan.jpg" Aspect="AspectFill"/>
+                        <StackLayout HeightRequest="1600" WidthRequest="2400" Margin="0" Padding="0" Spacing="0" Orientation="Horizontal">
+                            <Image Source="sampleFloorplan.jpg"/>
+                        </StackLayout>
 
                         <Frame Padding="0">
                             <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">

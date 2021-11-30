@@ -14,18 +14,22 @@
     <ContentPage.Content>
         <Frame Style="{StaticResource frame-main}">
             <AbsoluteLayout>
-            
+
+                
+
                 <!-- MAP -->
-                <Frame AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="SizeProportional" Style="{StaticResource frame-exterior}"> <!-- HorizontalOptions="FillAndExpand" -->
+                <Frame AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="SizeProportional" Style="{StaticResource frame-exterior}">
                     <AbsoluteLayout>
                         
                         <AbsoluteLayout.Effects>
                             <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
                         </AbsoluteLayout.Effects>
 
-                        <Image Source="sampleFloorplan.jpg" Aspect="AspectFill"/>
+                        <StackLayout HeightRequest="1600" WidthRequest="2400" Margin="0" Padding="0" Spacing="0" Orientation="Horizontal">
+                            <Image Source="sampleFloorplan.jpg"/>
+                        </StackLayout>
 
-                        <Frame Padding="0">
+                            <Frame Padding="0">
                             <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
@@ -49,14 +53,24 @@
                 </Frame>
 
                 <!-- COUNTER BUTTONS -->
-                <Frame x:Name="CounterFrame" AbsoluteLayout.LayoutBounds="1, 0.2" AbsoluteLayout.LayoutFlags="PositionProportional" Style="{StaticResource frame-exterior}">
+                <Frame x:Name="CounterFrame" AbsoluteLayout.LayoutBounds="0, 0.2" AbsoluteLayout.LayoutFlags="PositionProportional" Style="{StaticResource frame-interior}">
                     <StackLayout VerticalOptions="Center">
                         <Button Text="Add" Style="{StaticResource button-big}" />
                         <Button Text="Minus" Style="{StaticResource button-big}" />
+                        <Button Text="Add Note&#x0a;to Area" Clicked="TappedAddAreaNote" Style="{StaticResource button-big}"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- MAP OPTIONS -->
+                <Frame AbsoluteLayout.LayoutBounds="0, 1" AbsoluteLayout.LayoutFlags="PositionProportional" Style="{StaticResource frame-interior}">
+                    <StackLayout>
+                        <Button Text="Submit Survey" Clicked="TappedSave" Style="{StaticResource button-big}"/>
+                        <Button Text="Abort &amp; Exit" Clicked="TappedAbort" Style="{StaticResource button-big}"/>
                     </StackLayout>
                 </Frame>
 
             </AbsoluteLayout>
+            
         </Frame>
     </ContentPage.Content>
 </ContentPage>

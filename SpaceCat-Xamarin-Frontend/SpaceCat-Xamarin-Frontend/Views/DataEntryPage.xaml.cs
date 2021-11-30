@@ -31,5 +31,28 @@ namespace SpaceCat_Xamarin_Frontend
                     CounterFrame.IsVisible = false;
             }
         }
+
+        private void TappedAddAreaNote(object sender, EventArgs e)
+        {
+            // (unimplemented) add pop-up entry to add note to area
+        }
+
+        private async void TappedSave (object sender, EventArgs e)
+        {
+            // TODO: save survey data
+            bool success = true;
+
+            if (success)
+                await Navigation.PopModalAsync();
+            else
+            {
+                // TODO: add pop-up indicating an error occurred
+            }
+        }
+
+        private async void TappedAbort(object sender, EventArgs e)
+        {
+            await Navigation.PopModalAsync();
+        }
     }
 }
