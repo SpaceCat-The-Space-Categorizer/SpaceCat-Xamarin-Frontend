@@ -66,6 +66,7 @@ namespace SpaceCat_Xamarin_Frontend
             ThisBuilding.Floors.Clear();
             foreach (Floor f in Floors)
                 ThisBuilding.AddFloor(f);
+            Persistence.SaveBuilding(ThisBuilding);
             MessagingCenter.Send(this, "UpdateBuilding", (ThisBuilding, NewBuild));
         }
 
