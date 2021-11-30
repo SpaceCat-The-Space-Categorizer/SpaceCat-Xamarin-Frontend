@@ -70,7 +70,9 @@ namespace SpaceCat_Xamarin_Frontend
 
         private async void TappedAbort(object sender, EventArgs e)
         {
-            await Navigation.PopModalAsync();
+            bool discard = await DisplayAlert("Abort Survey", "Are you sure you want to discard this survey?", "Continue", "No, Cancel!");
+            if (discard)
+                await Navigation.PopModalAsync();
         }
     }
 }
