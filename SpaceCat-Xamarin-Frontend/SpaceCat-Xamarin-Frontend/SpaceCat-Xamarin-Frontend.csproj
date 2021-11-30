@@ -11,16 +11,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SpaceCat" Version="0.1.0" />
+    <PackageReference Include="SpaceCat" Version="0.3.3" />
+    <PackageReference Include="TouchTracking" Version="1.2.0" />
+    <PackageReference Include="TouchTracking.Forms" Version="1.1.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\MapCreationPage.xaml">
+    <Compile Update="Views\FloorSelectionViewPage.xaml.cs">
+      <DependentUpon>FloorSelectionViewPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Views\DataEntryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Test_MapCreatePage.xaml">
+    <EmbeddedResource Update="Views\FloorSelectionEditPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\MapCreationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

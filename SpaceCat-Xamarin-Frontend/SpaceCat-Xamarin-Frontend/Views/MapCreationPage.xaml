@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:tt="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms"
              xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
              x:Class="SpaceCat_Xamarin_Frontend.MapCreationPage">
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <local:StatusToColorConverter x:Key="statusToColor"/>
             <Style x:Key="frame-tools-main" TargetType="Frame" BasedOn="{StaticResource frame-exterior}">
                 <Setter Property="WidthRequest" Value="200"/>
             </Style>
@@ -34,25 +36,28 @@
                     <Frame Style="{StaticResource frame-tools-main}">
                         <StackLayout>
                             <!-- AREA TOOLS -->
-                            <Frame Style="{StaticResource frame-interior}">
+                            <Frame HeightRequest="300" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="AREA TOOLS" Style="{StaticResource label-tools-title}"/>
                                     <Grid>
-                                        <Button Text="New Area" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding TapNewArea}" Style="{StaticResource button-tools}"/>
-                                        <Button Text="Delete &#x0a;Area" Grid.Row="1" Grid.Column="0" Command="{Binding TapDeleteArea}" Style="{StaticResource button-tools}"/>
-                                        <Button Text="Add to &#x0a;Area" Grid.Row="1" Grid.Column="1" Command="{Binding TapAddArea}" Style="{StaticResource button-tools}"/>
+                                        <Button Text="New Area" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding NewAreaCommand}" Style="{StaticResource button-tools}"/>
+                                        <Button Text="Delete &#x0a;Area" Grid.Row="1" Grid.Column="0" Command="{Binding DeleteAreaCommand}" Style="{StaticResource button-tools}"/>
+                                        <Button Text="Add to &#x0a;Area" Grid.Row="1" Grid.Column="1" Command="{Binding AddAreaCommand}" Style="{StaticResource button-tools}"/>
                                     </Grid>
                                 </StackLayout>
                             </Frame>
 
-                            <!-- FURNITURE TOOLS -->
+                            <!-- FURNITURE -->
+                            
                             <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
-                                    <Grid>
-                                        <Button Grid.Row="0" Grid.Column="0" Text="Add New &#x0a;Furniture" Command="{Binding TapAddFurniture}" Style="{StaticResource button-tools}"/>
-                                        <Button Grid.Row="0" Grid.Column="1" Text="Choose &#x0a;Furniture" Command="{Binding TapChooseFurniture}" Style="{StaticResource button-tools}"/>
-                                    </Grid>
+                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Style="{StaticResource button-tools}"/>
+                                    <ScrollView>
+                                        <Grid x:Name="FurniturePresetList">
+                                            
+                                        </Grid>
+                                    </ScrollView>
                                 </StackLayout>
                             </Frame>
                         </StackLayout>
@@ -61,7 +66,7 @@
 
                     <!-- MAIN BUTTONS -->
                     <StackLayout VerticalOptions="End">
-                        <Button Text="Map Settings" Command="{Binding TapSettings}" Style="{StaticResource button-big}"/>
+                        <Button Text="Map Settings" Command="{Binding MapSettingsCommand}" Style="{StaticResource button-big}"/>
                         <Button Text="Save &amp; Exit" Clicked="ExitPage" Style="{StaticResource button-big}"/>
                     </StackLayout>
                 </StackLayout>
@@ -69,17 +74,42 @@
 
                 <!-- MAP -->
                 <Frame HorizontalOptions="FillAndExpand" Style="{StaticResource frame-exterior}">
+
                     <AbsoluteLayout>
-                        <!-- TODO: need to see how it behaves with image -->
-                        <BoxView Color="AntiqueWhite"
-                                AbsoluteLayout.LayoutBounds="0.5,0.5,900,725"
-                                AbsoluteLayout.LayoutFlags="PositionProportional" />
-                        <Label Text="Centered text"
-                                AbsoluteLayout.LayoutBounds="0.5,0.5,110,25"
-                                AbsoluteLayout.LayoutFlags="PositionProportional" />
+
+                        <AbsoluteLayout.Effects>
+                            <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
+                        </AbsoluteLayout.Effects>
+
+                        <StackLayout HeightRequest="1600" WidthRequest="2400" Margin="0" Padding="0" Spacing="0" Orientation="Horizontal">
+                            <Image Source="sampleFloorplan.jpg"/>
+                        </StackLayout>
+
+                        <Frame Padding="0">
+                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </AbsoluteLayout>
+                        </Frame>
+
+                        <Frame Padding="0">
+                            <AbsoluteLayout x:Name="mapFurniture" BindableLayout.ItemsSource="{Binding Shapes}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" Style="{StaticResource frame-furniture}">
+                                            <Image Source="{Binding Source}"/>
+                                        </Frame>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </AbsoluteLayout>
+                        </Frame>
+
                     </AbsoluteLayout>
                 </Frame>
-            
+                
             
             
             </StackLayout>
