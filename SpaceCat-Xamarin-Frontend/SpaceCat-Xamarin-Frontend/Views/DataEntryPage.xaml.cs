@@ -24,11 +24,24 @@ namespace SpaceCat_Xamarin_Frontend
             if (args.Type == TouchActionType.Released)
             {
                 Point tapLoc = new Point(args.Location.X, args.Location.Y);
-                bool furnitureSelected = ((DataEntryViewModel)BindingContext).SelectionHandler(tapLoc);
-                if (furnitureSelected)
+                string selection = ((DataEntryViewModel)BindingContext).SelectionHandler(tapLoc);
+
+                if (selection == "furniture")
+                {
                     CounterFrame.IsVisible = true;
+                    AddButton.IsEnabled = true;
+                    MinusButton.IsEnabled = true;
+                }
+                else if (selection == "area")
+                {
+                    CounterFrame.IsVisible = true;
+                    AddButton.IsEnabled = false;
+                    MinusButton.IsEnabled = false;
+                }
                 else
+                {
                     CounterFrame.IsVisible = false;
+                }
             }
         }
 

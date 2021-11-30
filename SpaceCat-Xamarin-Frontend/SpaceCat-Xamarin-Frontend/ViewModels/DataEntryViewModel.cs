@@ -48,7 +48,7 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
-        public bool SelectionHandler(Point tapLoc)
+        public string SelectionHandler(Point tapLoc)
         {
             foreach(AreaFigure fig in Figures)
             {
@@ -57,12 +57,13 @@ namespace SpaceCat_Xamarin_Frontend
                     foreach(Furniture furn in fig.Area.ContainedFurniture)
                     {
                         //if furn contains taploc, select furniture, bring up add/minus buttons
-                        return true;
+                        if (MapUtilities.ShapeContains(new FurnitureShape(furn), tapLoc))
+                            return "furniture";
                     }
-                    return true; //temp
+                    return "area"; //temp
                 }
             }
-            return false;
+            return "none";
         }
 
 
