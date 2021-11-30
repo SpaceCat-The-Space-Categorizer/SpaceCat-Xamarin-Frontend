@@ -62,6 +62,8 @@
                                                         <StackLayout Orientation="Horizontal">
                                                             <Label Text="Start a Survey on Floor " Style="{StaticResource label-medium}"/>
                                                             <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
+                                                            <Label Text=": " Style="{StaticResource label-medium}"/>
+                                                            <Label Text="{Binding FloorName}" Style="{StaticResource label-medium}"/>
                                                         </StackLayout>
                                                     </Frame>
                                                 </ViewCell>

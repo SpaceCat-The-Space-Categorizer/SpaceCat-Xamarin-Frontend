@@ -63,6 +63,8 @@
                                                             <Button Text="X" Clicked="Tapped_DeleteFloor" CommandParameter="{Binding FloorNumber}" Style="{StaticResource button-delete}"/>
                                                             <Label Text="Floor " Style="{StaticResource label-medium}"/>
                                                             <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
+                                                            <Label Text=": " Style="{StaticResource label-medium}"/>
+                                                            <Label Text="{Binding FloorName}" Style="{StaticResource label-medium}"/>
                                                         </StackLayout>
                                                     </Frame>
                                                 </ViewCell>
