@@ -7,6 +7,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <local:StatusToColorConverter x:Key="statusToColor"/>
             <Style x:Key="frame-tools-main" TargetType="Frame" BasedOn="{StaticResource frame-exterior}">
                 <Setter Property="WidthRequest" Value="200"/>
             </Style>
@@ -80,6 +81,10 @@
                             <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
                         </AbsoluteLayout.Effects>
 
+                        <StackLayout HeightRequest="1600" WidthRequest="2400" Margin="0" Padding="0" Spacing="0" Orientation="Horizontal">
+                            <Image Source="sampleFloorplan.jpg"/>
+                        </StackLayout>
+
                         <Frame Padding="0">
                             <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
                                 <BindableLayout.ItemTemplate>
@@ -94,7 +99,9 @@
                             <AbsoluteLayout x:Name="mapFurniture" BindableLayout.ItemsSource="{Binding Shapes}">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
-                                        <Image Source="{Binding Source}" AbsoluteLayout.LayoutBounds="{Binding Bounds}"/>
+                                        <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" Style="{StaticResource frame-furniture}">
+                                            <Image Source="{Binding Source}"/>
+                                        </Frame>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
                             </AbsoluteLayout>

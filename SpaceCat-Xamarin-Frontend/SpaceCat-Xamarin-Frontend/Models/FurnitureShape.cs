@@ -11,6 +11,7 @@ namespace SpaceCat_Xamarin_Frontend
     public class FurnitureShape
     {
         private Furniture _furn;
+        private string _status;
         private string _source;
         private Xamarin.Forms.Rectangle _bounds;
         /// <summary>
@@ -20,6 +21,15 @@ namespace SpaceCat_Xamarin_Frontend
         {
             get { return _furn; }
             set { _furn = value; OnPropertyChanged(); }
+        }
+        /// <summary>
+        /// The color indicating the status of the shape.
+        /// Green has been counted, Red hasn't been counted, Yellow indicates the shape has been selected.
+        /// </summary>
+        public string Status
+        {
+            get { return _status; }
+            set { _status = value; OnPropertyChanged(); }
         }
         /// <summary>
         /// The file name of the image representing the furniture.
@@ -45,9 +55,24 @@ namespace SpaceCat_Xamarin_Frontend
         public FurnitureShape(FurnitureBlueprint blueprint)
         {
             Furn = blueprint.NewInstance();
+            Status = "Uncounted";
             Source = blueprint.Filepath;
             Bounds = new Xamarin.Forms.Rectangle(0, 0, 100.0 * Furn.StretchX, 100.0 * Furn.StretchY);
             Furn.Corner = new Tuple<double,double>(Bounds.X, Bounds.Y);
+        }
+
+        /// <summary>
+        /// Used for updating background color of furniture shape's frame on update of status.
+        /// </summary>
+        /// <param name="oldShape">The shape being altered.</param>
+        /// <param name="newStatus">The new status of the shape (Uncounted, Counted, or InProgress).</param>
+        public FurnitureShape(FurnitureShape oldShape, string newStatus)
+        {
+            Furn = oldShape.Furn;
+            Status = newStatus;
+            Source = oldShape.Source;
+            Bounds = oldShape.Bounds;
+            Furn.Corner = oldShape.Furn.Corner;
         }
 
         /// <summary>
@@ -57,6 +82,7 @@ namespace SpaceCat_Xamarin_Frontend
         public FurnitureShape(Furniture existingFurn)
         {
             Furn = existingFurn;
+            Status = "Uncounted";
             Source = existingFurn.Filepath;
             Bounds = new Xamarin.Forms.Rectangle(existingFurn.Corner.Item1, existingFurn.Corner.Item2, 100.0 * Furn.StretchX, 100.0 * Furn.StretchY);
         }
