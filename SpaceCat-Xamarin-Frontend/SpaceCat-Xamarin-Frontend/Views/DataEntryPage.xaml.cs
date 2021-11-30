@@ -35,6 +35,7 @@ namespace SpaceCat_Xamarin_Frontend
                 else if (selection == "area")
                 {
                     CounterFrame.IsVisible = true;
+                    ((DataEntryViewModel)BindingContext).SeatingText = "";
                     AddButton.IsEnabled = false;
                     MinusButton.IsEnabled = false;
                 }

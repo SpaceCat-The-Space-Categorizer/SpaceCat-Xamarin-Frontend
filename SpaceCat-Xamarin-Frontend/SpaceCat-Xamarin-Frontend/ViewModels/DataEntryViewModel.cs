@@ -12,8 +12,14 @@ namespace SpaceCat_Xamarin_Frontend
     public class DataEntryViewModel : INotifyPropertyChanged
     {
         private Floor thisFloor;
+
+        // SelectedFurnitureIndex is the index from SelectedFigureIndex's Area.ContainedFurniture
+        public int SelectedFigureIndex;
+        private int SelectedFurnitureIndex;
+
         private ObservableCollection<AreaFigure> _figures;
         private ObservableCollection<FurnitureShape> _shapes;
+        private string _seatingText;
 
         public ObservableCollection<AreaFigure> Figures
         {
@@ -25,10 +31,11 @@ namespace SpaceCat_Xamarin_Frontend
             get { return _shapes; }
             set { _shapes = value; OnPropertyChanged(); }
         }
-
-        // SelectedFurnitureIndex is the index from SelectedFigureIndex's Area.ContainedFurniture
-        public int SelectedFigureIndex;
-        private int SelectedFurnitureIndex;
+        public string SeatingText
+        {
+            get { return _seatingText; }
+            set { _seatingText = value; OnPropertyChanged(); }
+        }
 
         public DataEntryViewModel()
         {
@@ -72,6 +79,7 @@ namespace SpaceCat_Xamarin_Frontend
                         if (MapUtilities.ShapeContains(new FurnitureShape(furn), tapLoc))
                         {
                             SelectedFurnitureIndex = j;
+                            SeatingText = "Occupied\n" + furn.OccupiedSeats + " / " + furn.Seating;
                             return "furniture";
                         }
 
@@ -102,17 +110,24 @@ namespace SpaceCat_Xamarin_Frontend
             int maxSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].Seating;
             int currentSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats;
             if (currentSeating < maxSeating)
+            {
                 Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats += 1;
-            
+                SeatingText = "Occupied\n" + (currentSeating + 1) + " / " + maxSeating;
+            }
+
             System.Diagnostics.Debug.WriteLine(Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats.ToString());
         }
 
         private void ExecuteSeatRemove(object s)
         {
+            int maxSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].Seating;
             int currentSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats;
             if (currentSeating > 0)
+            {
                 Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats -= 1;
-            
+                SeatingText = "Occupied\n" + (currentSeating - 1) + " / " + maxSeating;
+            }
+
             System.Diagnostics.Debug.WriteLine(Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats.ToString());
         }
 
