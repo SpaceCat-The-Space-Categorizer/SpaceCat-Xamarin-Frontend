@@ -36,19 +36,23 @@ namespace SpaceCat_Xamarin_Frontend
             Shapes = new ObservableCollection<FurnitureShape>();
             SelectedFigureIndex = -1;
             SelectedFurnitureIndex = -1;
+
+            SeatAddCommand = new Command(ExecuteSeatAdd);
+            SeatRemoveCommand = new Command(ExecuteSeatRemove);
         }
 
         public void LoadFloor(Floor aFloor)
         {
             thisFloor = aFloor;
-            foreach(Area anArea in thisFloor.Areas)
+            foreach (Area anArea in thisFloor.Areas)
             {
-                foreach(SpaceCat.Rectangle rect in anArea.DefiningRectangles)
+                foreach (SpaceCat.Rectangle rect in anArea.DefiningRectangles)
                 {
                     Figures.Add(new AreaFigure(anArea, rect, 1.0));
                 }
-                foreach(Furniture furn in anArea.ContainedFurniture)
+                foreach (Furniture furn in anArea.ContainedFurniture)
                 {
+                    furn.ClearSurveyData();
                     Shapes.Add(new FurnitureShape(furn));
                 }
             }
@@ -78,6 +82,38 @@ namespace SpaceCat_Xamarin_Frontend
                 }
             }
             return "none";
+        }
+
+
+        private void AddAreaNote(string notes)
+        {
+            // (unimplemented)
+            Figures[SelectedFigureIndex].Area.AdditionalNotes = notes;
+        }
+
+
+        // USER INPUT COMMAND HANDLERS
+        // Commands allow button clicks to route to ViewModel instead of using their "Clicked" property
+        public Command SeatAddCommand { get; set; }
+        public Command SeatRemoveCommand { get; set; }
+
+        private void ExecuteSeatAdd(object s)
+        {
+            int maxSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].Seating;
+            int currentSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats;
+            if (currentSeating < maxSeating)
+                Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats += 1;
+            
+            System.Diagnostics.Debug.WriteLine(Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats.ToString());
+        }
+
+        private void ExecuteSeatRemove(object s)
+        {
+            int currentSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats;
+            if (currentSeating > 0)
+                Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats -= 1;
+            
+            System.Diagnostics.Debug.WriteLine(Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats.ToString());
         }
 
 

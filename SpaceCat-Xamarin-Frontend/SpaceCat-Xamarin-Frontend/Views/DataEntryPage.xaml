@@ -55,8 +55,8 @@
                 <!-- COUNTER BUTTONS -->
                 <Frame x:Name="CounterFrame" AbsoluteLayout.LayoutBounds="0, 0.2" AbsoluteLayout.LayoutFlags="PositionProportional" Style="{StaticResource frame-interior}">
                     <StackLayout VerticalOptions="Center">
-                        <Button x:Name="AddButton" Text="Add" Style="{StaticResource button-big}" />
-                        <Button x:Name="MinusButton" Text="Minus" Style="{StaticResource button-big}" />
+                        <Button x:Name="AddButton" Text="Add" Command="{Binding SeatAddCommand}" Style="{StaticResource button-big}" />
+                        <Button x:Name="MinusButton" Text="Minus" Command="{Binding SeatRemoveCommand}" Style="{StaticResource button-big}" />
                         <Button Text="Add Note&#x0a;to Area" Clicked="TappedAddAreaNote" Style="{StaticResource button-big}"/>
                     </StackLayout>
                 </Frame>
