@@ -19,17 +19,17 @@ namespace SpaceCat_Xamarin_Frontend
             ((FloorSelectionViewViewModel)BindingContext).LoadBuilding(thisBuilding);
         }
 
-        private async void Tapped_SurveyFloor(object sender, EventArgs e)
-        {
-            Floor surveyFloor = ((FloorSelectionViewViewModel)BindingContext).SelectedFloor;
-            if (surveyFloor != null)
-                await Navigation.PushModalAsync(new DataEntryPage(surveyFloor));
-        }
-
         private async void Tapped_SaveExit(object sender, EventArgs e)
         {
             ((FloorSelectionViewViewModel)BindingContext).SaveExit();
             await Navigation.PopModalAsync();
+        }
+
+        private async void FloorSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            Floor surveyFloor = ((FloorSelectionViewViewModel)BindingContext).SelectedFloor;
+            if (surveyFloor != null)
+                await Navigation.PushModalAsync(new DataEntryPage(surveyFloor));
         }
     }
 }

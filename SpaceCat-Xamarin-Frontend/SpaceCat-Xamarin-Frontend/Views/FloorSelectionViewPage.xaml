@@ -54,13 +54,13 @@
                                 <StackLayout>
                                     <Label Text="FLOORS" Style="{StaticResource label-large}"/>
 
-                                    <ListView  ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor, Mode=TwoWay}">
+                                    <ListView  ItemsSource="{Binding Floors}" ItemSelected="FloorSelected" SelectedItem="{Binding SelectedFloor, Mode=OneWayToSource}">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <ViewCell>
                                                     <Frame Style="{StaticResource frame-listItem}">
                                                         <StackLayout Orientation="Horizontal">
-                                                            <Label Text="Floor " Style="{StaticResource label-medium}"/>
+                                                            <Label Text="Start a Survey on Floor " Style="{StaticResource label-medium}"/>
                                                             <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
                                                         </StackLayout>
                                                     </Frame>
@@ -69,9 +69,6 @@
                                         </ListView.ItemTemplate>
                                     </ListView>
                                     
-                                    <StackLayout Orientation="Horizontal" >
-                                        <Button Text="Edit Floor" Clicked="Tapped_SurveyFloor" Style="{StaticResource button-floors}"/>
-                                    </StackLayout>
                                 </StackLayout>
                             </Frame>
 
