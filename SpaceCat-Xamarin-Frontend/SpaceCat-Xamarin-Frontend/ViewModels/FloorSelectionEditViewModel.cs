@@ -43,7 +43,7 @@ namespace SpaceCat_Xamarin_Frontend
                     if (!floor.Item2)     //if it's not a new floor
                     {
                         int ogIndex = Floors.IndexOf(SelectedFloor);
-                        Floors.RemoveAt(ogIndex);
+                        Floors.RemoveAt(ogIndex);   //new floor not marked as new floor
                         Floors.Move(Floors.Count - 1, ogIndex);
                     }
                     SelectedFloor = Floors[0];
