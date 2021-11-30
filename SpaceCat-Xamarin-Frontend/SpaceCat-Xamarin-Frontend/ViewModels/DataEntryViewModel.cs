@@ -13,9 +13,8 @@ namespace SpaceCat_Xamarin_Frontend
     {
         private Floor thisFloor;
 
-        // SelectedFurnitureIndex is the index from SelectedFigureIndex's Area.ContainedFurniture
         public int SelectedFigureIndex;
-        private int SelectedFurnitureIndex;
+        public int SelectedShapeIndex;
 
         private ObservableCollection<AreaFigure> _figures;
         private ObservableCollection<FurnitureShape> _shapes;
@@ -42,12 +41,16 @@ namespace SpaceCat_Xamarin_Frontend
             Figures = new ObservableCollection<AreaFigure>();
             Shapes = new ObservableCollection<FurnitureShape>();
             SelectedFigureIndex = -1;
-            SelectedFurnitureIndex = -1;
+            SelectedShapeIndex = -1;
 
             SeatAddCommand = new Command(ExecuteSeatAdd);
             SeatRemoveCommand = new Command(ExecuteSeatRemove);
         }
 
+        /// <summary>
+        /// Loads the given floor onto the screen by populating the Figures and Shapes lists.
+        /// </summary>
+        /// <param name="aFloor">The floor to load.</param>
         public void LoadFloor(Floor aFloor)
         {
             thisFloor = aFloor;
@@ -65,33 +68,51 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
+        /// <summary>
+        /// Handles any tap release interactions on the map. Updates status of furniture shapes
+        /// and helps manage appearance of survey buttons.
+        /// </summary>
+        /// <param name="tapLoc">The location of the recorded tap.</param>
+        /// <returns>Returns "furniture" if furniture was tapped, 
+        /// "area" if just an area was tapped, or "none" if neither were tapped.</returns>
         public string SelectionHandler(Point tapLoc)
         {
+            // check for previous selection
+            if (SelectedShapeIndex != -1)
+            {
+                Shapes.Add(new FurnitureShape(Shapes[SelectedShapeIndex], "Counted"));
+                Shapes.RemoveAt(SelectedShapeIndex);
+            }
+
+            SelectedShapeIndex = -1;
             for (int i = 0; i < Figures.Count; i++)
             {
                 if (MapUtilities.Contains(Figures[i].FigPoints, tapLoc))
                 {
                     SelectedFigureIndex = i;
-                    int j = 0;
                     foreach (Furniture furn in Figures[i].Area.ContainedFurniture)
                     {
                         //if furn contains taploc, select furniture, bring up add/minus buttons
-                        if (MapUtilities.ShapeContains(new FurnitureShape(furn), tapLoc))
+                        for (int j = 0; j < Shapes.Count; j++)
                         {
-                            SelectedFurnitureIndex = j;
-                            SeatingText = "Occupied\n" + furn.OccupiedSeats + " / " + furn.Seating;
-                            return "furniture";
+                            if (Shapes[j].Furn == furn)
+                            {
+                                if (MapUtilities.ShapeContains(Shapes[j], tapLoc))
+                                {
+                                    Shapes.Add(new FurnitureShape(Shapes[j], "InProgress"));
+                                    Shapes.RemoveAt(j);
+                                    SelectedShapeIndex = Shapes.Count - 1;
+                                    SeatingText = "Occupied\n" + furn.OccupiedSeats + " / " + furn.Seating;
+                                    return "furniture";
+                                }
+                            }
                         }
-
-                        j++;
                     }
-
                     return "area";
                 }
             }
             return "none";
         }
-
 
         private void AddAreaNote(string notes)
         {
@@ -105,30 +126,36 @@ namespace SpaceCat_Xamarin_Frontend
         public Command SeatAddCommand { get; set; }
         public Command SeatRemoveCommand { get; set; }
 
+        /// <summary>
+        /// Adds 1 to the occupied seats count on the selected furniture. Updates the
+        /// associated text accordingly.
+        /// </summary>
+        /// <param name="s">Not used here.</param>
         private void ExecuteSeatAdd(object s)
         {
-            int maxSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].Seating;
-            int currentSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats;
+            int maxSeating = Shapes[SelectedShapeIndex].Furn.Seating;
+            int currentSeating = Shapes[SelectedShapeIndex].Furn.OccupiedSeats;
             if (currentSeating < maxSeating)
             {
-                Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats += 1;
+                Shapes[SelectedShapeIndex].Furn.OccupiedSeats += 1;
                 SeatingText = "Occupied\n" + (currentSeating + 1) + " / " + maxSeating;
             }
-
-            System.Diagnostics.Debug.WriteLine(Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats.ToString());
         }
 
+        /// <summary>
+        /// Subtracts 1 from the occupied seats count on the selected furniture. Updates
+        /// the associated text accordingly.
+        /// </summary>
+        /// <param name="s">Not used here.</param>
         private void ExecuteSeatRemove(object s)
         {
-            int maxSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].Seating;
-            int currentSeating = Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats;
+            int maxSeating = Shapes[SelectedShapeIndex].Furn.Seating;
+            int currentSeating = Shapes[SelectedShapeIndex].Furn.OccupiedSeats;
             if (currentSeating > 0)
             {
-                Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats -= 1;
+                Shapes[SelectedShapeIndex].Furn.OccupiedSeats -= 1;
                 SeatingText = "Occupied\n" + (currentSeating - 1) + " / " + maxSeating;
             }
-
-            System.Diagnostics.Debug.WriteLine(Figures[SelectedFigureIndex].Area.ContainedFurniture[SelectedFurnitureIndex].OccupiedSeats.ToString());
         }
 
 

@@ -21,10 +21,6 @@ namespace SpaceCat_Xamarin_Frontend
         private bool FigInProgress;
         private List<Area> NewAreaList;
         private List<FurnitureBlueprint> Templates;
-        
-        private string[] hexAreaColors = new string[]
-            { "CCDF3E", "E06666", "F6B26B", "FFD966", "93C47D", "76A5AF",
-                "6FA8DC", "8E7CC3", "C27BA0" };
 
         private ObservableCollection<AreaFigure> _figures;
         private int _SelectedFigure;
@@ -170,8 +166,8 @@ namespace SpaceCat_Xamarin_Frontend
 
             if (isNewArea)
             {
-                int randIndex = new Random().Next(hexAreaColors.Length);
-                thisArea = new Area(hexAreaColors[randIndex]);
+                int randIndex = new Random().Next(MapUtilities.HexAreaColors.Length);
+                thisArea = new Area(MapUtilities.HexAreaColors[randIndex]);
                 NewAreaList.Add(thisArea);
             }
             else

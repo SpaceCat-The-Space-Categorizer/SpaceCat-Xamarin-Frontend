@@ -5,6 +5,11 @@
              xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
              x:Class="SpaceCat_Xamarin_Frontend.DataEntryPage">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:StatusToColorConverter x:Key="statusToColor"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.BindingContext>
         <local:DataEntryViewModel/>
@@ -43,7 +48,9 @@
                             <AbsoluteLayout BindableLayout.ItemsSource="{Binding Shapes}">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
-                                        <Image Source="{Binding Source}" AbsoluteLayout.LayoutBounds="{Binding Bounds}"/>
+                                        <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" BackgroundColor="{Binding Status, Converter={StaticResource statusToColor}}" Style="{StaticResource frame-furniture}">
+                                            <Image Source="{Binding Source}"/>
+                                        </Frame>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
                             </AbsoluteLayout>

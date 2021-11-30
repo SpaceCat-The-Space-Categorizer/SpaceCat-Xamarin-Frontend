@@ -7,6 +7,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <local:StatusToColorConverter x:Key="statusToColor"/>
             <Style x:Key="frame-tools-main" TargetType="Frame" BasedOn="{StaticResource frame-exterior}">
                 <Setter Property="WidthRequest" Value="200"/>
             </Style>
@@ -98,7 +99,9 @@
                             <AbsoluteLayout x:Name="mapFurniture" BindableLayout.ItemsSource="{Binding Shapes}">
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
-                                        <Image Source="{Binding Source}" AbsoluteLayout.LayoutBounds="{Binding Bounds}"/>
+                                        <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" Style="{StaticResource frame-furniture}">
+                                            <Image Source="{Binding Source}"/>
+                                        </Frame>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
                             </AbsoluteLayout>
