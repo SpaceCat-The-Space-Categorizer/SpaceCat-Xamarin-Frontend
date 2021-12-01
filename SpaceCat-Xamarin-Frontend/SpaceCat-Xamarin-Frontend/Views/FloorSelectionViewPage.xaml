@@ -77,7 +77,7 @@
                             </Frame>
 
                         </StackLayout>
-                        <Button Text="Save &amp; Exit - Survey Complete" Clicked="Tapped_SaveExit" Style="{StaticResource button-big}"/>
+                        <Button Text="Submit Survey" Clicked="Tapped_SaveExit" Style="{StaticResource button-big}"/>
                     </StackLayout>
                 </Frame>
             </Frame>
