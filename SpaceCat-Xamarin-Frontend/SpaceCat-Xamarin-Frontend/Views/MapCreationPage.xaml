@@ -52,7 +52,7 @@
                             <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
-                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" BorderColor="{Binding DeleteFurnitureToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Margin="0,0,0,10" BorderColor="{Binding DeleteFurnitureToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
                                     <ScrollView>
                                         <Grid x:Name="FurniturePresetList">
                                             
