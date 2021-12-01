@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace SpaceCat_Xamarin_Frontend
 {
-    class FloorSelectionEditViewModel
+    class FloorSelectionEditViewModel : INotifyPropertyChanged
     {
         public bool NewBuild;
         private Building _thisBuilding;
