@@ -19,6 +19,7 @@ namespace SpaceCat_Xamarin_Frontend
         private bool AddAreaToolOn;
         private bool DeleteFurnitureOn;
         private bool FigInProgress;
+        private int LastColorIndex;
         private List<Area> NewAreaList;
         private List<FurnitureBlueprint> Templates;
 
@@ -69,6 +70,7 @@ namespace SpaceCat_Xamarin_Frontend
             AddAreaToolOn = false;
             DeleteFurnitureOn = false;
             FigInProgress = false;
+            LastColorIndex = -1;
             NewAreaList = new List<Area>();
             Templates = new List<FurnitureBlueprint>();
 
@@ -166,8 +168,11 @@ namespace SpaceCat_Xamarin_Frontend
 
             if (isNewArea)
             {
-                int randIndex = new Random().Next(MapUtilities.HexAreaColors.Length);
-                thisArea = new Area(MapUtilities.HexAreaColors[randIndex]);
+                if (LastColorIndex < MapUtilities.HexAreaColors.Length - 1)
+                    LastColorIndex++;
+                else
+                    LastColorIndex = 0;
+                thisArea = new Area(MapUtilities.HexAreaColors[LastColorIndex]);
                 NewAreaList.Add(thisArea);
             }
             else
