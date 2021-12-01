@@ -19,6 +19,7 @@ namespace SpaceCat_Xamarin_Frontend
         public MainPage()
         {
             InitializeComponent();
+            Persistence.ValidateEnvironment();
         }
 
         /// <summary>

@@ -49,7 +49,7 @@ namespace SpaceCat_Xamarin_Frontend
 
                     if (ogIndex != -1)
                     {
-                        Floors.RemoveAt(ogIndex);   //new floor not marked as new floor
+                        Floors.RemoveAt(ogIndex);
                         Floors.Move(Floors.Count - 1, ogIndex);
                     }
                     SelectedFloor = Floors[0];
@@ -72,6 +72,7 @@ namespace SpaceCat_Xamarin_Frontend
             ThisBuilding.Floors.Clear();
             foreach (Floor f in Floors)
                 ThisBuilding.AddFloor(f);
+            Persistence.SaveBuilding(ThisBuilding);
             MessagingCenter.Send(this, "UpdateBuilding", (ThisBuilding, NewBuild));
         }
 

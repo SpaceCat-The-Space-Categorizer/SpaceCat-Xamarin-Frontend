@@ -74,10 +74,19 @@ namespace SpaceCat_Xamarin_Frontend
         /// </summary>
         public void LoadBuildings()
         {
-            Buildings.Add(new BuildingListItem(new Building("Building 1")));
+            /*Buildings.Add(new BuildingListItem(new Building("Building 1")));
             Buildings.Add(new BuildingListItem(new Building("Building 2")));
             Buildings.Add(new BuildingListItem(new Building("Building 3")));
-            Buildings.Add(new BuildingListItem(new Building("Building 4")));
+            Buildings.Add(new BuildingListItem(new Building("Building 4")));*/
+            Building b1 = Persistence.LoadBuilding("Building 1");
+            Building b2 = Persistence.LoadBuilding("Building 2");
+            Building b3 = Persistence.LoadBuilding("Building 3");
+            Building b4 = Persistence.LoadBuilding("Building 4");
+            Buildings.Add(new BuildingListItem(b1));
+            Buildings.Add(new BuildingListItem(b2));
+            Buildings.Add(new BuildingListItem(b3));
+            Buildings.Add(new BuildingListItem(b4));
+
 
             if (Buildings.Count > 0)
                 SelectedBuilding = Buildings[0];
