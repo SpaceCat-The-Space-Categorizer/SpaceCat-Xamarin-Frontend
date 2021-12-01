@@ -475,7 +475,8 @@ namespace SpaceCat_Xamarin_Frontend
             NewAreaToolOn = false;
             AddAreaToolOn = false;
             DeleteFurnitureToolOn = false;
-            DeleteAreaToolOn = true;
+            if (Figures.Count > 0)
+                DeleteAreaToolOn = true;
         }
 
         /// <summary>
@@ -487,7 +488,8 @@ namespace SpaceCat_Xamarin_Frontend
             NewAreaToolOn = false;
             DeleteAreaToolOn = false;
             AddAreaToolOn = false;
-            DeleteFurnitureToolOn = true;
+            if (Shapes.Count > 0)
+                DeleteFurnitureToolOn = true;
         }
 
         private void ExecuteMapSettings(object s)
