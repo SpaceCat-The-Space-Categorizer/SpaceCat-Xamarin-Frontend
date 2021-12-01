@@ -7,9 +7,9 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <local:StatusToColorConverter x:Key="statusToColor"/>
-            <Style x:Key="frame-tools-main" TargetType="Frame" BasedOn="{StaticResource frame-exterior}">
-                <Setter Property="WidthRequest" Value="200"/>
+            <local:BoolToToolColorConverter x:Key="boolToToolColor"/>
+            <Style x:Key="frame-tools-main" TargetType="Frame" BasedOn="{StaticResource frame-interior}">
+                <Setter Property="WidthRequest" Value="300"/>
             </Style>
             <Style x:Key="label-tools-title" TargetType="Label" BasedOn="{StaticResource label-medium}">
                 <Setter Property="TextDecorations" Value="Underline"/>
@@ -33,16 +33,16 @@
             
                 <!-- TOOLS -->
                 <StackLayout>
-                    <Frame Style="{StaticResource frame-tools-main}">
+                    <Frame Style="{StaticResource frame-exterior}">
                         <StackLayout>
                             <!-- AREA TOOLS -->
-                            <Frame HeightRequest="300" Style="{StaticResource frame-interior}">
+                            <Frame HeightRequest="300" Style="{StaticResource frame-tools-main}">
                                 <StackLayout>
                                     <Label Text="AREA TOOLS" Style="{StaticResource label-tools-title}"/>
                                     <Grid>
-                                        <Button Text="New Area" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding NewAreaCommand}" Style="{StaticResource button-tools}"/>
-                                        <Button Text="Delete &#x0a;Area" Grid.Row="1" Grid.Column="0" Command="{Binding DeleteAreaCommand}" Style="{StaticResource button-tools}"/>
-                                        <Button Text="Add to &#x0a;Area" Grid.Row="1" Grid.Column="1" Command="{Binding AddAreaCommand}" Style="{StaticResource button-tools}"/>
+                                        <Button Text="New Area" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding NewAreaCommand}" BorderColor="{Binding NewAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                        <Button Text="Delete &#x0a;Area" Grid.Row="1" Grid.Column="0" Command="{Binding DeleteAreaCommand}" BorderColor="{Binding DeleteAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                        <Button Text="Add to &#x0a;Area" Grid.Row="1" Grid.Column="1" Command="{Binding AddAreaCommand}" BorderColor="{Binding AddAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
                                     </Grid>
                                 </StackLayout>
                             </Frame>
@@ -52,7 +52,7 @@
                             <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
-                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Style="{StaticResource button-tools}"/>
+                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Margin="0,0,0,10" BorderColor="{Binding DeleteFurnitureToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
                                     <ScrollView>
                                         <Grid x:Name="FurniturePresetList">
                                             

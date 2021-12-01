@@ -58,11 +58,15 @@
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <ViewCell>
-                                                    <Frame Style="{StaticResource frame-listItem}">
-                                                        <StackLayout Orientation="Horizontal">
-                                                            <Label Text="Start a Survey on Floor " Style="{StaticResource label-medium}"/>
-                                                            <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
-                                                        </StackLayout>
+                                                    <Frame Style="{StaticResource frame-listItem-back}">
+                                                        <Frame Style="{StaticResource frame-listItem}">
+                                                            <StackLayout Orientation="Horizontal">
+                                                                <Label Text="Start a Survey on Floor " Style="{StaticResource label-medium}"/>
+                                                                <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
+                                                                <Label Text=": " Style="{StaticResource label-medium}"/>
+                                                                <Label Text="{Binding FloorName}" Style="{StaticResource label-medium}"/>
+                                                            </StackLayout>
+                                                        </Frame>
                                                     </Frame>
                                                 </ViewCell>
                                             </DataTemplate>

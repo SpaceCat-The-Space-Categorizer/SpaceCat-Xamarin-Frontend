@@ -9,9 +9,10 @@ using Xamarin.Forms;
 
 namespace SpaceCat_Xamarin_Frontend
 {
-    class FloorSelectionViewViewModel
+    class FloorSelectionViewViewModel : INotifyPropertyChanged
     {
         private Building _thisBuilding;
+        
         private ObservableCollection<Floor> _floors;
         private Floor _selected;
         public Building ThisBuilding
@@ -37,12 +38,6 @@ namespace SpaceCat_Xamarin_Frontend
             // TEMP FLOORS
             //Floors.Add(new Floor(1));
 
-            // receive updated floor from floor survey page
-            MessagingCenter.Subscribe<DataEntryPage, AreaSurvey[]>(this, "SaveFloorSurvey",
-                (page, surveys) =>
-                {
-
-                });
         }
 
         public void LoadBuilding(Building thisBuilding)

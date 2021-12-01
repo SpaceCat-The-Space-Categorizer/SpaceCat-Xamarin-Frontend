@@ -33,7 +33,7 @@ namespace SpaceCat_Xamarin_Frontend
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Color.FromHex(HexSeatStatusColors[0]);
+            return "Uncounted";
         }
     }
 }

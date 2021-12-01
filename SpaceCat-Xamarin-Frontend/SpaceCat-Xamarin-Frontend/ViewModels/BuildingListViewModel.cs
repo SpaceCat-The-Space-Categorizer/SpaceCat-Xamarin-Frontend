@@ -18,6 +18,8 @@ namespace SpaceCat_Xamarin_Frontend
 {
     public class BuildingListViewModel : INotifyPropertyChanged
     {
+        private List<RecentBuilding> RecentBuildings;
+
         private ObservableCollection<BuildingListItem> _buildings;
         private BuildingListItem _selected;
 
@@ -42,30 +44,49 @@ namespace SpaceCat_Xamarin_Frontend
         public BuildingListViewModel()
         {
             Buildings = new ObservableCollection<BuildingListItem>();
-            LoadBuildings();
+            Persistence.ValidateEnvironment();
+            RecentBuildings = Persistence.LoadRecentBuildings();
+            foreach (RecentBuilding build in RecentBuildings)
+            {
+                Buildings.Add(new BuildingListItem(build));
+            }
+            
+            //LoadBuildings();
+            if (Buildings.Count > 0)
+                SelectedBuilding = Buildings[0];
 
             /* Messaging Center subscribes to recieve messages sent from other pages -
                in this case it's recieving the new or editted building object from the FloorSelectionEditPage
                so it can be added to the building list on the landing page */
 
-            MessagingCenter.Subscribe<FloorSelectionEditViewModel, (Building, bool)>(this, "UpdateBuilding",
+            MessagingCenter.Subscribe<FloorSelectionEditViewModel, RecentBuilding>(this, "UpdateBuilding",
                 (page, building) =>
                 {
-                    //Add building
-                    if (building.Item2)
+                    bool newBuild = true;
+                    for (int i = 0; i < Buildings.Count; i++)
                     {
-                        Buildings.Add(new BuildingListItem(building.Item1));
-                        Buildings.Move(Buildings.Count - 1, 0);
-                        OnPropertyChanged("Buildings");
+                        if (Buildings[i].Build.Name == building.Name)
+                        {
+                            newBuild = false;
+                            Buildings.Remove(Buildings[i]);
+                            Buildings.Add(new BuildingListItem(building));
+                            Buildings.Move(Buildings.Count - 1, 0);
+                            break;
+                        }
                     }
-                    else //update building
+                    // if no matching name was found
+                    if (newBuild)
                     {
-                        BuildingListItem oldBuilding = Buildings.FirstOrDefault(build => build.Build.Name == building.Item1.Name);
-                        Buildings.Remove(oldBuilding);
-                        Buildings.Add(new BuildingListItem(building.Item1));
+                        Buildings.Add(new BuildingListItem(building));
                         Buildings.Move(Buildings.Count - 1, 0);
-                        OnPropertyChanged("Buildings");
                     }
+
+                    RecentBuildings.Clear();
+                    foreach (BuildingListItem item in Buildings)
+                    {
+                        RecentBuildings.Add(item.Build);
+                    }
+                    Persistence.SaveRecentBuildings(RecentBuildings);
                 });
         }
 
@@ -74,10 +95,19 @@ namespace SpaceCat_Xamarin_Frontend
         /// </summary>
         public void LoadBuildings()
         {
-            Buildings.Add(new BuildingListItem(new Building("Building 1")));
+            /*Buildings.Add(new BuildingListItem(new Building("Building 1")));
             Buildings.Add(new BuildingListItem(new Building("Building 2")));
             Buildings.Add(new BuildingListItem(new Building("Building 3")));
             Buildings.Add(new BuildingListItem(new Building("Building 4")));
+            Building b1 = Persistence.LoadBuilding("Building 1");
+            Building b2 = Persistence.LoadBuilding("Building 2");
+            Building b3 = Persistence.LoadBuilding("Building 3");
+            Building b4 = Persistence.LoadBuilding("Building 4");
+            Buildings.Add(new BuildingListItem(b1));
+            Buildings.Add(new BuildingListItem(b2));
+            Buildings.Add(new BuildingListItem(b3));
+            Buildings.Add(new BuildingListItem(b4));*/
+
 
             if (Buildings.Count > 0)
                 SelectedBuilding = Buildings[0];

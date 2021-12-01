@@ -9,9 +9,8 @@ using Xamarin.Forms;
 
 namespace SpaceCat_Xamarin_Frontend
 {
-    class FloorSelectionEditViewModel
+    class FloorSelectionEditViewModel : INotifyPropertyChanged
     {
-        public bool NewBuild;
         private Building _thisBuilding;
         private ObservableCollection<Floor> _floors;
         private Floor _selected;
@@ -36,13 +35,19 @@ namespace SpaceCat_Xamarin_Frontend
             Floors = new ObservableCollection<Floor>();
 
             // receive updated floor from floor editing page
-            MessagingCenter.Subscribe<MapCreationPage, (Floor, bool)>(this, "UpdateFloor",
+            MessagingCenter.Subscribe<MapCreationPage, Floor>(this, "UpdateFloor",
                 (page, floor) =>
                 {
-                    Floors.Add(floor.Item1);
-                    if (!floor.Item2)     //if it's not a new floor
+                    int ogIndex = -1;
+                    for (int i = 0; i < Floors.Count; i++)
                     {
-                        int ogIndex = Floors.IndexOf(SelectedFloor);
+                        if (Floors[i].FloorName == floor.FloorName)
+                            ogIndex = i;
+                    }
+                    Floors.Add(floor);
+
+                    if (ogIndex != -1)
+                    {
                         Floors.RemoveAt(ogIndex);
                         Floors.Move(Floors.Count - 1, ogIndex);
                     }
@@ -66,7 +71,8 @@ namespace SpaceCat_Xamarin_Frontend
             ThisBuilding.Floors.Clear();
             foreach (Floor f in Floors)
                 ThisBuilding.AddFloor(f);
-            MessagingCenter.Send(this, "UpdateBuilding", (ThisBuilding, NewBuild));
+            Persistence.SaveBuilding(ThisBuilding);
+            MessagingCenter.Send(this, "UpdateBuilding", new RecentBuilding(ThisBuilding));
         }
 
         // INotifyPropertyChanged interface is used to update the UI when variables are altered
