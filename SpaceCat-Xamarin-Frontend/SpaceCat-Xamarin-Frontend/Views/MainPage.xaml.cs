@@ -91,16 +91,13 @@ namespace SpaceCat_Xamarin_Frontend
             }
             
         }
-
-        private void Clicked_Analysis(object sender, EventArgs e)
-        {
-            
         private async void Clicked_Analysis(object sender, EventArgs e)
         {
             BuildingListItem buildingToAnalyze = ((BuildingListViewModel)BindingContext).SelectedBuilding;
             if ( buildingToAnalyze != null )
             {
-                await Navigation.PushModalAsync(new AnalysisPage(buildingToAnalyze.Build));
+                Building building = Persistence.LoadBuilding(buildingToAnalyze.Build.Name);
+                await Navigation.PushModalAsync(new AnalysisPage(building));
             }
             else
             {

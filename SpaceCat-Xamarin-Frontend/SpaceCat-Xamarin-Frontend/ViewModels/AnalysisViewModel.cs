@@ -17,7 +17,7 @@ namespace SpaceCat_Xamarin_Frontend
             //We should consider automatically creating views at some point
             WorkingBuilding.DatabaseHandler.CreateViews(true);
             //We should add code to handle files with different names
-            WorkingBuilding.DatabaseHandler.ExportCSV("test");
+            WorkingBuilding.DatabaseHandler.ExportCSV(WorkingBuilding.Name);
         }
     }
 }
