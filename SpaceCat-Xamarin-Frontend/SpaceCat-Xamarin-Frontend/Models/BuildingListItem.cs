@@ -12,10 +12,10 @@ namespace SpaceCat_Xamarin_Frontend
     /// </summary>
     public class BuildingListItem
     {
-        private Building _build;
+        private RecentBuilding _build;
         private string _name;
         private DateTime _date;
-        public Building Build
+        public RecentBuilding Build
         {
             get { return _build; }
             set { _build = value; OnPropertyChanged(); }
@@ -35,7 +35,7 @@ namespace SpaceCat_Xamarin_Frontend
         ///     Initalizes a new instance of the BuildingListItem class.
         /// </summary>
         /// <param name="building">The building to base this BuildingListItem object on.</param>
-        public BuildingListItem (Building building)
+        public BuildingListItem (RecentBuilding building)
         {
             Build = building;
             Name = building.Name;

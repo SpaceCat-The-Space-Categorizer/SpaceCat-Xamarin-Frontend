@@ -42,7 +42,7 @@ namespace SpaceCat_Xamarin_Frontend
                     await DisplayAlert("New Building", "Invalid name, try again!", "OK");
             }
             if (accept)
-                await Navigation.PushModalAsync(new FloorSelectionEditPage(new Building(name), true));
+                await Navigation.PushModalAsync(new FloorSelectionEditPage(new RecentBuilding(new Building(name))));
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace SpaceCat_Xamarin_Frontend
 
             Button btn = (Button)sender;
             BuildingListItem building = ((BuildingListViewModel)BindingContext).Buildings.Where(build => build.Build.Name == (string)btn.CommandParameter).FirstOrDefault();
-            Navigation.PushModalAsync(new FloorSelectionEditPage(building.Build, false));
+            Navigation.PushModalAsync(new FloorSelectionEditPage(building.Build));
         }
 
         /// <summary>
@@ -83,6 +83,18 @@ namespace SpaceCat_Xamarin_Frontend
             ((BuildingListViewModel)BindingContext).Buildings.Remove(building);
         }
 
+        private void Clicked_Survey(object sender, EventArgs e)
+        {
+            if (((BuildingListViewModel)BindingContext).SelectedBuilding != null)
+            {
+                Navigation.PushModalAsync(new FloorSelectionViewPage(((BuildingListViewModel)BindingContext).SelectedBuilding.Build));
+            }
+            
+        }
+
+        private void Clicked_Analysis(object sender, EventArgs e)
+        {
+            
         private async void Clicked_Analysis(object sender, EventArgs e)
         {
             BuildingListItem buildingToAnalyze = ((BuildingListViewModel)BindingContext).SelectedBuilding;

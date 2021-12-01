@@ -7,11 +7,28 @@ using Xamarin.Forms.Shapes;
 namespace SpaceCat_Xamarin_Frontend
 {
     /// <summary>
-    ///     Contains helper functions for creating floor maps, and their unit tests.
+    ///     Contains custom colors, helper functions for creating floor maps, and their unit tests.
     /// </summary>
     public static class MapUtilities
     {
-        
+        /// <summary>
+        /// List of 6-character strings representing hex colors to attribute to areas.
+        /// </summary>
+        public static string[] HexAreaColors = new string[]
+            { 
+                // primary colors
+                "d92626", "d97126", "d9ca26", "8ed926", "26d971", "26d9ca",
+                "26acd9", "2671d9", "5326d9", "ac26d9", "d926bb",
+
+                // faded colors and grays
+                "9f7a60", "9f9a60", "608f9f", "70609f", "9f6095", "545454",
+                "808080", "bfbfbf",
+
+                // secondary colors
+                "bf6040", "bf9540", "aabf40", "4abf40", "40bf95", "40b5bf",
+                 "408abf", "4055bf", "7f40bf", "bf4075"
+            };
+
         /// <summary>
         ///     Determines if the provided point is contained within the bounds of the shape created by
         ///     the provided point collection.
@@ -34,6 +51,28 @@ namespace SpaceCat_Xamarin_Frontend
                     if (figPt.X > highX) highX = figPt.X;
                     if (figPt.Y > highY) highY = figPt.Y;
                 }
+                if (pt.X >= lowX && pt.X <= highX && pt.Y >= lowY && pt.Y <= highY)
+                    return true;
+                else return false;
+            }
+            else return false;
+        }
+
+        /// <summary>
+        ///     Determines if the provided point is contained within the bounds of the provided image.
+        /// </summary>
+        /// <param name="img">The image to check for containment.</param>
+        /// <param name="pt">The point to check if contained in image.</param>
+        /// <returns>Returns true if provided point is within the bounds of the image.</returns>
+        public static bool ShapeContains(FurnitureShape img, Point pt)
+        {
+            if (img != null)
+            {
+                double lowX = img.Bounds.X;
+                double lowY = img.Bounds.Y;
+                double highX = lowX + img.Bounds.Width;
+                double highY = lowY + img.Bounds.Height;
+
                 if (pt.X >= lowX && pt.X <= highX && pt.Y >= lowY && pt.Y <= highY)
                     return true;
                 else return false;
