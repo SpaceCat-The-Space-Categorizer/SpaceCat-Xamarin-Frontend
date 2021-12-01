@@ -13,10 +13,10 @@ namespace SpaceCat_Xamarin_Frontend
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FloorSelectionViewPage : ContentPage
     {
-        public FloorSelectionViewPage(Building thisBuilding)
+        public FloorSelectionViewPage(RecentBuilding thisBuilding)
         {
             InitializeComponent();
-            ((FloorSelectionViewViewModel)BindingContext).LoadBuilding(thisBuilding);
+            ((FloorSelectionViewViewModel)BindingContext).LoadBuilding(Persistence.LoadBuilding(thisBuilding.Name));
         }
 
         private async void Tapped_SaveExit(object sender, EventArgs e)

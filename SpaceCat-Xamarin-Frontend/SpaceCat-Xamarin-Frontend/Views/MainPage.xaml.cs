@@ -19,7 +19,6 @@ namespace SpaceCat_Xamarin_Frontend
         public MainPage()
         {
             InitializeComponent();
-            Persistence.ValidateEnvironment();
         }
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace SpaceCat_Xamarin_Frontend
                     await DisplayAlert("New Building", "Invalid name, try again!", "OK");
             }
             if (accept)
-                await Navigation.PushModalAsync(new FloorSelectionEditPage(new Building(name), true));
+                await Navigation.PushModalAsync(new FloorSelectionEditPage(new RecentBuilding(new Building(name))));
         }
 
         /// <summary>
@@ -69,7 +68,7 @@ namespace SpaceCat_Xamarin_Frontend
 
             Button btn = (Button)sender;
             BuildingListItem building = ((BuildingListViewModel)BindingContext).Buildings.Where(build => build.Build.Name == (string)btn.CommandParameter).FirstOrDefault();
-            Navigation.PushModalAsync(new FloorSelectionEditPage(building.Build, false));
+            Navigation.PushModalAsync(new FloorSelectionEditPage(building.Build));
         }
 
         /// <summary>
