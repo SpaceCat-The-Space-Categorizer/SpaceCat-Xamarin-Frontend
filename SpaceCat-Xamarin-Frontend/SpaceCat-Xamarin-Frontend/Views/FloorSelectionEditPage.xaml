@@ -40,9 +40,9 @@
                                 <!-- BUILDING DETAILS FRAME-->
                                 <Grid RowDefinitions="50, 50, *" ColumnDefinitions="200, *" RowSpacing="15">
                                     <Label Grid.Row="0" Grid.Column="0" Text="BUILDING NAME" Style="{StaticResource label-medium}"/>
-                                    <Entry Grid.Row="0" Grid.Column="1" Placeholder="A name..." Text="{Binding ThisBuilding.Name}" Style="{StaticResource entry-main}"/>
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding ThisBuilding.Name}" Style="{StaticResource label-medium}"/>
                                     <Label Grid.Row="1" Grid.Column="0" Text="DATE CREATED" Style="{StaticResource label-medium}"/>
-                                    <Entry Grid.Row="1" Grid.Column="1" Placeholder="A date..." Text="{Binding ThisBuilding.DateCreated}" Style="{StaticResource entry-main}"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding ThisBuilding.DateCreated}" Style="{StaticResource label-medium}"/>
                                     <Label Grid.Row="2" Grid.Column="0" Text="ADDITIONAL NOTES" Style="{StaticResource label-medium}"/>
                                     <Entry Grid.Row="2" Grid.Column="1" Placeholder="Add a note..." Style="{StaticResource entry-main}"/>
                                 </Grid>
@@ -58,12 +58,16 @@
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <ViewCell>
-                                                    <Frame Style="{StaticResource frame-listItem}">
-                                                        <StackLayout Orientation="Horizontal">
-                                                            <Button Text="X" Clicked="Tapped_DeleteFloor" CommandParameter="{Binding FloorNumber}" Style="{StaticResource button-delete}"/>
-                                                            <Label Text="Floor " Style="{StaticResource label-medium}"/>
-                                                            <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
-                                                        </StackLayout>
+                                                    <Frame Style="{StaticResource frame-listItem-back}">
+                                                        <Frame Style="{StaticResource frame-listItem}">
+                                                            <StackLayout Orientation="Horizontal">
+                                                                <Button Text="X" Clicked="Tapped_DeleteFloor" CommandParameter="{Binding FloorName}" Style="{StaticResource button-delete}"/>
+                                                                <Label Text="Floor " Style="{StaticResource label-medium}"/>
+                                                                <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
+                                                                <Label Text=", " Style="{StaticResource label-medium}"/>
+                                                                <Label Text="{Binding FloorName}" Style="{StaticResource label-medium}"/>
+                                                            </StackLayout>
+                                                        </Frame>
                                                     </Frame>
                                                 </ViewCell>
                                             </DataTemplate>

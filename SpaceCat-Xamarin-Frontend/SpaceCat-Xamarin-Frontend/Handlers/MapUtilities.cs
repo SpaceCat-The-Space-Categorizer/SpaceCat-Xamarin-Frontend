@@ -12,11 +12,22 @@ namespace SpaceCat_Xamarin_Frontend
     public static class MapUtilities
     {
         /// <summary>
-        /// List of 6 character strings representing hex colors to attribute to areas.
+        /// List of 6-character strings representing hex colors to attribute to areas.
         /// </summary>
         public static string[] HexAreaColors = new string[]
-            { "CCDF3E", "E06666", "F6B26B", "FFD966", "93C47D", "76A5AF",
-                "6FA8DC", "8E7CC3", "C27BA0" };
+            { 
+                // primary colors
+                "d92626", "d97126", "d9ca26", "8ed926", "26d971", "26d9ca",
+                "26acd9", "2671d9", "5326d9", "ac26d9", "d926bb",
+
+                // faded colors and grays
+                "9f7a60", "9f9a60", "608f9f", "70609f", "9f6095", "545454",
+                "808080", "bfbfbf",
+
+                // secondary colors
+                "bf6040", "bf9540", "aabf40", "4abf40", "40bf95", "40b5bf",
+                 "408abf", "4055bf", "7f40bf", "bf4075"
+            };
 
         /// <summary>
         ///     Determines if the provided point is contained within the bounds of the shape created by
