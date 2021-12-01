@@ -19,11 +19,9 @@ namespace SpaceCat_Xamarin_Frontend
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MapCreationPage : ContentPage
     {
-        private bool NewFloor;
-        public MapCreationPage(Floor thisFloor, bool newFloor)
+        public MapCreationPage(Floor thisFloor)
         {
             InitializeComponent();
-            NewFloor = newFloor;
             ImageButton[] presets = ((MapCreationViewModel)BindingContext).LoadFloor(thisFloor);
             int column = 0;
             for (int i = 0; i < presets.Length; i++)
@@ -63,13 +61,13 @@ namespace SpaceCat_Xamarin_Frontend
             
             if (updatedFloor != null)
             {
-                MessagingCenter.Send(this, "UpdateFloor", (updatedFloor, NewFloor));
+                MessagingCenter.Send(this, "UpdateFloor", (updatedFloor));
                 await Navigation.PopModalAsync();
             }
             else if (userContinue)
             {
                 updatedFloor = ((MapCreationViewModel)BindingContext).UpdateFloor(true);
-                MessagingCenter.Send(this, "UpdateFloor", (updatedFloor, NewFloor));
+                MessagingCenter.Send(this, "UpdateFloor", (updatedFloor));
                 await Navigation.PopModalAsync();
             }
         }

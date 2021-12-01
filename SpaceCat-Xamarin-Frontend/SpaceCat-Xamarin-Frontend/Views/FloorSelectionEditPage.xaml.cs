@@ -33,7 +33,21 @@ namespace SpaceCat_Xamarin_Frontend
             {
                 name = await DisplayPromptAsync("New Floor", "Enter a name for the new floor: ", "OK", "Cancel", "a name...");
                 if (name != null && name.Length > 0)
-                    validName = true;
+                {
+                    if (((FloorSelectionEditViewModel)BindingContext).Floors.Count == 0)
+                        validName = true;
+                    foreach (Floor f in ((FloorSelectionEditViewModel)BindingContext).Floors)
+                    {
+                        if (f.FloorName == name)
+                        {
+                            validName = false;
+                            await DisplayAlert("New Floor", "This name already belongs to another floor map! Please enter a unique name.", "OK");
+                            break;
+                        }
+                        else
+                            validName = true;
+                    }
+                }
                 else if (name == null)
                     break;
                 else
@@ -66,20 +80,20 @@ namespace SpaceCat_Xamarin_Frontend
             b3.IsEnabled = true;
 
             if (!cancel)
-                await Navigation.PushModalAsync(new MapCreationPage(new Floor(number, name), true));
+                await Navigation.PushModalAsync(new MapCreationPage(new Floor(number, name)));
         }
 
         private async void Tapped_EditFloor(object sender, EventArgs e)
         {
             Floor editFloor = ((FloorSelectionEditViewModel)BindingContext).SelectedFloor;
             if (editFloor != null)
-                await Navigation.PushModalAsync(new MapCreationPage(editFloor, false));
+                await Navigation.PushModalAsync(new MapCreationPage(editFloor));
         }
 
         private void Tapped_DeleteFloor(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            Floor floor = ((FloorSelectionEditViewModel)BindingContext).Floors.Where(f => f.FloorNumber == (int)btn.CommandParameter).FirstOrDefault();
+            Floor floor = ((FloorSelectionEditViewModel)BindingContext).Floors.Where(f => f.FloorName == (string)btn.CommandParameter).FirstOrDefault();
             ((FloorSelectionEditViewModel)BindingContext).Floors.Remove(floor);
         }
 
