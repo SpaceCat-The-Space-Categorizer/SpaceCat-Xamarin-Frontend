@@ -14,14 +14,17 @@ namespace SpaceCat_Xamarin_Frontend
 {
     public class MapCreationViewModel : INotifyPropertyChanged
     {
+        public Grid Presets;
         private Floor ThisFloor;
-        private bool NewAreaToolOn;
-        private bool AddAreaToolOn;
-        private bool DeleteFurnitureOn;
         private bool FigInProgress;
         private int LastColorIndex;
         private List<Area> NewAreaList;
         private List<FurnitureBlueprint> Templates;
+
+        private bool _newAreaToolOn;
+        private bool _deleteAreaToolOn;
+        private bool _addAreaToolOn;
+        private bool _deleteFurnitureToolOn;
 
         private ObservableCollection<AreaFigure> _figures;
         private int _SelectedFigure;
@@ -29,7 +32,26 @@ namespace SpaceCat_Xamarin_Frontend
         private ObservableCollection<FurnitureShape> _shapes;
         private int _movingShape;
 
-        public Grid Presets;
+        public bool NewAreaToolOn
+        {
+            get { return _newAreaToolOn; }
+            set { _newAreaToolOn = value; OnPropertyChanged(); }
+        }
+        public bool DeleteAreaToolOn
+        {
+            get { return _deleteAreaToolOn; }
+            set { _deleteAreaToolOn = value; OnPropertyChanged(); }
+        }
+        public bool AddAreaToolOn
+        {
+            get { return _addAreaToolOn; }
+            set { _addAreaToolOn = value; OnPropertyChanged(); }
+        }
+        public bool DeleteFurnitureToolOn
+        {
+            get { return _deleteFurnitureToolOn; }
+            set { _deleteFurnitureToolOn = value; OnPropertyChanged(); }
+        }
 
         /// <summary>
         /// Contains all of the area figures currently drawn on the map.
@@ -67,8 +89,9 @@ namespace SpaceCat_Xamarin_Frontend
         public MapCreationViewModel()
         {
             NewAreaToolOn = false;
+            DeleteAreaToolOn = false;
             AddAreaToolOn = false;
-            DeleteFurnitureOn = false;
+            DeleteFurnitureToolOn = false;
             FigInProgress = false;
             LastColorIndex = -1;
             NewAreaList = new List<Area>();
@@ -149,8 +172,8 @@ namespace SpaceCat_Xamarin_Frontend
             {
                 Source = fileName,
                 BackgroundColor = Color.White,
-                BorderColor = Color.Black,
-                BorderWidth = 1,
+                BorderColor = Color.Gray,
+                BorderWidth = 3,
                 CornerRadius = 5,
                 HeightRequest = 60,
                 CommandParameter = fileName
@@ -202,7 +225,7 @@ namespace SpaceCat_Xamarin_Frontend
                         if (NewAreaToolOn)      CreateFigure(true, tapLoc);
                         else if (AddAreaToolOn) CreateFigure(false, tapLoc);
                     }
-                    else if (!DeleteFurnitureOn)
+                    else if (!DeleteAreaToolOn && !DeleteFurnitureToolOn)
                     {
                         for (int i = 0; i < Shapes.Count; i++)
                         {
@@ -248,14 +271,25 @@ namespace SpaceCat_Xamarin_Frontend
                         Shapes[MovingShape].Move(tapLoc);
                         MovingShape = -1;
                     }
-                    else if (DeleteFurnitureOn)
+                    else if (DeleteAreaToolOn)
+                    {
+                        foreach (AreaFigure fig in Figures)
+                        {
+                            if (MapUtilities.Contains(fig.FigPoints, tapLoc))
+                            {
+                                DeleteArea(fig);
+                                break;
+                            }
+                        }
+                    }
+                    else if (DeleteFurnitureToolOn)
                     {
                         for (int i = 0; i < Shapes.Count; i++)
                         {
                             if (MapUtilities.ShapeContains(Shapes[i], tapLoc))
                             {
                                 Shapes.RemoveAt(i);
-                                DeleteFurnitureOn = false;
+                                DeleteFurnitureToolOn = false;
                                 break;
                             }
                         }
@@ -264,7 +298,9 @@ namespace SpaceCat_Xamarin_Frontend
                         SelectArea(tapLoc);
 
                     NewAreaToolOn = false;
+                    DeleteAreaToolOn = false;
                     AddAreaToolOn = false;
+                    DeleteFurnitureToolOn = false;
                     break;
             }
             return movedIndex;
@@ -296,6 +332,37 @@ namespace SpaceCat_Xamarin_Frontend
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Deletes the given figure from Figures, and deletes the associated defining rectangle from NewAreaList.
+        /// If figure is the last in its area, the area is deleted.
+        /// </summary>
+        /// <param name="figToDelete">The figure to be deleted.</param>
+        private void DeleteArea(AreaFigure figToDelete)
+        {
+            // look for affected area in NewAreaList
+            int affectedArea = -1;
+            for (int i = 0; i < NewAreaList.Count; i++)
+            {
+                if (NewAreaList[i] == figToDelete.Area)
+                {
+                    affectedArea = i;
+                    break;
+                }
+            }
+
+            // determine if it is the last rectangle in the area
+            if (affectedArea > -1)
+            {
+                if (NewAreaList[affectedArea].DefiningRectangles.Count <= 1)
+                    NewAreaList.RemoveAt(affectedArea);
+                else
+                    NewAreaList[affectedArea].RemoveRectangle(Figures[SelectedFigure].GetRectangle());
+
+                Figures.Remove(figToDelete);
+            }
+
         }
 
         /// <summary>
@@ -372,18 +439,19 @@ namespace SpaceCat_Xamarin_Frontend
         public Command MapSettingsCommand { get; set; }
 
         /// <summary>
-        ///     Called on click of New Area button, enables New Area tool/disables Add Area tool.
+        ///     Called on click of New Area button, enables New Area tool/disables other tools.
         /// </summary>
         /// <param name="s">Not Used</param>
         private void ExecuteNewArea(object s)
         {
             AddAreaToolOn = false;
-            DeleteFurnitureOn = false;
+            DeleteAreaToolOn = false;
+            DeleteFurnitureToolOn = false;
             NewAreaToolOn = true;
         }
 
         /// <summary>
-        ///     Called on click of Add Area button, enables Add Area tool/disables New Area tool.
+        ///     Called on click of Add Area button, enables Add Area tool/disables other tools.
         /// </summary>
         /// <remarks>
         ///     Will not enable Add Area tool if an area is not selected.
@@ -392,53 +460,34 @@ namespace SpaceCat_Xamarin_Frontend
         private void ExecuteAddArea(object s)
         {
             NewAreaToolOn = false;
-            DeleteFurnitureOn = false;
+            DeleteAreaToolOn = false;
+            DeleteFurnitureToolOn = false;
             if (SelectedFigure > -1)
                 AddAreaToolOn = true;
         }
 
         /// <summary>
-        ///     Called on click of Delete Area button. Deletes selected figure.
+        ///     Called on click of Delete Area button, enables Delete Area tool, disables other tools.
         /// </summary>
-        /// <remarks>
-        ///     UPDATE LATER
-        /// </remarks>
         /// <param name="s">Not Used</param>
         private void ExecuteDeleteArea(object s)
         {
-            if (SelectedFigure > -1) // if an area is selected
-            {
-                // look for affected area in NewAreaList
-                int affectedArea = -1;
-                for (int i = 0; i < NewAreaList.Count; i++)
-                {
-                    if (NewAreaList[i] == Figures[SelectedFigure].Area)
-                    {
-                        affectedArea = i;
-                        break;
-                    }
-                }
-                
-                // determine if it is the last rectangle in the area
-                if (NewAreaList[affectedArea].DefiningRectangles.Count <= 1)
-                    NewAreaList.RemoveAt(affectedArea);
-                else
-                    NewAreaList[affectedArea].RemoveRectangle(Figures[SelectedFigure].GetRectangle());
-
-                Figures.RemoveAt(SelectedFigure);
-                SelectedFigure = -1;
-            }
+            NewAreaToolOn = false;
+            AddAreaToolOn = false;
+            DeleteFurnitureToolOn = false;
+            DeleteAreaToolOn = true;
         }
 
         /// <summary>
-        /// Called on a click of the Delete Furniture button. Enables Delete Furniture tool.
+        /// Called on a click of the Delete Furniture button. Enables Delete Furniture tool, disables other tools.
         /// </summary>
         /// <param name="s">Not Used.</param>
         private void ExecuteDeleteFurniture(object s)
         {
             NewAreaToolOn = false;
+            DeleteAreaToolOn = false;
             AddAreaToolOn = false;
-            DeleteFurnitureOn = true;
+            DeleteFurnitureToolOn = true;
         }
 
         private void ExecuteMapSettings(object s)

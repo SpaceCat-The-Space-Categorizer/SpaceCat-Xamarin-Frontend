@@ -71,10 +71,16 @@
                 <Setter Property="CornerRadius" Value="0"/>
                 <!--<Setter Property="VerticalOptions" Value="FillAndExpand"/>-->
             </Style>
+            <Style x:Key="frame-listItem-back" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="LightGray"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="CornerRadius" Value="5"/>
+            </Style>
             <Style x:Key="frame-listItem" TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="White"/>
                 <Setter Property="Padding" Value="5,10,5,10"/>
-                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Margin" Value="3"/>
                 <Setter Property="CornerRadius" Value="5"/>
             </Style>
             <Style x:Key="frame-furniture" TargetType="Frame">
@@ -86,21 +92,25 @@
 
             <!-- BUTTON STYLES -->
             <Style x:Key="button-base" TargetType="Button">
-                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="TextColor" Value="#4d4d4d"/>
+                <Setter Property="TextTransform" Value="Uppercase"/>
                 <Setter Property="BackgroundColor" Value="White"/>
-                <Setter Property="BorderColor" Value="Black"/>
+                <Setter Property="BorderColor" Value="Gray"/>
             </Style>
             <Style x:Key="button-big" BasedOn="{StaticResource button-base}" TargetType="Button">
                 <Setter Property="Padding" Value="10,30,10,30"/>
                 <Setter Property="FontSize" Value="20"/>
-                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="CornerRadius" Value="5"/>
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+                <Setter Property="BorderWidth" Value="3"/>
             </Style>
             <Style x:Key="button-small" BasedOn="{StaticResource button-base}" TargetType="Button">
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="CornerRadius" Value="5"/>
                 <Setter Property="HeightRequest" Value="40"/>
+                <Setter Property="BorderWidth" Value="3"/>
+                <Setter Property="BorderColor" Value="Gray"/>
             </Style>
             <Style x:Key="button-edit" BasedOn="{StaticResource button-small}" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="YellowGreen"/>
@@ -108,7 +118,7 @@
                 <Setter Property="WidthRequest" Value="80"/>
             </Style>
             <Style x:Key="button-delete" BasedOn="{StaticResource button-small}" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="IndianRed"/>
+                <Setter Property="BackgroundColor" Value="#CCD27979"/>
                 <Setter Property="Margin" Value="10,0,5,0"/>
                 <Setter Property="WidthRequest" Value="50"/>
             </Style>

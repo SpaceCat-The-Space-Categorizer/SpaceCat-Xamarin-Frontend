@@ -55,13 +55,15 @@
                                             <ListView.ItemTemplate>
                                                 <DataTemplate>
                                                     <ViewCell>
-                                                        <Frame Style="{StaticResource frame-listItem}">
-                                                            <StackLayout Orientation="Horizontal">
-                                                                <Button Text="X" Clicked="Clicked_Delete" CommandParameter="{Binding Name}" Style="{StaticResource button-delete}"/>
-                                                                <Button Text="EDIT" Clicked="Clicked_Edit" CommandParameter="{Binding Name}" Style="{StaticResource button-edit}"/>
-                                                                <Label Text="{Binding Name}" Style="{StaticResource label-buildingList-main}"/>
-                                                                <Label Text="{Binding Date}" Style="{StaticResource label-buildingList-last}"/>
-                                                            </StackLayout>
+                                                        <Frame Style="{StaticResource frame-listItem-back}">
+                                                            <Frame Style="{StaticResource frame-listItem}">
+                                                                <StackLayout Orientation="Horizontal">
+                                                                    <Button Text="X" Clicked="Clicked_Delete" CommandParameter="{Binding Name}" Style="{StaticResource button-delete}"/>
+                                                                    <Button Text="EDIT" Clicked="Clicked_Edit" CommandParameter="{Binding Name}" Style="{StaticResource button-edit}"/>
+                                                                    <Label Text="{Binding Name}" Style="{StaticResource label-buildingList-main}"/>
+                                                                    <Label Text="{Binding Date}" Style="{StaticResource label-buildingList-last}"/>
+                                                                </StackLayout>
+                                                            </Frame>
                                                         </Frame>
                                                     </ViewCell>
                                                 </DataTemplate>
