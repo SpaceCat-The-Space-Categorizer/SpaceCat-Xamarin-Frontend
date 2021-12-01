@@ -13,11 +13,14 @@ namespace SpaceCat_Xamarin_Frontend
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class FloorSelectionEditPage : ContentPage
     {
-        public FloorSelectionEditPage(RecentBuilding thisBuilding, bool newBuild)
+        public FloorSelectionEditPage(RecentBuilding thisBuilding)
         {
             InitializeComponent();
-            ((FloorSelectionEditViewModel)BindingContext).NewBuild = newBuild;
-            ((FloorSelectionEditViewModel)BindingContext).LoadBuilding(Persistence.LoadBuilding(thisBuilding.Name));
+            Building build = Persistence.LoadBuilding(thisBuilding.Name);
+            if (build == null)
+                ((FloorSelectionEditViewModel)BindingContext).LoadBuilding(new Building(thisBuilding.Name));
+            else
+                ((FloorSelectionEditViewModel)BindingContext).LoadBuilding(Persistence.LoadBuilding(thisBuilding.Name));
         }
 
         private async void Tapped_NewFloor(object sender, EventArgs e)

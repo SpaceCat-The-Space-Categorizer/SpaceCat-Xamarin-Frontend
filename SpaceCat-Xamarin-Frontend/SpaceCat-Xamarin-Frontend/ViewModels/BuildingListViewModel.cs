@@ -63,11 +63,11 @@ namespace SpaceCat_Xamarin_Frontend
                 (page, building) =>
                 {
                     bool newBuild = true;
-                    newBuild = false;
                     for (int i = 0; i < Buildings.Count; i++)
                     {
                         if (Buildings[i].Build.Name == building.Name)
                         {
+                            newBuild = false;
                             Buildings.Remove(Buildings[i]);
                             Buildings.Add(new BuildingListItem(building));
                             Buildings.Move(Buildings.Count - 1, 0);
