@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
+             x:Class="SpaceCat_Xamarin_Frontend.AnalysisPage">
+
+    <ContentPage.BindingContext>
+        <local:AnalysisViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <Frame Style="{StaticResource frame-title}">
+                <Label Text="SPACE CAT!" Style="{StaticResource label-title}"/>
+            </Frame>
+            <Frame Style="{StaticResource frame-main}">
+                <Frame Style="{StaticResource frame-exterior}" Margin="15">
+                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                        <Grid>
+                            <Button Grid.Column="0" Text="Generate Text Report" Style="{StaticResource button-big}"/>
+                            <Button Grid.Column="1" Text="Export to CSV file" Clicked="Clicked_Export" Style="{StaticResource button-big}"/>
+                        </Grid>
+                        <Button Text="Back" Clicked="Clicked_Back" Style="{StaticResource button-big}"/>
+                    </StackLayout>
+                </Frame>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+    
+    
+</ContentPage>
