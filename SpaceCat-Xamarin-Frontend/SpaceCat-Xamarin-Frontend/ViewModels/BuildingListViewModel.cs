@@ -44,6 +44,7 @@ namespace SpaceCat_Xamarin_Frontend
         public BuildingListViewModel()
         {
             Buildings = new ObservableCollection<BuildingListItem>();
+            Persistence.ValidateEnvironment();
             RecentBuildings = Persistence.LoadRecentBuildings();
             foreach (RecentBuilding build in RecentBuildings)
             {
