@@ -43,7 +43,7 @@ namespace SpaceCat_Xamarin_Frontend
                     await DisplayAlert("New Building", "Invalid name, try again!", "OK");
             }
             if (accept)
-                await Navigation.PushModalAsync(new FloorSelectionEditPage(new Building(name), true));
+                await Navigation.PushModalAsync(new FloorSelectionEditPage(new RecentBuilding(new Building(name)), true));
         }
 
         /// <summary>
