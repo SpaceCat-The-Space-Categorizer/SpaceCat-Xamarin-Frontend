@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SpaceCat">
-      <Version>0.6.6</Version>
+      <Version>0.6.7</Version>
     </PackageReference>
     <PackageReference Include="TouchTracking">
       <Version>1.2.0</Version>
