@@ -2,10 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
-             x:Class="SpaceCat_Xamarin_Frontend.FloorSelectionEditPage">
+             x:Class="SpaceCat_Xamarin_Frontend.FloorSelectionViewPage">
 
     <ContentPage.BindingContext>
-        <local:FloorSelectionEditViewModel/>
+        <local:FloorSelectionViewViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Resources>
@@ -44,7 +44,7 @@
                                     <Label Grid.Row="1" Grid.Column="0" Text="DATE CREATED" Style="{StaticResource label-medium}"/>
                                     <Label Grid.Row="1" Grid.Column="1" Text="{Binding ThisBuilding.DateCreated}" Style="{StaticResource label-medium}"/>
                                     <Label Grid.Row="2" Grid.Column="0" Text="ADDITIONAL NOTES" Style="{StaticResource label-medium}"/>
-                                    <Entry Grid.Row="2" Grid.Column="1" Placeholder="Add a note..." Style="{StaticResource entry-main}"/>
+                                    <Label Grid.Row="2" Grid.Column="1" Text="None..." Style="{StaticResource label-medium}"/>
                                 </Grid>
                             </Frame>
 
@@ -54,17 +54,16 @@
                                 <StackLayout>
                                     <Label Text="FLOORS" Style="{StaticResource label-large}"/>
 
-                                    <ListView  ItemsSource="{Binding Floors}" SelectedItem="{Binding SelectedFloor, Mode=TwoWay}">
+                                    <ListView  ItemsSource="{Binding Floors}" ItemSelected="FloorSelected" SelectedItem="{Binding SelectedFloor, Mode=OneWayToSource}">
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <ViewCell>
                                                     <Frame Style="{StaticResource frame-listItem-back}">
                                                         <Frame Style="{StaticResource frame-listItem}">
                                                             <StackLayout Orientation="Horizontal">
-                                                                <Button Text="X" Clicked="Tapped_DeleteFloor" CommandParameter="{Binding FloorName}" Style="{StaticResource button-delete}"/>
-                                                                <Label Text="Floor " Style="{StaticResource label-medium}"/>
+                                                                <Label Text="Start a Survey on Floor " Style="{StaticResource label-medium}"/>
                                                                 <Label Text="{Binding FloorNumber}" Style="{StaticResource label-medium}"/>
-                                                                <Label Text=", " Style="{StaticResource label-medium}"/>
+                                                                <Label Text=": " Style="{StaticResource label-medium}"/>
                                                                 <Label Text="{Binding FloorName}" Style="{StaticResource label-medium}"/>
                                                             </StackLayout>
                                                         </Frame>
@@ -74,15 +73,11 @@
                                         </ListView.ItemTemplate>
                                     </ListView>
                                     
-                                    <StackLayout Orientation="Horizontal" >
-                                        <Button x:Name="b1" Grid.Column="0" Text="New Floor" Clicked="Tapped_NewFloor" Style="{StaticResource button-floors}"/>
-                                        <Button x:Name="b2" Grid.Column="1" Text="Edit Floor" Clicked="Tapped_EditFloor" Style="{StaticResource button-floors}"/>
-                                    </StackLayout>
                                 </StackLayout>
                             </Frame>
 
                         </StackLayout>
-                        <Button x:Name="b3" Text="Save &amp; Exit" Clicked="Tapped_SaveExit" Style="{StaticResource button-big}"/>
+                        <Button Text="Submit Survey" Clicked="Tapped_SaveExit" Style="{StaticResource button-big}"/>
                     </StackLayout>
                 </Frame>
             </Frame>

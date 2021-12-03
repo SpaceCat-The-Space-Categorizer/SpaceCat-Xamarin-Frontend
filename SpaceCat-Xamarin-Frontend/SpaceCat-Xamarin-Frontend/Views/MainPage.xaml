@@ -46,7 +46,7 @@
                         
                         
                         <!-- BUILDING LIST FRAME -->
-                        <Frame> <!-- took out style -->
+                        <Frame>
                             <StackLayout>
                                 <Frame Style="{StaticResource frame-interior}">
                                     <StackLayout>
@@ -55,13 +55,15 @@
                                             <ListView.ItemTemplate>
                                                 <DataTemplate>
                                                     <ViewCell>
-                                                        <Frame Style="{StaticResource frame-listItem}">
-                                                            <StackLayout Orientation="Horizontal">
-                                                                <Button Text="X" Clicked="Clicked_Delete" CommandParameter="{Binding Name}" Style="{StaticResource button-delete}"/>
-                                                                <Button Text="EDIT" Clicked="Clicked_Edit" CommandParameter="{Binding Name}" Style="{StaticResource button-edit}"/>
-                                                                <Label Text="{Binding Name}" Style="{StaticResource label-buildingList-main}"/>
-                                                                <Label Text="{Binding Date}" Style="{StaticResource label-buildingList-last}"/>
-                                                            </StackLayout>
+                                                        <Frame Style="{StaticResource frame-listItem-back}">
+                                                            <Frame Style="{StaticResource frame-listItem}">
+                                                                <StackLayout Orientation="Horizontal">
+                                                                    <Button Text="X" Clicked="Clicked_Delete" CommandParameter="{Binding Name}" Style="{StaticResource button-delete}"/>
+                                                                    <Button Text="EDIT" Clicked="Clicked_Edit" CommandParameter="{Binding Name}" Style="{StaticResource button-edit}"/>
+                                                                    <Label Text="{Binding Name}" Style="{StaticResource label-buildingList-main}"/>
+                                                                    <Label Text="{Binding Date}" Style="{StaticResource label-buildingList-last}"/>
+                                                                </StackLayout>
+                                                            </Frame>
                                                         </Frame>
                                                     </ViewCell>
                                                 </DataTemplate>
@@ -89,7 +91,7 @@
                                         <Label Text="{Binding SelectedBuilding.BuildingStatus}" Style="{StaticResource label-buildingInfo-last}"/>-->
                                     </StackLayout>
                                 </Frame>
-                                <Button Text="Start a Building Survey" Command="{Binding GoToSurveyMode}" Style="{StaticResource button-big}"/>
+                                <Button Text="Start a Building Survey" Clicked="Clicked_Survey" Style="{StaticResource button-big}"/>
                                 <Button x:Name="buttonNote" Text="Data Analysis and Export" Clicked="Clicked_Analysis" Style="{StaticResource button-big}"/>
                             </StackLayout>
                         </Frame>

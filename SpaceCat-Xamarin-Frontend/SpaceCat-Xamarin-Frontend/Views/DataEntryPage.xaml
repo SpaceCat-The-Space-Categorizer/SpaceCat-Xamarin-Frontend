@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:tt="clr-namespace:TouchTracking.Forms;assembly=TouchTracking.Forms"
+             xmlns:local="clr-namespace:SpaceCat_Xamarin_Frontend"
+             x:Class="SpaceCat_Xamarin_Frontend.DataEntryPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:StatusToColorConverter x:Key="statusToColor"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <local:DataEntryViewModel/>
+    </ContentPage.BindingContext>
+
+
+    <ContentPage.Content>
+        <Frame Style="{StaticResource frame-main}">
+            <AbsoluteLayout>
+
+                
+
+                <!-- MAP -->
+                <Frame AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="SizeProportional" Style="{StaticResource frame-exterior}">
+                    <AbsoluteLayout>
+                        
+                        <AbsoluteLayout.Effects>
+                            <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
+                        </AbsoluteLayout.Effects>
+
+                        <StackLayout HeightRequest="1600" WidthRequest="2400" Margin="0" Padding="0" Spacing="0" Orientation="Horizontal">
+                            <Image Source="sampleFloorplan.jpg"/>
+                        </StackLayout>
+
+                            <Frame Padding="0">
+                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </AbsoluteLayout>
+                        </Frame>
+
+                        <Frame Padding="0">
+                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Shapes}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" BackgroundColor="{Binding Status, Converter={StaticResource statusToColor}}" Style="{StaticResource frame-furniture}">
+                                            <Image Source="{Binding Source}"/>
+                                        </Frame>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </AbsoluteLayout>
+                        </Frame>
+
+                    </AbsoluteLayout>
+                </Frame>
+
+                <Frame AbsoluteLayout.LayoutBounds="0, 1" AbsoluteLayout.LayoutFlags="PositionProportional" Style="{StaticResource frame-exterior}">
+                    <StackLayout>
+                        <!-- COUNTER BUTTONS -->
+                        <Frame x:Name="CounterFrame" Style="{StaticResource frame-interior}">
+                            <StackLayout VerticalOptions="Center">
+                                <Label x:Name="SeatingCounter" Text="{Binding SeatingText}" HorizontalTextAlignment="Center" Style="{StaticResource label-large}"/>
+                                <Button x:Name="AddButton" Text="Add" Command="{Binding SeatAddCommand}" Style="{StaticResource button-big}" />
+                                <Button x:Name="MinusButton" Text="Minus" Command="{Binding SeatRemoveCommand}" Style="{StaticResource button-big}" />
+                                <Button Text="Add Note&#x0a;to Area" Clicked="TappedAddAreaNote" Style="{StaticResource button-big}"/>
+                            </StackLayout>
+                        </Frame>
+
+                        <!-- MAP OPTIONS -->
+                        <Frame Style="{StaticResource frame-interior}">
+                            <StackLayout>
+                                <Button Text="Save Survey" Clicked="TappedSave" Style="{StaticResource button-big}"/>
+                                <Button Text="Abort &amp; Exit" Clicked="TappedAbort" Style="{StaticResource button-big}"/>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                </Frame>
+
+            </AbsoluteLayout>
+            
+        </Frame>
+    </ContentPage.Content>
+</ContentPage>

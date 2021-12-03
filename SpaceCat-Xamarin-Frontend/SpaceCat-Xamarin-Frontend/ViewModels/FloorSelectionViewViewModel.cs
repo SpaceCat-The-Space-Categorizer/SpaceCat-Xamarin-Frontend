@@ -9,9 +9,10 @@ using Xamarin.Forms;
 
 namespace SpaceCat_Xamarin_Frontend
 {
-    class FloorSelectionEditViewModel : INotifyPropertyChanged
+    class FloorSelectionViewViewModel : INotifyPropertyChanged
     {
         private Building _thisBuilding;
+        
         private ObservableCollection<Floor> _floors;
         private Floor _selected;
         public Building ThisBuilding
@@ -30,28 +31,21 @@ namespace SpaceCat_Xamarin_Frontend
             set { _selected = value; OnPropertyChanged(); }
         }
 
-        public FloorSelectionEditViewModel()
+        public FloorSelectionViewViewModel()
         {
             Floors = new ObservableCollection<Floor>();
 
-            // receive updated floor from floor editing page
-            MessagingCenter.Subscribe<MapCreationPage, Floor>(this, "UpdateFloor",
+            MessagingCenter.Subscribe<DataEntryPage, Floor>(this, "FloorSurvey",
                 (page, floor) =>
                 {
-                    int ogIndex = -1;
-                    for (int i = 0; i < Floors.Count; i++)
+                    for (int i = 0; i < ThisBuilding.Floors.Count; i++)
                     {
-                        if (Floors[i].FloorName == floor.FloorName)
-                            ogIndex = i;
+                        if (ThisBuilding.Floors[i].FloorName == floor.FloorName)
+                        {
+                            ThisBuilding.Floors[i] = floor;
+                            break;
+                        }
                     }
-                    Floors.Add(floor);
-
-                    if (ogIndex != -1)
-                    {
-                        Floors.RemoveAt(ogIndex);
-                        Floors.Move(Floors.Count - 1, ogIndex);
-                    }
-                    SelectedFloor = Floors[0];
                 });
         }
 
@@ -68,12 +62,7 @@ namespace SpaceCat_Xamarin_Frontend
 
         public void SaveExit()
         {
-            ThisBuilding.Floors.Clear();
-            foreach (Floor f in Floors)
-                ThisBuilding.AddFloor(f);
-            ThisBuilding.CompleteMap();
-            Persistence.SaveBuilding(ThisBuilding);
-            MessagingCenter.Send(this, "UpdateBuilding", new RecentBuilding(ThisBuilding));
+            ThisBuilding.CompleteSurvey();
         }
 
         // INotifyPropertyChanged interface is used to update the UI when variables are altered
