@@ -8,7 +8,7 @@ namespace SpaceCat_Xamarin_Frontend
 {
     public class StatusToColorConverter : IValueConverter
     {
-        public string[] HexSeatStatusColors = { "#33FF3333", "#33CCDF3E", "#33FFE12B" };
+        public string[] HexSeatStatusColors = { "#33C70039", "#3328B463", "#33FFC300" };
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
