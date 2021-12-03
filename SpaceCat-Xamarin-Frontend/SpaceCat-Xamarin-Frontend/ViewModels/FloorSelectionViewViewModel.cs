@@ -52,7 +52,7 @@ namespace SpaceCat_Xamarin_Frontend
         public void LoadBuilding(Building thisBuilding)
         {
             ThisBuilding = thisBuilding;
-            if (ThisBuilding.Floors.Count > 0)
+            if (ThisBuilding.Floors.Count > 0) // TODO: check if floors list exists first
             {
                 foreach (Floor f in ThisBuilding.Floors)
                     Floors.Add(f);
