@@ -160,7 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SpaceCat">
-      <Version>0.4.7</Version>
+      <Version>0.6.8</Version>
     </PackageReference>
     <PackageReference Include="TouchTracking">
       <Version>1.2.0</Version>

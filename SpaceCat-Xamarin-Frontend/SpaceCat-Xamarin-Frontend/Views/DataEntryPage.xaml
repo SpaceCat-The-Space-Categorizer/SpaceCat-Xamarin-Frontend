@@ -74,7 +74,7 @@
                         <!-- MAP OPTIONS -->
                         <Frame Style="{StaticResource frame-interior}">
                             <StackLayout>
-                                <Button Text="Submit Survey" Clicked="TappedSave" Style="{StaticResource button-big}"/>
+                                <Button Text="Save Survey" Clicked="TappedSave" Style="{StaticResource button-big}"/>
                                 <Button Text="Abort &amp; Exit" Clicked="TappedAbort" Style="{StaticResource button-big}"/>
                             </StackLayout>
                         </Frame>
