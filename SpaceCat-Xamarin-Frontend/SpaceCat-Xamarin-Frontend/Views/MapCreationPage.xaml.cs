@@ -119,7 +119,7 @@ namespace SpaceCat_Xamarin_Frontend
         private void Tapped_NewFurniture(object sender, EventArgs e)
         {
             ImageButton ib = (ImageButton)sender;
-            ((MapCreationViewModel)BindingContext).AddNewFurniture(ib);
+            ((MapCreationViewModel)BindingContext).AddNewFurniture(ib, 0 - theMap.TranslationX + toolStack.Width, 0 - theMap.TranslationY);
         }
 
         private async void Tapped_MapSettings(object sender, EventArgs e)

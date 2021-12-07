@@ -378,13 +378,13 @@ namespace SpaceCat_Xamarin_Frontend
         /// Creates a new furniture shape from the selected preset and adds it to the map.
         /// </summary>
         /// <param name="imgButton">The ImageButton with the furniture preset selected by the user.</param>
-        public void AddNewFurniture(ImageButton imgButton)
+        public void AddNewFurniture(ImageButton imgButton, double xLoc, double yLoc)
         {
             foreach (FurnitureBlueprint blueprint in Templates)
             {
                 if (blueprint.Filepath == (string)imgButton.CommandParameter)
                 {
-                    Shapes.Add(new FurnitureShape(blueprint));
+                    Shapes.Add(new FurnitureShape(blueprint, xLoc, yLoc));
                     break;
                 }
             }
