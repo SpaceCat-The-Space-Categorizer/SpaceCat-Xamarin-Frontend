@@ -180,6 +180,10 @@ namespace SpaceCat_Xamarin_Frontend
             };
         }
 
+        /// <summary>
+        /// Gets the floor name concatenated with the floor number for a unique floor identifier.
+        /// </summary>
+        /// <returns>Returns the floor name concatenated with the floor number.</returns>
         public string GetFullFloorName()
         {
             return ThisFloor.FloorName + ThisFloor.FloorNumber.ToString();

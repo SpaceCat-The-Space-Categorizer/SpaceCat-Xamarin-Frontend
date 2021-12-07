@@ -105,7 +105,7 @@ namespace SpaceCat_Xamarin_Frontend
         private void Tapped_MapRight(object sender, EventArgs e)
         {
             double screenWidth = Application.Current.MainPage.Width;
-            double halfScreenWidth = screenWidth / 2.0 - 200;
+            double halfScreenWidth = screenWidth / 2.0;
             double minTranslation = -20.0 - (floorImg.Width - screenWidth);
             if (theMap.TranslationX > minTranslation)
             {
