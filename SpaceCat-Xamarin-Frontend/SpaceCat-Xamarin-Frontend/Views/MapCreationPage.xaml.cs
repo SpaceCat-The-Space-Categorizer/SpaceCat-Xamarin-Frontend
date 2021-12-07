@@ -35,6 +35,13 @@ namespace SpaceCat_Xamarin_Frontend
                     column = 0;
             }
             SetFloorImage();
+            mainStack.RaiseChild(toolStack);
+            toolStack.HeightRequest = Application.Current.MainPage.Height;
+            toolStack.TranslationX = -10;
+            toolStack.TranslationY = -10;
+            panButtons.TranslationX = Application.Current.MainPage.Width - 200;
+            panButtons.TranslationY = Application.Current.MainPage.Height - 200;
+            theMap.TranslationX = 230;
         }
 
         private async void SetFloorImage()
@@ -56,6 +63,56 @@ namespace SpaceCat_Xamarin_Frontend
             {
                 Xamarin.Forms.Rectangle newBounds = ((MapCreationViewModel)BindingContext).Shapes[movedIndex].Bounds;
                 AbsoluteLayout.SetLayoutBounds(mapFurniture.Children.ElementAt(movedIndex), newBounds);
+            }
+        }
+
+        private void Tapped_MapUp(object sender, EventArgs e)
+        {
+            double halfScreenHeight = Application.Current.MainPage.Height / 2.0;
+            if (theMap.TranslationY < 0)
+            {
+                if (theMap.TranslationY + halfScreenHeight > 0)
+                    theMap.TranslationY = 0;
+                else
+                    theMap.TranslationY += halfScreenHeight;
+            }
+        }
+        private void Tapped_MapDown(object sender, EventArgs e)
+        {
+            double halfScreenHeight = Application.Current.MainPage.Height / 2.0;
+            double minTranslation = -20.0 - (floorImg.Height - (halfScreenHeight * 2.0));
+            if (theMap.TranslationY > minTranslation)
+            {
+                if (theMap.TranslationY - halfScreenHeight < minTranslation)
+                    theMap.TranslationY = minTranslation;
+                else
+                    theMap.TranslationY -= halfScreenHeight;
+            }
+        }
+
+        private void Tapped_MapLeft(object sender, EventArgs e)
+        {
+            double halfScreenWidth = Application.Current.MainPage.Width / 2.0;
+            if (theMap.TranslationX < toolStack.Width)
+            {
+                if (theMap.TranslationX + halfScreenWidth > toolStack.Width)
+                    theMap.TranslationX = toolStack.Width;
+                else
+                    theMap.TranslationX += halfScreenWidth;
+            }
+        }
+
+        private void Tapped_MapRight(object sender, EventArgs e)
+        {
+            double screenWidth = Application.Current.MainPage.Width;
+            double halfScreenWidth = screenWidth / 2.0 - 200;
+            double minTranslation = -20.0 - (floorImg.Width - screenWidth);
+            if (theMap.TranslationX > minTranslation)
+            {
+                if (theMap.TranslationX - halfScreenWidth < minTranslation)
+                    theMap.TranslationX = minTranslation;
+                else
+                    theMap.TranslationX -= halfScreenWidth;
             }
         }
 

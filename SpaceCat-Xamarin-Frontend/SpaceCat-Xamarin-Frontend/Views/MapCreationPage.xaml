@@ -29,12 +29,12 @@
 
     <ContentPage.Content>
         <Frame Style="{StaticResource frame-main}">
-            <StackLayout Orientation="Horizontal">
+            <AbsoluteLayout x:Name="mainStack">
             
             
                 <!-- TOOLS -->
-                <StackLayout>
-                    <Frame Style="{StaticResource frame-exterior}">
+                <StackLayout x:Name="toolStack" WidthRequest="230" HeightRequest="500">
+                    <Frame VerticalOptions="Start" Style="{StaticResource frame-exterior}">
                         <StackLayout>
                             <!-- AREA TOOLS -->
                             <Frame Style="{StaticResource frame-tools-main}">
@@ -49,73 +49,87 @@
                             </Frame>
 
                             <!-- FURNITURE -->
-                            
+
                             <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
                                     <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Margin="0,0,0,10" BorderColor="{Binding DeleteFurnitureToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
                                     <ScrollView>
                                         <Grid x:Name="FurniturePresetList">
-                                            
+
                                         </Grid>
                                     </ScrollView>
                                 </StackLayout>
                             </Frame>
+
+                            <!-- MAIN BUTTONS -->
+                            <StackLayout VerticalOptions="End">
+                                <Button Text="Import Map Image" Clicked="Tapped_MapSettings" Command="{Binding MapSettingsCommand}" Style="{StaticResource button-big}"/>
+                                <Button Text="Save &amp; Exit" Clicked="ExitPage" Style="{StaticResource button-big}"/>
+                            </StackLayout>
+
                         </StackLayout>
                     </Frame>
 
-
-                    <!-- MAIN BUTTONS -->
-                    <StackLayout VerticalOptions="End">
-                        <Button Text="Import Map Image" Clicked="Tapped_MapSettings" Command="{Binding MapSettingsCommand}" Style="{StaticResource button-big}"/>
-                        <Button Text="Save &amp; Exit" Clicked="ExitPage" Style="{StaticResource button-big}"/>
-                    </StackLayout>
                 </StackLayout>
 
 
                 <!-- MAP -->
-                <local:PinchToNavigateContainer HorizontalOptions="FillAndExpand">
-                    <local:PinchToNavigateContainer.Content>
+                <AbsoluteLayout>
+                    <local:PinchToNavigateContainer x:Name="theMap" HorizontalOptions="FillAndExpand">
+                        <local:PinchToNavigateContainer.Content>
 
-                        <AbsoluteLayout>
+                            <AbsoluteLayout>
 
-                            <AbsoluteLayout.Effects>
-                                <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
-                            </AbsoluteLayout.Effects>
+                                <AbsoluteLayout.Effects>
+                                    <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
+                                </AbsoluteLayout.Effects>
 
-                            <StackLayout Margin="0" Padding="0" Spacing="0">
-                                <Image x:Name="floorImg" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand"/>
-                            </StackLayout>
+                                <StackLayout Margin="0" Padding="0" Spacing="0">
+                                    <Image x:Name="floorImg" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand"/>
+                                </StackLayout>
 
-                            <Frame Padding="0">
-                                <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate>
-                                            <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
-                                </AbsoluteLayout>
-                            </Frame>
+                                <Frame Padding="0">
+                                    <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </AbsoluteLayout>
+                                </Frame>
 
-                            <Frame Padding="0">
-                                <AbsoluteLayout x:Name="mapFurniture" BindableLayout.ItemsSource="{Binding Shapes}">
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate>
-                                            <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" Style="{StaticResource frame-furniture}">
-                                                <Image Source="{Binding Source}"/>
-                                            </Frame>
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
-                                </AbsoluteLayout>
-                            </Frame>
+                                <Frame Padding="0">
+                                    <AbsoluteLayout x:Name="mapFurniture" BindableLayout.ItemsSource="{Binding Shapes}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" Style="{StaticResource frame-furniture}">
+                                                    <Image Source="{Binding Source}"/>
+                                                </Frame>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </AbsoluteLayout>
+                                </Frame>
 
-                        </AbsoluteLayout>
-                    </local:PinchToNavigateContainer.Content>
-                </local:PinchToNavigateContainer>
+                            </AbsoluteLayout>
+                        
+                        </local:PinchToNavigateContainer.Content>
+                    </local:PinchToNavigateContainer>
+
+                    <Frame x:Name="panButtons" BackgroundColor="LightGray" Opacity="0.75">
+                        <Grid>
+                            <Button Text="^" Grid.Row="0" Grid.Column="1" Clicked="Tapped_MapUp" WidthRequest="30" Style="{StaticResource button-small}"/>
+                            <Button Text="&lt;" Grid.Row="1" Grid.Column="0" Clicked="Tapped_MapLeft" WidthRequest="30" Style="{StaticResource button-small}"/>
+                            <Button Text=">" Grid.Row="1" Grid.Column="2" Clicked="Tapped_MapRight" WidthRequest="30" Style="{StaticResource button-small}"/>
+                            <Button Text="v" Grid.Row="2" Grid.Column="1" Clicked="Tapped_MapDown" WidthRequest="30" TextTransform="Lowercase" Style="{StaticResource button-small}"/>
+                        </Grid>
+                    </Frame>
+
+                </AbsoluteLayout>
                 
             
             
-            </StackLayout>
+            </AbsoluteLayout>
         </Frame>
     </ContentPage.Content>
 </ContentPage>
