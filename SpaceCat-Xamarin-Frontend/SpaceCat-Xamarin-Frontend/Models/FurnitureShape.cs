@@ -97,6 +97,13 @@ namespace SpaceCat_Xamarin_Frontend
             Furn.Corner = new Tuple<double, double>(Bounds.X, Bounds.Y);
         }
 
+        public void SetScale(double scaleFactor)
+        {
+            Bounds = new Xamarin.Forms.Rectangle(Bounds.X, Bounds.Y, 100 * scaleFactor, 100 * scaleFactor);
+            Furn.StretchX = scaleFactor;
+            Furn.StretchY = scaleFactor;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
         ///     Indicates that the UI should be updated to reflect some kind of change to bound variables.

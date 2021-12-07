@@ -15,6 +15,7 @@ namespace SpaceCat_Xamarin_Frontend
     public class MapCreationViewModel : INotifyPropertyChanged
     {
         public Grid Presets;
+        public double ScaleFactor;
         private Floor ThisFloor;
         private bool FigInProgress;
         private int LastColorIndex;
@@ -94,6 +95,7 @@ namespace SpaceCat_Xamarin_Frontend
             DeleteFurnitureToolOn = false;
             FigInProgress = false;
             LastColorIndex = -1;
+            ScaleFactor = 1.0;
             NewAreaList = new List<Area>();
             Templates = new List<FurnitureBlueprint>();
 
@@ -104,11 +106,11 @@ namespace SpaceCat_Xamarin_Frontend
             MovingShape = -1;
 
             // attach command functions to Command variables (defined below area methods)
-            MapSettingsCommand = new Command(ExecuteMapSettings);
             NewAreaCommand = new Command(ExecuteNewArea);
             DeleteAreaCommand = new Command(ExecuteDeleteArea);
             DeleteFurnitureCommand = new Command(ExecuteDeleteFurniture);
             AddAreaCommand = new Command(ExecuteAddArea);
+            ScaleFurnitureCommand = new Command(ExecuteScaleFurniture);
 
             //MapUtilities.RunUnitTesting();   // RUN UNIT TESTS (uncomment to run, results in debug output)
         }
@@ -384,12 +386,12 @@ namespace SpaceCat_Xamarin_Frontend
             {
                 if (blueprint.Filepath == (string)imgButton.CommandParameter)
                 {
-                    Shapes.Add(new FurnitureShape(blueprint, xLoc, yLoc));
+                    FurnitureShape newShape = new FurnitureShape(blueprint, xLoc, yLoc);
+                    newShape.SetScale(ScaleFactor);
+                    Shapes.Add(newShape);
                     break;
                 }
             }
-
-
         }
 
         /// <summary>
@@ -445,7 +447,7 @@ namespace SpaceCat_Xamarin_Frontend
         public Command AddAreaCommand { get; set; }
         public Command DeleteAreaCommand { get; set; }
         public Command DeleteFurnitureCommand { get; set; }
-        public Command MapSettingsCommand { get; set; }
+        public Command ScaleFurnitureCommand { get; set; }
 
         /// <summary>
         ///     Called on click of New Area button, enables New Area tool/disables other tools.
@@ -541,10 +543,9 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
-        private void ExecuteMapSettings(object s)
+        private void ExecuteScaleFurniture(object s)
         {
-            // Handles tapping the map settings button (unimplemented)
-            System.Diagnostics.Debug.WriteLine("Tapped Settings!");
+            
         }
 
 

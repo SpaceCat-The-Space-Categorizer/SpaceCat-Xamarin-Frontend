@@ -53,7 +53,8 @@
                             <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
-                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Margin="0,0,0,10" BorderColor="{Binding DeleteFurnitureToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Margin="0,0,0,0" BorderColor="{Binding DeleteFurnitureToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                    <Button Text="Scale Furniture" Clicked="Tapped_ScaleFurniture" Margin="0,0,0,10" BorderColor="#808080" Style="{StaticResource button-tools}"/>
                                     <ScrollView>
                                         <Grid x:Name="FurniturePresetList">
 
@@ -64,7 +65,7 @@
 
                             <!-- MAIN BUTTONS -->
                             <StackLayout VerticalOptions="End">
-                                <Button Text="Import Map Image" Clicked="Tapped_MapSettings" Command="{Binding MapSettingsCommand}" Style="{StaticResource button-big}"/>
+                                <Button Text="Import Map Image" Clicked="Tapped_MapSettings" Style="{StaticResource button-big}"/>
                                 <Button Text="Save &amp; Exit" Clicked="ExitPage" Style="{StaticResource button-big}"/>
                             </StackLayout>
 

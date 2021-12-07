@@ -122,6 +122,36 @@ namespace SpaceCat_Xamarin_Frontend
             ((MapCreationViewModel)BindingContext).AddNewFurniture(ib, 0 - theMap.TranslationX + toolStack.Width, 0 - theMap.TranslationY);
         }
 
+        private async void Tapped_ScaleFurniture(object sender, EventArgs e)
+        {
+            toolStack.IsEnabled = false;
+            panButtons.IsEnabled = false;
+            double scaleFactor = 1.0;
+            bool success = false;
+            while (!success)
+            {
+                string scaleString = await DisplayPromptAsync("Scale Furniture", "Enter a decimal scale factor to apply to any new furniture: ", "OK", "Cancel", "1.0");
+                try
+                {
+                    if (scaleString == null)
+                        break;
+                    scaleFactor = Double.Parse(scaleString);
+                    if (scaleFactor > 0)
+                        success = true;
+                    else
+                        await DisplayAlert("Scale Furniture", "The scale factor needs to be greater than zero!", "OK");
+                }
+                catch (FormatException)
+                {
+                    await DisplayAlert("Scale Furniture", "The scale factor needs to be a number!", "OK");
+                }
+            }
+            if (success)
+                ((MapCreationViewModel)BindingContext).ScaleFactor = scaleFactor;
+            toolStack.IsEnabled = true;
+            panButtons.IsEnabled = true;
+        }
+
         private async void Tapped_MapSettings(object sender, EventArgs e)
         {
             (sender as Button).IsEnabled = false;
