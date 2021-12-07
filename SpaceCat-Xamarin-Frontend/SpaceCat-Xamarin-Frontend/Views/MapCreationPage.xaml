@@ -18,6 +18,7 @@
             </Style>
             <Style x:Key="button-tools" TargetType="Button" BasedOn="{StaticResource button-small}">
                 <Setter Property="HeightRequest" Value="60"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -36,14 +37,14 @@
                     <Frame Style="{StaticResource frame-exterior}">
                         <StackLayout>
                             <!-- AREA TOOLS -->
-                            <Frame HeightRequest="300" Style="{StaticResource frame-tools-main}">
+                            <Frame Style="{StaticResource frame-tools-main}">
                                 <StackLayout>
                                     <Label Text="AREA TOOLS" Style="{StaticResource label-tools-title}"/>
-                                    <Grid>
-                                        <Button Text="New Area" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding NewAreaCommand}" BorderColor="{Binding NewAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
-                                        <Button Text="Delete &#x0a;Area" Grid.Row="1" Grid.Column="0" Command="{Binding DeleteAreaCommand}" BorderColor="{Binding DeleteAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
-                                        <Button Text="Add to &#x0a;Area" Grid.Row="1" Grid.Column="1" Command="{Binding AddAreaCommand}" BorderColor="{Binding AddAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
-                                    </Grid>
+                                    <Button Text="New Area" Command="{Binding NewAreaCommand}" BorderColor="{Binding NewAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                    <StackLayout Orientation="Horizontal" BackgroundColor="AliceBlue">
+                                        <Button Text="Delete &#x0a;Area" Command="{Binding DeleteAreaCommand}" BorderColor="{Binding DeleteAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                        <Button Text="Add to &#x0a;Area" Command="{Binding AddAreaCommand}" BorderColor="{Binding AddAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                    </StackLayout>
                                 </StackLayout>
                             </Frame>
 
@@ -66,7 +67,7 @@
 
                     <!-- MAIN BUTTONS -->
                     <StackLayout VerticalOptions="End">
-                        <Button Text="Map Settings" Clicked="Tapped_MapSettings" Command="{Binding MapSettingsCommand}" Style="{StaticResource button-big}"/>
+                        <Button Text="Import Map Image" Clicked="Tapped_MapSettings" Command="{Binding MapSettingsCommand}" Style="{StaticResource button-big}"/>
                         <Button Text="Save &amp; Exit" Clicked="ExitPage" Style="{StaticResource button-big}"/>
                     </StackLayout>
                 </StackLayout>
@@ -81,8 +82,8 @@
                             <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
                         </AbsoluteLayout.Effects>
 
-                        <StackLayout HeightRequest="1600" WidthRequest="2400" Margin="0" Padding="0" Spacing="0" Orientation="Horizontal">
-                            <Image x:Name="floorImg" Source="sampleFloorplan.jpg"/>
+                        <StackLayout Margin="0" Padding="0" Spacing="0">
+                            <Image x:Name="floorImg" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand"/>
                         </StackLayout>
 
                         <Frame Padding="0">
