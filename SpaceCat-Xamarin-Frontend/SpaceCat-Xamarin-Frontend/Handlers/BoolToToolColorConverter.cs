@@ -8,7 +8,7 @@ namespace SpaceCat_Xamarin_Frontend
 {
     public class BoolToToolColorConverter : IValueConverter
     {
-        public (string, string) HexToolColors = ("#808080", "#6EE03E" );
+        public (string, string) HexToolColors = ("#808080", "#4590BF");
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
