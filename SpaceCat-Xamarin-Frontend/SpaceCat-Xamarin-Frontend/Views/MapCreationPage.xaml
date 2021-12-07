@@ -66,7 +66,7 @@
 
                     <!-- MAIN BUTTONS -->
                     <StackLayout VerticalOptions="End">
-                        <Button Text="Map Settings" Command="{Binding MapSettingsCommand}" Style="{StaticResource button-big}"/>
+                        <Button Text="Map Settings" Clicked="Tapped_MapSettings" Command="{Binding MapSettingsCommand}" Style="{StaticResource button-big}"/>
                         <Button Text="Save &amp; Exit" Clicked="ExitPage" Style="{StaticResource button-big}"/>
                     </StackLayout>
                 </StackLayout>
@@ -82,7 +82,7 @@
                         </AbsoluteLayout.Effects>
 
                         <StackLayout HeightRequest="1600" WidthRequest="2400" Margin="0" Padding="0" Spacing="0" Orientation="Horizontal">
-                            <Image Source="sampleFloorplan.jpg"/>
+                            <Image x:Name="floorImg" Source="sampleFloorplan.jpg"/>
                         </StackLayout>
 
                         <Frame Padding="0">

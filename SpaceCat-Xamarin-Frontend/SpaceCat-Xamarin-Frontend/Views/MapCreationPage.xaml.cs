@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,6 +51,20 @@ namespace SpaceCat_Xamarin_Frontend
         {
             ImageButton ib = (ImageButton)sender;
             ((MapCreationViewModel)BindingContext).AddNewFurniture(ib);
+        }
+
+        private async void Tapped_MapSettings(object sender, EventArgs e)
+        {
+            (sender as Button).IsEnabled = false;
+
+            Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
+            if (stream != null)
+            {
+                ImageSource myImage = ImageSource.FromStream(() => stream);
+                floorImg.Source = myImage;
+            }
+
+            (sender as Button).IsEnabled = true;
         }
 
         public async void ExitPage(object sender, EventArgs e)
