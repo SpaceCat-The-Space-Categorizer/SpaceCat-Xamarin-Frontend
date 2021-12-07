@@ -74,42 +74,44 @@
 
 
                 <!-- MAP -->
-                <Frame HorizontalOptions="FillAndExpand" Style="{StaticResource frame-exterior}">
+                <local:PinchToNavigateContainer HorizontalOptions="FillAndExpand">
+                    <local:PinchToNavigateContainer.Content>
 
-                    <AbsoluteLayout>
+                        <AbsoluteLayout>
 
-                        <AbsoluteLayout.Effects>
-                            <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
-                        </AbsoluteLayout.Effects>
+                            <AbsoluteLayout.Effects>
+                                <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
+                            </AbsoluteLayout.Effects>
 
-                        <StackLayout Margin="0" Padding="0" Spacing="0">
-                            <Image x:Name="floorImg" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand"/>
-                        </StackLayout>
+                            <StackLayout Margin="0" Padding="0" Spacing="0">
+                                <Image x:Name="floorImg" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand"/>
+                            </StackLayout>
 
-                        <Frame Padding="0">
-                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </AbsoluteLayout>
-                        </Frame>
+                            <Frame Padding="0">
+                                <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </AbsoluteLayout>
+                            </Frame>
 
-                        <Frame Padding="0">
-                            <AbsoluteLayout x:Name="mapFurniture" BindableLayout.ItemsSource="{Binding Shapes}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" Style="{StaticResource frame-furniture}">
-                                            <Image Source="{Binding Source}"/>
-                                        </Frame>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </AbsoluteLayout>
-                        </Frame>
+                            <Frame Padding="0">
+                                <AbsoluteLayout x:Name="mapFurniture" BindableLayout.ItemsSource="{Binding Shapes}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" Style="{StaticResource frame-furniture}">
+                                                <Image Source="{Binding Source}"/>
+                                            </Frame>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </AbsoluteLayout>
+                            </Frame>
 
-                    </AbsoluteLayout>
-                </Frame>
+                        </AbsoluteLayout>
+                    </local:PinchToNavigateContainer.Content>
+                </local:PinchToNavigateContainer>
                 
             
             
