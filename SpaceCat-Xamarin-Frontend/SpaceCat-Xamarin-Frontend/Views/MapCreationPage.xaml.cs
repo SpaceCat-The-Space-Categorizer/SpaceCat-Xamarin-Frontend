@@ -34,6 +34,18 @@ namespace SpaceCat_Xamarin_Frontend
                 else
                     column = 0;
             }
+            SetFloorImage();
+        }
+
+        private async void SetFloorImage()
+        {
+            string fileName = ((MapCreationViewModel)BindingContext).GetFullFloorName();
+            Stream stream = await DependencyService.Get<IFileService>().GetPicture(fileName);
+            if (stream != null)
+            {
+                ImageSource myImage = ImageSource.FromStream(() => stream);
+                floorImg.Source = myImage;
+            }
         }
 
         private void TappedMap(object sender, TouchActionEventArgs args)
@@ -60,8 +72,9 @@ namespace SpaceCat_Xamarin_Frontend
             Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
             if (stream != null)
             {
-                ImageSource myImage = ImageSource.FromStream(() => stream);
-                floorImg.Source = myImage;
+                string fileName = ((MapCreationViewModel)BindingContext).GetFullFloorName();
+                DependencyService.Get<IFileService>().SavePicture(fileName, stream);
+                SetFloorImage();
             }
 
             (sender as Button).IsEnabled = true;

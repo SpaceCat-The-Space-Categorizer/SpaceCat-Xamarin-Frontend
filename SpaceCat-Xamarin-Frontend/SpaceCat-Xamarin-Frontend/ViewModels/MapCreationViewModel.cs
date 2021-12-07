@@ -180,6 +180,11 @@ namespace SpaceCat_Xamarin_Frontend
             };
         }
 
+        public string GetFullFloorName()
+        {
+            return ThisFloor.FloorName + ThisFloor.FloorNumber.ToString();
+        }
+
         /// <summary>
         /// Creates a new AreaFigure when adding an area rectangle using area tools.
         /// </summary>
