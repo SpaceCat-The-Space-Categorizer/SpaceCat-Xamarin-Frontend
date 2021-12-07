@@ -15,6 +15,7 @@ namespace SpaceCat_Xamarin_Frontend
     public class MapCreationViewModel : INotifyPropertyChanged
     {
         public Grid Presets;
+        public double ScaleFactor;
         private Floor ThisFloor;
         private bool FigInProgress;
         private int LastColorIndex;
@@ -94,6 +95,7 @@ namespace SpaceCat_Xamarin_Frontend
             DeleteFurnitureToolOn = false;
             FigInProgress = false;
             LastColorIndex = -1;
+            ScaleFactor = 1.0;
             NewAreaList = new List<Area>();
             Templates = new List<FurnitureBlueprint>();
 
@@ -104,11 +106,11 @@ namespace SpaceCat_Xamarin_Frontend
             MovingShape = -1;
 
             // attach command functions to Command variables (defined below area methods)
-            MapSettingsCommand = new Command(ExecuteMapSettings);
             NewAreaCommand = new Command(ExecuteNewArea);
             DeleteAreaCommand = new Command(ExecuteDeleteArea);
             DeleteFurnitureCommand = new Command(ExecuteDeleteFurniture);
             AddAreaCommand = new Command(ExecuteAddArea);
+            ScaleFurnitureCommand = new Command(ExecuteScaleFurniture);
 
             //MapUtilities.RunUnitTesting();   // RUN UNIT TESTS (uncomment to run, results in debug output)
         }
@@ -178,6 +180,15 @@ namespace SpaceCat_Xamarin_Frontend
                 HeightRequest = 60,
                 CommandParameter = fileName
             };
+        }
+
+        /// <summary>
+        /// Gets the floor name concatenated with the floor number for a unique floor identifier.
+        /// </summary>
+        /// <returns>Returns the floor name concatenated with the floor number.</returns>
+        public string GetFullFloorName()
+        {
+            return ThisFloor.FloorName + ThisFloor.FloorNumber.ToString();
         }
 
         /// <summary>
@@ -369,18 +380,18 @@ namespace SpaceCat_Xamarin_Frontend
         /// Creates a new furniture shape from the selected preset and adds it to the map.
         /// </summary>
         /// <param name="imgButton">The ImageButton with the furniture preset selected by the user.</param>
-        public void AddNewFurniture(ImageButton imgButton)
+        public void AddNewFurniture(ImageButton imgButton, double xLoc, double yLoc)
         {
             foreach (FurnitureBlueprint blueprint in Templates)
             {
                 if (blueprint.Filepath == (string)imgButton.CommandParameter)
                 {
-                    Shapes.Add(new FurnitureShape(blueprint));
+                    FurnitureShape newShape = new FurnitureShape(blueprint, xLoc, yLoc);
+                    newShape.SetScale(ScaleFactor);
+                    Shapes.Add(newShape);
                     break;
                 }
             }
-
-
         }
 
         /// <summary>
@@ -436,7 +447,7 @@ namespace SpaceCat_Xamarin_Frontend
         public Command AddAreaCommand { get; set; }
         public Command DeleteAreaCommand { get; set; }
         public Command DeleteFurnitureCommand { get; set; }
-        public Command MapSettingsCommand { get; set; }
+        public Command ScaleFurnitureCommand { get; set; }
 
         /// <summary>
         ///     Called on click of New Area button, enables New Area tool/disables other tools.
@@ -444,10 +455,20 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="s">Not Used</param>
         private void ExecuteNewArea(object s)
         {
-            AddAreaToolOn = false;
-            DeleteAreaToolOn = false;
-            DeleteFurnitureToolOn = false;
-            NewAreaToolOn = true;
+            if (!NewAreaToolOn)
+            {
+                AddAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+                NewAreaToolOn = true;
+            }
+            else
+            {
+                AddAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+                NewAreaToolOn = false;
+            }
         }
 
         /// <summary>
@@ -459,11 +480,21 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="s">Not Used</param>
         private void ExecuteAddArea(object s)
         {
-            NewAreaToolOn = false;
-            DeleteAreaToolOn = false;
-            DeleteFurnitureToolOn = false;
-            if (SelectedFigure > -1)
-                AddAreaToolOn = true;
+            if (!AddAreaToolOn)
+            {
+                NewAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+                if (SelectedFigure > -1)
+                    AddAreaToolOn = true;
+            }
+            else
+            {
+                NewAreaToolOn = false;
+                AddAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+            }
         }
 
         /// <summary>
@@ -472,11 +503,21 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="s">Not Used</param>
         private void ExecuteDeleteArea(object s)
         {
-            NewAreaToolOn = false;
-            AddAreaToolOn = false;
-            DeleteFurnitureToolOn = false;
-            if (Figures.Count > 0)
-                DeleteAreaToolOn = true;
+            if (!DeleteAreaToolOn)
+            {
+                NewAreaToolOn = false;
+                AddAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+                if (Figures.Count > 0)
+                    DeleteAreaToolOn = true;
+            }
+            else
+            {
+                NewAreaToolOn = false;
+                AddAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+            }
         }
 
         /// <summary>
@@ -485,17 +526,26 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="s">Not Used.</param>
         private void ExecuteDeleteFurniture(object s)
         {
-            NewAreaToolOn = false;
-            DeleteAreaToolOn = false;
-            AddAreaToolOn = false;
-            if (Shapes.Count > 0)
-                DeleteFurnitureToolOn = true;
+            if (!DeleteFurnitureToolOn)
+            {
+                NewAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                AddAreaToolOn = false;
+                if (Shapes.Count > 0)
+                    DeleteFurnitureToolOn = true;
+            }
+            else
+            {
+                NewAreaToolOn = false;
+                AddAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+            }
         }
 
-        private void ExecuteMapSettings(object s)
+        private void ExecuteScaleFurniture(object s)
         {
-            // Handles tapping the map settings button (unimplemented)
-            System.Diagnostics.Debug.WriteLine("Tapped Settings!");
+            
         }
 
 

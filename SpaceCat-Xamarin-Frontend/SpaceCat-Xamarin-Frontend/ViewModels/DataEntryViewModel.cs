@@ -11,7 +11,7 @@ namespace SpaceCat_Xamarin_Frontend
 {
     public class DataEntryViewModel : INotifyPropertyChanged
     {
-        private Floor thisFloor;
+        private Floor ThisFloor;
 
         public int SelectedFigureIndex;
         public int SelectedShapeIndex;
@@ -53,8 +53,8 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="aFloor">The floor to load.</param>
         public void LoadFloor(Floor aFloor)
         {
-            thisFloor = aFloor;
-            foreach (Area anArea in thisFloor.Areas)
+            ThisFloor = aFloor;
+            foreach (Area anArea in ThisFloor.Areas)
             {
                 foreach (SpaceCat.Rectangle rect in anArea.DefiningRectangles)
                 {
@@ -66,6 +66,15 @@ namespace SpaceCat_Xamarin_Frontend
                     Shapes.Add(new FurnitureShape(furn));
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the floor name concatenated with the floor number for a unique floor identifier.
+        /// </summary>
+        /// <returns>Returns the floor name concatenated with the floor number.</returns>
+        public string GetFullFloorName()
+        {
+            return ThisFloor.FloorName + ThisFloor.FloorNumber.ToString();
         }
 
         /// <summary>
