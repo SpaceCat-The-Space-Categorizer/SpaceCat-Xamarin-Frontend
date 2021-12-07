@@ -90,30 +90,25 @@ namespace SpaceCat_Xamarin_Frontend
                 });
         }
 
-        /// <summary>
-        /// UPDATE LATER: Currently adds temporary placeholder data to Buildings to test UI
-        /// </summary>
-        public void LoadBuildings()
+        public void DeleteBuilding(string buildingName)
         {
-            /*Buildings.Add(new BuildingListItem(new Building("Building 1")));
-            Buildings.Add(new BuildingListItem(new Building("Building 2")));
-            Buildings.Add(new BuildingListItem(new Building("Building 3")));
-            Buildings.Add(new BuildingListItem(new Building("Building 4")));
-            Building b1 = Persistence.LoadBuilding("Building 1");
-            Building b2 = Persistence.LoadBuilding("Building 2");
-            Building b3 = Persistence.LoadBuilding("Building 3");
-            Building b4 = Persistence.LoadBuilding("Building 4");
-            Buildings.Add(new BuildingListItem(b1));
-            Buildings.Add(new BuildingListItem(b2));
-            Buildings.Add(new BuildingListItem(b3));
-            Buildings.Add(new BuildingListItem(b4));*/
-
-
-            System.Diagnostics.Debug.WriteLine("HERE I AM");
-            System.Diagnostics.Debug.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-
-            if (Buildings.Count > 0)
-                SelectedBuilding = Buildings[0];
+            foreach (BuildingListItem b in Buildings)
+            {
+                if (b.Build.Name == buildingName)
+                {
+                    Buildings.Remove(b);
+                    break;
+                }
+            }
+            foreach (RecentBuilding b in RecentBuildings)
+            {
+                if (b.Name == buildingName)
+                {
+                    RecentBuildings.Remove(b);
+                    Persistence.SaveRecentBuildings(RecentBuildings);
+                    break;
+                }
+            }
         }
 
         /// <summary>

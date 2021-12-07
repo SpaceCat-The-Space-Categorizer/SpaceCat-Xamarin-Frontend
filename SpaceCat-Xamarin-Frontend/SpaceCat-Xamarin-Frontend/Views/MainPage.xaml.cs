@@ -79,8 +79,7 @@ namespace SpaceCat_Xamarin_Frontend
         private void Clicked_Delete(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            BuildingListItem building = ((BuildingListViewModel)BindingContext).Buildings.Where(build => build.Build.Name == (string)btn.CommandParameter).FirstOrDefault();
-            ((BuildingListViewModel)BindingContext).Buildings.Remove(building);
+            ((BuildingListViewModel)BindingContext).DeleteBuilding(btn.CommandParameter.ToString());
         }
 
         private void Clicked_Survey(object sender, EventArgs e)
