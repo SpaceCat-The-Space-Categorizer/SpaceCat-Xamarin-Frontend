@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,25 @@ namespace SpaceCat_Xamarin_Frontend
                 else
                     column = 0;
             }
+            SetFloorImage();
+            mainStack.RaiseChild(toolStack);
+            toolStack.HeightRequest = Application.Current.MainPage.Height;
+            toolStack.TranslationX = -10;
+            toolStack.TranslationY = -10;
+            panButtons.TranslationX = Application.Current.MainPage.Width - 200;
+            panButtons.TranslationY = Application.Current.MainPage.Height - 200;
+            theMap.TranslationX = 230;
+        }
+
+        private async void SetFloorImage()
+        {
+            string fileName = ((MapCreationViewModel)BindingContext).GetFullFloorName();
+            Stream stream = await DependencyService.Get<IFileService>().GetPicture(fileName);
+            if (stream != null)
+            {
+                ImageSource myImage = ImageSource.FromStream(() => stream);
+                floorImg.Source = myImage;
+            }
         }
 
         private void TappedMap(object sender, TouchActionEventArgs args)
@@ -46,10 +66,105 @@ namespace SpaceCat_Xamarin_Frontend
             }
         }
 
+        private void Tapped_MapUp(object sender, EventArgs e)
+        {
+            double halfScreenHeight = Application.Current.MainPage.Height / 2.0;
+            if (theMap.TranslationY < 0)
+            {
+                if (theMap.TranslationY + halfScreenHeight > 0)
+                    theMap.TranslationY = 0;
+                else
+                    theMap.TranslationY += halfScreenHeight;
+            }
+        }
+        private void Tapped_MapDown(object sender, EventArgs e)
+        {
+            double halfScreenHeight = Application.Current.MainPage.Height / 2.0;
+            double minTranslation = -20.0 - (floorImg.Height - (halfScreenHeight * 2.0));
+            if (theMap.TranslationY > minTranslation)
+            {
+                if (theMap.TranslationY - halfScreenHeight < minTranslation)
+                    theMap.TranslationY = minTranslation;
+                else
+                    theMap.TranslationY -= halfScreenHeight;
+            }
+        }
+
+        private void Tapped_MapLeft(object sender, EventArgs e)
+        {
+            double halfScreenWidth = Application.Current.MainPage.Width / 2.0;
+            if (theMap.TranslationX < toolStack.Width)
+            {
+                if (theMap.TranslationX + halfScreenWidth > toolStack.Width)
+                    theMap.TranslationX = toolStack.Width;
+                else
+                    theMap.TranslationX += halfScreenWidth;
+            }
+        }
+
+        private void Tapped_MapRight(object sender, EventArgs e)
+        {
+            double screenWidth = Application.Current.MainPage.Width;
+            double halfScreenWidth = screenWidth / 2.0;
+            double minTranslation = -20.0 - (floorImg.Width - screenWidth);
+            if (theMap.TranslationX > minTranslation)
+            {
+                if (theMap.TranslationX - halfScreenWidth < minTranslation)
+                    theMap.TranslationX = minTranslation;
+                else
+                    theMap.TranslationX -= halfScreenWidth;
+            }
+        }
+
         private void Tapped_NewFurniture(object sender, EventArgs e)
         {
             ImageButton ib = (ImageButton)sender;
-            ((MapCreationViewModel)BindingContext).AddNewFurniture(ib);
+            ((MapCreationViewModel)BindingContext).AddNewFurniture(ib, 0 - theMap.TranslationX + toolStack.Width, 0 - theMap.TranslationY);
+        }
+
+        private async void Tapped_ScaleFurniture(object sender, EventArgs e)
+        {
+            toolStack.IsEnabled = false;
+            panButtons.IsEnabled = false;
+            double scaleFactor = 1.0;
+            bool success = false;
+            while (!success)
+            {
+                string scaleString = await DisplayPromptAsync("Scale Furniture", "Enter a decimal scale factor to apply to any new furniture: ", "OK", "Cancel", "1.0");
+                try
+                {
+                    if (scaleString == null)
+                        break;
+                    scaleFactor = Double.Parse(scaleString);
+                    if (scaleFactor > 0)
+                        success = true;
+                    else
+                        await DisplayAlert("Scale Furniture", "The scale factor needs to be greater than zero!", "OK");
+                }
+                catch (FormatException)
+                {
+                    await DisplayAlert("Scale Furniture", "The scale factor needs to be a number!", "OK");
+                }
+            }
+            if (success)
+                ((MapCreationViewModel)BindingContext).ScaleFactor = scaleFactor;
+            toolStack.IsEnabled = true;
+            panButtons.IsEnabled = true;
+        }
+
+        private async void Tapped_MapSettings(object sender, EventArgs e)
+        {
+            (sender as Button).IsEnabled = false;
+
+            Stream stream = await DependencyService.Get<IPhotoPickerService>().GetImageStreamAsync();
+            if (stream != null)
+            {
+                string fileName = ((MapCreationViewModel)BindingContext).GetFullFloorName();
+                DependencyService.Get<IFileService>().SavePicture(fileName, stream);
+                SetFloorImage();
+            }
+
+            (sender as Button).IsEnabled = true;
         }
 
         public async void ExitPage(object sender, EventArgs e)

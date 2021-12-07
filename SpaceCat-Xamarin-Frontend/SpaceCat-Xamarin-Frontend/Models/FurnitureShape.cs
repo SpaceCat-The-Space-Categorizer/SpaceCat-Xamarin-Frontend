@@ -52,12 +52,12 @@ namespace SpaceCat_Xamarin_Frontend
         /// Used for creating new furniture.
         /// </summary>
         /// <param name="blueprint">The blueprint to use for creating this furniture shape.</param>
-        public FurnitureShape(FurnitureBlueprint blueprint)
+        public FurnitureShape(FurnitureBlueprint blueprint, double xLoc, double yLoc)
         {
             Furn = blueprint.NewInstance();
             Status = "Uncounted";
             Source = blueprint.Filepath;
-            Bounds = new Xamarin.Forms.Rectangle(0, 0, 100.0 * Furn.StretchX, 100.0 * Furn.StretchY);
+            Bounds = new Xamarin.Forms.Rectangle(xLoc, yLoc, 100.0 * Furn.StretchX, 100.0 * Furn.StretchY);
             Furn.Corner = new Tuple<double,double>(Bounds.X, Bounds.Y);
         }
 
@@ -95,6 +95,13 @@ namespace SpaceCat_Xamarin_Frontend
         {
             Bounds = new Xamarin.Forms.Rectangle(newLoc.X, newLoc.Y, Bounds.Width, Bounds.Height);
             Furn.Corner = new Tuple<double, double>(Bounds.X, Bounds.Y);
+        }
+
+        public void SetScale(double scaleFactor)
+        {
+            Bounds = new Xamarin.Forms.Rectangle(Bounds.X, Bounds.Y, 100 * scaleFactor, 100 * scaleFactor);
+            Furn.StretchX = scaleFactor;
+            Furn.StretchY = scaleFactor;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

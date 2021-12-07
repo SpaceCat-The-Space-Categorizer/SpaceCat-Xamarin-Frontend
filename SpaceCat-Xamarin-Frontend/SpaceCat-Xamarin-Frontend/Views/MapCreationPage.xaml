@@ -18,6 +18,7 @@
             </Style>
             <Style x:Key="button-tools" TargetType="Button" BasedOn="{StaticResource button-small}">
                 <Setter Property="HeightRequest" Value="60"/>
+                <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -28,91 +29,108 @@
 
     <ContentPage.Content>
         <Frame Style="{StaticResource frame-main}">
-            <StackLayout Orientation="Horizontal">
+            <AbsoluteLayout x:Name="mainStack">
             
             
                 <!-- TOOLS -->
-                <StackLayout>
-                    <Frame Style="{StaticResource frame-exterior}">
+                <StackLayout x:Name="toolStack" WidthRequest="230" HeightRequest="500">
+                    <Frame VerticalOptions="Start" Style="{StaticResource frame-exterior}">
                         <StackLayout>
                             <!-- AREA TOOLS -->
-                            <Frame HeightRequest="300" Style="{StaticResource frame-tools-main}">
+                            <Frame Style="{StaticResource frame-tools-main}">
                                 <StackLayout>
                                     <Label Text="AREA TOOLS" Style="{StaticResource label-tools-title}"/>
-                                    <Grid>
-                                        <Button Text="New Area" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding NewAreaCommand}" BorderColor="{Binding NewAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
-                                        <Button Text="Delete &#x0a;Area" Grid.Row="1" Grid.Column="0" Command="{Binding DeleteAreaCommand}" BorderColor="{Binding DeleteAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
-                                        <Button Text="Add to &#x0a;Area" Grid.Row="1" Grid.Column="1" Command="{Binding AddAreaCommand}" BorderColor="{Binding AddAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
-                                    </Grid>
+                                    <Button Text="New Area" Command="{Binding NewAreaCommand}" BorderColor="{Binding NewAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                    <StackLayout Orientation="Horizontal" BackgroundColor="AliceBlue">
+                                        <Button Text="Delete &#x0a;Area" Command="{Binding DeleteAreaCommand}" BorderColor="{Binding DeleteAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                        <Button Text="Add to &#x0a;Area" Command="{Binding AddAreaCommand}" BorderColor="{Binding AddAreaToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                    </StackLayout>
                                 </StackLayout>
                             </Frame>
 
                             <!-- FURNITURE -->
-                            
+
                             <Frame VerticalOptions="FillAndExpand" Style="{StaticResource frame-interior}">
                                 <StackLayout>
                                     <Label Text="FURNITURE" Style="{StaticResource label-tools-title}"/>
-                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Margin="0,0,0,10" BorderColor="{Binding DeleteFurnitureToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                    <Button Text="Delete Furniture" Command="{Binding DeleteFurnitureCommand}" Margin="0,0,0,0" BorderColor="{Binding DeleteFurnitureToolOn, Converter={StaticResource boolToToolColor}}" Style="{StaticResource button-tools}"/>
+                                    <Button Text="Scale Furniture" Clicked="Tapped_ScaleFurniture" Margin="0,0,0,10" BorderColor="#808080" Style="{StaticResource button-tools}"/>
                                     <ScrollView>
                                         <Grid x:Name="FurniturePresetList">
-                                            
+
                                         </Grid>
                                     </ScrollView>
                                 </StackLayout>
                             </Frame>
+
+                            <!-- MAIN BUTTONS -->
+                            <StackLayout VerticalOptions="End">
+                                <Button Text="Import Map Image" Clicked="Tapped_MapSettings" Style="{StaticResource button-big}"/>
+                                <Button Text="Save &amp; Exit" Clicked="ExitPage" Style="{StaticResource button-big}"/>
+                            </StackLayout>
+
                         </StackLayout>
                     </Frame>
 
-
-                    <!-- MAIN BUTTONS -->
-                    <StackLayout VerticalOptions="End">
-                        <Button Text="Map Settings" Command="{Binding MapSettingsCommand}" Style="{StaticResource button-big}"/>
-                        <Button Text="Save &amp; Exit" Clicked="ExitPage" Style="{StaticResource button-big}"/>
-                    </StackLayout>
                 </StackLayout>
 
 
                 <!-- MAP -->
-                <Frame HorizontalOptions="FillAndExpand" Style="{StaticResource frame-exterior}">
+                <AbsoluteLayout>
+                    <local:PinchToNavigateContainer x:Name="theMap" HorizontalOptions="FillAndExpand">
+                        <local:PinchToNavigateContainer.Content>
 
-                    <AbsoluteLayout>
+                            <AbsoluteLayout>
 
-                        <AbsoluteLayout.Effects>
-                            <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
-                        </AbsoluteLayout.Effects>
+                                <AbsoluteLayout.Effects>
+                                    <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
+                                </AbsoluteLayout.Effects>
 
-                        <StackLayout HeightRequest="1600" WidthRequest="2400" Margin="0" Padding="0" Spacing="0" Orientation="Horizontal">
-                            <Image Source="sampleFloorplan.jpg"/>
-                        </StackLayout>
+                                <StackLayout Margin="0" Padding="0" Spacing="0">
+                                    <Image x:Name="floorImg" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand"/>
+                                </StackLayout>
 
-                        <Frame Padding="0">
-                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
+                                <Frame Padding="0">
+                                    <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </AbsoluteLayout>
+                                </Frame>
+
+                                <Frame Padding="0">
+                                    <AbsoluteLayout x:Name="mapFurniture" BindableLayout.ItemsSource="{Binding Shapes}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" Style="{StaticResource frame-furniture}">
+                                                    <Image Source="{Binding Source}"/>
+                                                </Frame>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </AbsoluteLayout>
+                                </Frame>
+
                             </AbsoluteLayout>
-                        </Frame>
+                        
+                        </local:PinchToNavigateContainer.Content>
+                    </local:PinchToNavigateContainer>
 
-                        <Frame Padding="0">
-                            <AbsoluteLayout x:Name="mapFurniture" BindableLayout.ItemsSource="{Binding Shapes}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" Style="{StaticResource frame-furniture}">
-                                            <Image Source="{Binding Source}"/>
-                                        </Frame>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </AbsoluteLayout>
-                        </Frame>
+                    <Frame x:Name="panButtons" BackgroundColor="LightGray" Opacity="0.75">
+                        <Grid>
+                            <Button Text="^" Grid.Row="0" Grid.Column="1" Clicked="Tapped_MapUp" WidthRequest="30" Style="{StaticResource button-small}"/>
+                            <Button Text="&lt;" Grid.Row="1" Grid.Column="0" Clicked="Tapped_MapLeft" WidthRequest="30" Style="{StaticResource button-small}"/>
+                            <Button Text=">" Grid.Row="1" Grid.Column="2" Clicked="Tapped_MapRight" WidthRequest="30" Style="{StaticResource button-small}"/>
+                            <Button Text="v" Grid.Row="2" Grid.Column="1" Clicked="Tapped_MapDown" WidthRequest="30" TextTransform="Lowercase" Style="{StaticResource button-small}"/>
+                        </Grid>
+                    </Frame>
 
-                    </AbsoluteLayout>
-                </Frame>
+                </AbsoluteLayout>
                 
             
             
-            </StackLayout>
+            </AbsoluteLayout>
         </Frame>
     </ContentPage.Content>
 </ContentPage>
