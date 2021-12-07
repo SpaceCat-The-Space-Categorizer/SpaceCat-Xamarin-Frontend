@@ -449,10 +449,20 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="s">Not Used</param>
         private void ExecuteNewArea(object s)
         {
-            AddAreaToolOn = false;
-            DeleteAreaToolOn = false;
-            DeleteFurnitureToolOn = false;
-            NewAreaToolOn = true;
+            if (!NewAreaToolOn)
+            {
+                AddAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+                NewAreaToolOn = true;
+            }
+            else
+            {
+                AddAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+                NewAreaToolOn = false;
+            }
         }
 
         /// <summary>
@@ -464,11 +474,21 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="s">Not Used</param>
         private void ExecuteAddArea(object s)
         {
-            NewAreaToolOn = false;
-            DeleteAreaToolOn = false;
-            DeleteFurnitureToolOn = false;
-            if (SelectedFigure > -1)
-                AddAreaToolOn = true;
+            if (!AddAreaToolOn)
+            {
+                NewAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+                if (SelectedFigure > -1)
+                    AddAreaToolOn = true;
+            }
+            else
+            {
+                NewAreaToolOn = false;
+                AddAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+            }
         }
 
         /// <summary>
@@ -477,11 +497,21 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="s">Not Used</param>
         private void ExecuteDeleteArea(object s)
         {
-            NewAreaToolOn = false;
-            AddAreaToolOn = false;
-            DeleteFurnitureToolOn = false;
-            if (Figures.Count > 0)
-                DeleteAreaToolOn = true;
+            if (!DeleteAreaToolOn)
+            {
+                NewAreaToolOn = false;
+                AddAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+                if (Figures.Count > 0)
+                    DeleteAreaToolOn = true;
+            }
+            else
+            {
+                NewAreaToolOn = false;
+                AddAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+            }
         }
 
         /// <summary>
@@ -490,11 +520,21 @@ namespace SpaceCat_Xamarin_Frontend
         /// <param name="s">Not Used.</param>
         private void ExecuteDeleteFurniture(object s)
         {
-            NewAreaToolOn = false;
-            DeleteAreaToolOn = false;
-            AddAreaToolOn = false;
-            if (Shapes.Count > 0)
-                DeleteFurnitureToolOn = true;
+            if (!DeleteFurnitureToolOn)
+            {
+                NewAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                AddAreaToolOn = false;
+                if (Shapes.Count > 0)
+                    DeleteFurnitureToolOn = true;
+            }
+            else
+            {
+                NewAreaToolOn = false;
+                AddAreaToolOn = false;
+                DeleteAreaToolOn = false;
+                DeleteFurnitureToolOn = false;
+            }
         }
 
         private void ExecuteMapSettings(object s)
