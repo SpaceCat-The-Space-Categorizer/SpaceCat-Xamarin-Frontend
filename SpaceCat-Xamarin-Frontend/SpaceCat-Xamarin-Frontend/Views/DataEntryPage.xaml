@@ -23,41 +23,43 @@
                 
 
                 <!-- MAP -->
-                <Frame AbsoluteLayout.LayoutBounds="1,1,1,1" AbsoluteLayout.LayoutFlags="SizeProportional" Style="{StaticResource frame-exterior}">
-                    <AbsoluteLayout>
+                <local:PinchToNavigateContainer x:Name="theMap" HorizontalOptions="FillAndExpand">
+                    <local:PinchToNavigateContainer.Content>
+                        <AbsoluteLayout>
                         
-                        <AbsoluteLayout.Effects>
-                            <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
-                        </AbsoluteLayout.Effects>
+                            <AbsoluteLayout.Effects>
+                                <tt:TouchEffect Capture="True" TouchAction="TappedMap"/>
+                            </AbsoluteLayout.Effects>
 
-                        <StackLayout HeightRequest="1600" WidthRequest="2400" Margin="0" Padding="0" Spacing="0" Orientation="Horizontal">
-                            <Image Source="sampleFloorplan.jpg"/>
-                        </StackLayout>
+                            <StackLayout Margin="0" Padding="0" Spacing="0">
+                                <Image x:Name="floorImg" VerticalOptions="StartAndExpand" HorizontalOptions="StartAndExpand"/>
+                            </StackLayout>
+
+                                <Frame Padding="0">
+                                <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </AbsoluteLayout>
+                            </Frame>
 
                             <Frame Padding="0">
-                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Figures}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <Polygon Points="{Binding FigPoints}" Opacity="{Binding Opacity}" Fill="{Binding FillColor}" Stroke="{Binding StrokeColor}" StrokeThickness="5"/>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </AbsoluteLayout>
-                        </Frame>
+                                <AbsoluteLayout BindableLayout.ItemsSource="{Binding Shapes}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" BackgroundColor="{Binding Status, Converter={StaticResource statusToColor}}" Style="{StaticResource frame-furniture}">
+                                                <Image Source="{Binding Source}"/>
+                                            </Frame>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </AbsoluteLayout>
+                            </Frame>
 
-                        <Frame Padding="0">
-                            <AbsoluteLayout BindableLayout.ItemsSource="{Binding Shapes}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <Frame AbsoluteLayout.LayoutBounds="{Binding Bounds}" BackgroundColor="{Binding Status, Converter={StaticResource statusToColor}}" Style="{StaticResource frame-furniture}">
-                                            <Image Source="{Binding Source}"/>
-                                        </Frame>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </AbsoluteLayout>
-                        </Frame>
-
-                    </AbsoluteLayout>
-                </Frame>
+                        </AbsoluteLayout>
+                    </local:PinchToNavigateContainer.Content>
+                </local:PinchToNavigateContainer>
 
                 <Frame AbsoluteLayout.LayoutBounds="0, 1" AbsoluteLayout.LayoutFlags="PositionProportional" Style="{StaticResource frame-exterior}">
                     <StackLayout>
@@ -74,11 +76,20 @@
                         <!-- MAP OPTIONS -->
                         <Frame Style="{StaticResource frame-interior}">
                             <StackLayout>
-                                <Button Text="Submit Survey" Clicked="TappedSave" Style="{StaticResource button-big}"/>
+                                <Button Text="Save Survey" Clicked="TappedSave" Style="{StaticResource button-big}"/>
                                 <Button Text="Abort &amp; Exit" Clicked="TappedAbort" Style="{StaticResource button-big}"/>
                             </StackLayout>
                         </Frame>
                     </StackLayout>
+                </Frame>
+
+                <Frame x:Name="panButtons" BackgroundColor="LightGray" Opacity="0.75">
+                    <Grid>
+                        <Button Text="^" Grid.Row="0" Grid.Column="1" Clicked="Tapped_MapUp" WidthRequest="30" Style="{StaticResource button-small}"/>
+                        <Button Text="&lt;" Grid.Row="1" Grid.Column="0" Clicked="Tapped_MapLeft" WidthRequest="30" Style="{StaticResource button-small}"/>
+                        <Button Text=">" Grid.Row="1" Grid.Column="2" Clicked="Tapped_MapRight" WidthRequest="30" Style="{StaticResource button-small}"/>
+                        <Button Text="v" Grid.Row="2" Grid.Column="1" Clicked="Tapped_MapDown" WidthRequest="30" TextTransform="Lowercase" Style="{StaticResource button-small}"/>
+                    </Grid>
                 </Frame>
 
             </AbsoluteLayout>

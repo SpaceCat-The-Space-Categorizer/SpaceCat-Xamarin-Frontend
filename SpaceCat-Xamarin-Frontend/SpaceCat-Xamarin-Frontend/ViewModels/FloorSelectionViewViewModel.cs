@@ -35,15 +35,24 @@ namespace SpaceCat_Xamarin_Frontend
         {
             Floors = new ObservableCollection<Floor>();
 
-            // TEMP FLOORS
-            //Floors.Add(new Floor(1));
-
+            MessagingCenter.Subscribe<DataEntryPage, Floor>(this, "FloorSurvey",
+                (page, floor) =>
+                {
+                    for (int i = 0; i < ThisBuilding.Floors.Count; i++)
+                    {
+                        if (ThisBuilding.Floors[i].FloorName == floor.FloorName)
+                        {
+                            ThisBuilding.Floors[i] = floor;
+                            break;
+                        }
+                    }
+                });
         }
 
         public void LoadBuilding(Building thisBuilding)
         {
             ThisBuilding = thisBuilding;
-            if (ThisBuilding.Floors.Count > 0)
+            if (ThisBuilding.Floors.Count > 0) // TODO: check if floors list exists first
             {
                 foreach (Floor f in ThisBuilding.Floors)
                     Floors.Add(f);
@@ -53,7 +62,7 @@ namespace SpaceCat_Xamarin_Frontend
 
         public void SaveExit()
         {
-            //TODO: save survey data
+            ThisBuilding.CompleteSurvey();
         }
 
         // INotifyPropertyChanged interface is used to update the UI when variables are altered
